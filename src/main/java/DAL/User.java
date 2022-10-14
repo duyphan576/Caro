@@ -4,7 +4,7 @@
  */
 package DAL;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -15,6 +15,9 @@ public class User {
     String userName, password, nickname;
     Date birthday;
 
+    public User(){
+        
+    }
     public User(int userId, int sex, int isBlocked, String userName, String password, String nickname, Date birthday) {
         this.userId = userId;
         this.sex = sex;
