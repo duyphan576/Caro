@@ -59,9 +59,6 @@ public class SignUp extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sign Up");
-        setPreferredSize(new java.awt.Dimension(500, 470));
-
-        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
         txtusername.setForeground(new java.awt.Color(0, 0, 153));
         txtusername.addActionListener(new java.awt.event.ActionListener() {
@@ -315,6 +312,7 @@ public class SignUp extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new SignUp().setVisible(true);

@@ -45,6 +45,7 @@ public class Game extends javax.swing.JFrame {
         jProgressBar2 = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
 
