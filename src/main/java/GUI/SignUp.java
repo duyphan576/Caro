@@ -4,9 +4,6 @@
  */
 package GUI;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.io.File;
 import javax.swing.ImageIcon;
@@ -18,12 +15,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author jukut
  */
-public class SignUp extends javax.swing.JFrame {
+public class Signup extends javax.swing.JFrame {
 
     /**
      * Creates new form SignUp
      */
-    public SignUp() {
+    public Signup() {
         initComponents();
     }
 
@@ -37,7 +34,6 @@ public class SignUp extends javax.swing.JFrame {
     private void initComponents() {
 
         Sex = new javax.swing.ButtonGroup();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
         jPanel1 = new javax.swing.JPanel();
         txtusername = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -52,12 +48,15 @@ public class SignUp extends javax.swing.JFrame {
         rdfemale = new javax.swing.JRadioButton();
         jLabel6 = new javax.swing.JLabel();
         btnsignup = new javax.swing.JButton();
-        txtdate = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
         btnback = new javax.swing.JButton();
+<<<<<<< HEAD
         btnchoosefile = new javax.swing.JButton();
         txtfile = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+=======
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+>>>>>>> 80c9aed87756b4862ae1942d298c52deb8708ae9
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -152,6 +151,29 @@ public class SignUp extends javax.swing.JFrame {
                 .addGap(68, 68, 68)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+<<<<<<< HEAD
+=======
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtusername, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtpassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                            .addComponent(txtcfpassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                            .addComponent(txtfullname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(rdmale)
+                                .addGap(58, 58, 58)
+                                .addComponent(rdfemale)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+>>>>>>> 80c9aed87756b4862ae1942d298c52deb8708ae9
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnsignup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -214,6 +236,7 @@ public class SignUp extends javax.swing.JFrame {
                     .addComponent(rdfemale))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+<<<<<<< HEAD
                     .addComponent(txtdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(4, 4, 4)
@@ -222,6 +245,10 @@ public class SignUp extends javax.swing.JFrame {
                         .addComponent(btnchoosefile)
                         .addComponent(txtfile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+=======
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+>>>>>>> 80c9aed87756b4862ae1942d298c52deb8708ae9
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnsignup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -298,14 +325,15 @@ public class SignUp extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Signup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -316,7 +344,7 @@ public class SignUp extends javax.swing.JFrame {
         }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SignUp().setVisible(true);
+                new Signup().setVisible(true);
             }
         });
     }
@@ -326,7 +354,7 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JButton btnback;
     private javax.swing.JButton btnchoosefile;
     private javax.swing.JButton btnsignup;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -339,8 +367,11 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JRadioButton rdfemale;
     private javax.swing.JRadioButton rdmale;
     private javax.swing.JTextField txtcfpassword;
+<<<<<<< HEAD
     private com.toedter.calendar.JDateChooser txtdate;
     private javax.swing.JLabel txtfile;
+=======
+>>>>>>> 80c9aed87756b4862ae1942d298c52deb8708ae9
     private javax.swing.JTextField txtfullname;
     private javax.swing.JTextField txtpassword;
     private javax.swing.JTextField txtusername;

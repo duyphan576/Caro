@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package DAL;
+package Model;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -12,10 +12,13 @@ import java.util.Date;
  */
 public class User {
     int userId, sex, isBlocked;
-    String userName, password, nickname;
+    String userName, password, nickname, avatar;
     Date birthday;
 
-    public User(int userId, int sex, int isBlocked, String userName, String password, String nickname, Date birthday) {
+    public User(){
+        
+    }
+    public User(int userId, int sex, int isBlocked, String userName, String password, String nickname, Date birthday, String avatar) {
         this.userId = userId;
         this.sex = sex;
         this.isBlocked = isBlocked;
@@ -23,6 +26,7 @@ public class User {
         this.password = password;
         this.nickname = nickname;
         this.birthday = birthday;
+        this.avatar = avatar;
     }
 
     public int getUserId() {
@@ -79,6 +83,14 @@ public class User {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+    
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
     
 }
