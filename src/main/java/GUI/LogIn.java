@@ -34,7 +34,7 @@ public class Login extends javax.swing.JFrame {
         lblUserName = new javax.swing.JLabel();
         txtUserName = new javax.swing.JTextField();
         lblPassword = new javax.swing.JLabel();
-        txtPassword = new javax.swing.JPasswordField();
+        pwPassword = new javax.swing.JPasswordField();
         checkRememberMe = new javax.swing.JCheckBox();
         lblRememberme = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
@@ -42,7 +42,6 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 204, 204));
-        setPreferredSize(new java.awt.Dimension(500, 500));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 500));
 
@@ -63,9 +62,9 @@ public class Login extends javax.swing.JFrame {
         lblPassword.setForeground(new java.awt.Color(0, 0, 153));
         lblPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/password.png"))); // NOI18N
 
-        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+        pwPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPasswordActionPerformed(evt);
+                pwPasswordActionPerformed(evt);
             }
         });
 
@@ -102,7 +101,7 @@ public class Login extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtUserName, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
-                            .addComponent(txtPassword)
+                            .addComponent(pwPassword)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(checkRememberMe)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -126,7 +125,7 @@ public class Login extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pwPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(checkRememberMe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -159,9 +158,9 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUserNameActionPerformed
 
-    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+    private void pwPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pwPasswordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPasswordActionPerformed
+    }//GEN-LAST:event_pwPasswordActionPerformed
 
     /**
      * @param args the command line arguments
@@ -245,7 +244,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblRememberme;
     private javax.swing.JLabel lblUserName;
-    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JPasswordField pwPassword;
     private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
 }
