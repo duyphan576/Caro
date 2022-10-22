@@ -50,13 +50,13 @@ public class HomePage extends javax.swing.JFrame {
         btnExit = new javax.swing.JButton();
         JPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtChatBox = new javax.swing.JTextArea();
-        txtChat = new javax.swing.JTextField();
+        areaChatBox = new javax.swing.JTextArea();
+        txtMessage = new javax.swing.JTextField();
         btnSend = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        lblOnlineUser = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblOnlineUser = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -240,9 +240,9 @@ public class HomePage extends javax.swing.JFrame {
 
         JPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        txtChatBox.setColumns(20);
-        txtChatBox.setRows(5);
-        jScrollPane1.setViewportView(txtChatBox);
+        areaChatBox.setColumns(20);
+        areaChatBox.setRows(5);
+        jScrollPane1.setViewportView(areaChatBox);
 
         btnSend.setText("Gửi");
 
@@ -254,7 +254,7 @@ public class HomePage extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(JPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanel4Layout.createSequentialGroup()
-                        .addComponent(txtChat)
+                        .addComponent(txtMessage)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -268,17 +268,17 @@ public class HomePage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(JPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSend)
-                    .addComponent(txtChat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Online User");
+        lblOnlineUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblOnlineUser.setText("Online User");
 
-        jTable1.setAutoCreateRowSorter(true);
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblOnlineUser.setAutoCreateRowSorter(true);
+        tblOnlineUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -294,7 +294,7 @@ public class HomePage extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(tblOnlineUser);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -303,7 +303,7 @@ public class HomePage extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblOnlineUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -313,7 +313,7 @@ public class HomePage extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
+                .addComponent(lblOnlineUser)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2)
                 .addContainerGap())
@@ -431,6 +431,7 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JPanel JPanel3;
     private javax.swing.JPanel JPanel4;
     private javax.swing.JPanel Profile;
+    private javax.swing.JTextArea areaChatBox;
     private javax.swing.JButton btnAchievements;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnListRoom;
@@ -439,19 +440,18 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JButton btnPlayNow;
     private javax.swing.JButton btnRank;
     private javax.swing.JButton btnSend;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblBirthday;
     private javax.swing.JLabel lblGameName;
     private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblOnlineUser;
     private javax.swing.JLabel lblProfile;
     private javax.swing.JLabel lblSex;
     private javax.swing.JLabel lblUserName;
-    private javax.swing.JTextField txtChat;
-    private javax.swing.JTextArea txtChatBox;
+    private javax.swing.JTable tblOnlineUser;
+    private javax.swing.JTextField txtMessage;
     // End of variables declaration//GEN-END:variables
 }
