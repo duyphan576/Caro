@@ -39,13 +39,18 @@ public class HomePage extends javax.swing.JFrame {
         lblSex = new javax.swing.JLabel();
         lblBirthday = new javax.swing.JLabel();
         lblProfile = new javax.swing.JLabel();
+        lblBirthday1 = new javax.swing.JLabel();
+        lblBirthday2 = new javax.swing.JLabel();
+        lblBirthday3 = new javax.swing.JLabel();
+        lblBirthday4 = new javax.swing.JLabel();
+        lblBirthday5 = new javax.swing.JLabel();
+        lblBirthday6 = new javax.swing.JLabel();
         JPanel3 = new javax.swing.JPanel();
         lblGameName = new javax.swing.JLabel();
         btnPlayNow = new javax.swing.JButton();
         btnNewRoom = new javax.swing.JButton();
         btnListRoom = new javax.swing.JButton();
         btnRank = new javax.swing.JButton();
-        btnAchievements = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
         JPanel4 = new javax.swing.JPanel();
@@ -91,8 +96,21 @@ public class HomePage extends javax.swing.JFrame {
         lblBirthday.setText("Birthday :");
 
         lblProfile.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblProfile.setForeground(new java.awt.Color(0, 204, 255));
         lblProfile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblProfile.setText("Profile");
+        lblProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resume.png"))); // NOI18N
+
+        lblBirthday1.setText("Match :");
+
+        lblBirthday2.setText("Win Match :");
+
+        lblBirthday3.setText("Win Rate :");
+
+        lblBirthday4.setText("Lose Match :");
+
+        lblBirthday5.setText("Max Win Streak :");
+
+        lblBirthday6.setText("Grade :");
 
         javax.swing.GroupLayout ProfileLayout = new javax.swing.GroupLayout(Profile);
         Profile.setLayout(ProfileLayout);
@@ -101,24 +119,48 @@ public class HomePage extends javax.swing.JFrame {
             .addGroup(ProfileLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblProfile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                    .addComponent(lblProfile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblSex, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblBirthday, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblBirthday, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProfileLayout.createSequentialGroup()
+                        .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblBirthday2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblBirthday1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblBirthday3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblBirthday4, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
+                    .addGroup(ProfileLayout.createSequentialGroup()
+                        .addComponent(lblBirthday5, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblBirthday6, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         ProfileLayout.setVerticalGroup(
             ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ProfileLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblProfile)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSex, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(406, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBirthday1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBirthday3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBirthday2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBirthday4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBirthday5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBirthday6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(268, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout JPanel2Layout = new javax.swing.GroupLayout(JPanel2);
@@ -132,7 +174,7 @@ public class HomePage extends javax.swing.JFrame {
                         .addComponent(Avatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(JPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblUserName, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                            .addComponent(lblUserName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(Profile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -156,7 +198,7 @@ public class HomePage extends javax.swing.JFrame {
 
         lblGameName.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         lblGameName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblGameName.setText("Game Caro XXX");
+        lblGameName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tic-tac-toe.png"))); // NOI18N
 
         btnPlayNow.setText("Play Now");
         btnPlayNow.addActionListener(new java.awt.event.ActionListener() {
@@ -173,13 +215,6 @@ public class HomePage extends javax.swing.JFrame {
         btnRank.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRankActionPerformed(evt);
-            }
-        });
-
-        btnAchievements.setText("Achievements");
-        btnAchievements.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAchievementsActionPerformed(evt);
             }
         });
 
@@ -211,7 +246,6 @@ public class HomePage extends javax.swing.JFrame {
                     .addComponent(btnNewRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnListRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRank, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAchievements, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -219,9 +253,9 @@ public class HomePage extends javax.swing.JFrame {
         JPanel3Layout.setVerticalGroup(
             JPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblGameName)
-                .addGap(98, 98, 98)
+                .addGap(15, 15, 15)
+                .addComponent(lblGameName, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(79, 79, 79)
                 .addComponent(btnPlayNow)
                 .addGap(18, 18, 18)
                 .addComponent(btnNewRoom)
@@ -230,12 +264,10 @@ public class HomePage extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnRank)
                 .addGap(18, 18, 18)
-                .addComponent(btnAchievements)
-                .addGap(18, 18, 18)
                 .addComponent(btnLogOut)
                 .addGap(18, 18, 18)
                 .addComponent(btnExit)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(252, Short.MAX_VALUE))
         );
 
         JPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -244,7 +276,7 @@ public class HomePage extends javax.swing.JFrame {
         areaChatBox.setRows(5);
         jScrollPane1.setViewportView(areaChatBox);
 
-        btnSend.setText("Gửi");
+        btnSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/share.png"))); // NOI18N
 
         javax.swing.GroupLayout JPanel4Layout = new javax.swing.GroupLayout(JPanel4);
         JPanel4.setLayout(JPanel4Layout);
@@ -264,18 +296,18 @@ public class HomePage extends javax.swing.JFrame {
             JPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(JPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSend)
-                    .addComponent(txtMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(JPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtMessage))
                 .addContainerGap())
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblOnlineUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblOnlineUser.setText("Online User");
+        lblOnlineUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user1.png"))); // NOI18N
 
         tblOnlineUser.setAutoCreateRowSorter(true);
         tblOnlineUser.setModel(new javax.swing.table.DefaultTableModel(
@@ -315,7 +347,7 @@ public class HomePage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblOnlineUser)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -366,10 +398,6 @@ public class HomePage extends javax.swing.JFrame {
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLogOutActionPerformed
-
-    private void btnAchievementsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAchievementsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAchievementsActionPerformed
 
     private void btnRankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRankActionPerformed
         // TODO add your handling code here:
@@ -432,7 +460,6 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JPanel JPanel4;
     private javax.swing.JPanel Profile;
     private javax.swing.JTextArea areaChatBox;
-    private javax.swing.JButton btnAchievements;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnListRoom;
     private javax.swing.JButton btnLogOut;
@@ -444,6 +471,12 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblBirthday;
+    private javax.swing.JLabel lblBirthday1;
+    private javax.swing.JLabel lblBirthday2;
+    private javax.swing.JLabel lblBirthday3;
+    private javax.swing.JLabel lblBirthday4;
+    private javax.swing.JLabel lblBirthday5;
+    private javax.swing.JLabel lblBirthday6;
     private javax.swing.JLabel lblGameName;
     private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblName;
