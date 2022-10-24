@@ -34,17 +34,20 @@ public class HomePage extends javax.swing.JFrame {
         Avatar = new javax.swing.JPanel();
         lblID = new javax.swing.JLabel();
         lblUserName = new javax.swing.JLabel();
+        lblGrade = new javax.swing.JLabel();
         Profile = new javax.swing.JPanel();
         lblName = new javax.swing.JLabel();
         lblSex = new javax.swing.JLabel();
         lblBirthday = new javax.swing.JLabel();
         lblProfile = new javax.swing.JLabel();
-        lblBirthday1 = new javax.swing.JLabel();
-        lblBirthday2 = new javax.swing.JLabel();
-        lblBirthday3 = new javax.swing.JLabel();
-        lblBirthday4 = new javax.swing.JLabel();
-        lblBirthday5 = new javax.swing.JLabel();
-        lblBirthday6 = new javax.swing.JLabel();
+        lblMatch = new javax.swing.JLabel();
+        lblWinMatch = new javax.swing.JLabel();
+        lblWinRate = new javax.swing.JLabel();
+        lblLoseMatch = new javax.swing.JLabel();
+        lblMaxWinStreak = new javax.swing.JLabel();
+        lblMaxLoseStreak = new javax.swing.JLabel();
+        lblCurrentWinStreak = new javax.swing.JLabel();
+        lblCurrentLoseStreak = new javax.swing.JLabel();
         JPanel3 = new javax.swing.JPanel();
         lblGameName = new javax.swing.JLabel();
         btnPlayNow = new javax.swing.JButton();
@@ -71,46 +74,53 @@ public class HomePage extends javax.swing.JFrame {
         JPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         Avatar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Avatar.setPreferredSize(new java.awt.Dimension(128, 128));
 
         javax.swing.GroupLayout AvatarLayout = new javax.swing.GroupLayout(Avatar);
         Avatar.setLayout(AvatarLayout);
         AvatarLayout.setHorizontalGroup(
             AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 99, Short.MAX_VALUE)
+            .addGap(0, 126, Short.MAX_VALUE)
         );
         AvatarLayout.setVerticalGroup(
             AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 99, Short.MAX_VALUE)
+            .addGap(0, 126, Short.MAX_VALUE)
         );
 
         lblID.setText("ID :");
 
         lblUserName.setText("User Name :");
 
+        lblGrade.setText("Grade :");
+
         Profile.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        lblName.setText("Name :");
+        lblName.setText("Name:");
 
-        lblSex.setText("Sex :");
+        lblSex.setText("Sex:");
 
-        lblBirthday.setText("Birthday :");
+        lblBirthday.setText("Birthday:");
 
         lblProfile.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblProfile.setForeground(new java.awt.Color(0, 204, 255));
         lblProfile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resume.png"))); // NOI18N
 
-        lblBirthday1.setText("Match :");
+        lblMatch.setText("Match:");
 
-        lblBirthday2.setText("Win Match :");
+        lblWinMatch.setText("Win Match :");
 
-        lblBirthday3.setText("Win Rate :");
+        lblWinRate.setText("Win Rate:");
 
-        lblBirthday4.setText("Lose Match :");
+        lblLoseMatch.setText("Lose Match:");
 
-        lblBirthday5.setText("Max Win Streak :");
+        lblMaxWinStreak.setText("Max Win Streak:");
 
-        lblBirthday6.setText("Grade :");
+        lblMaxLoseStreak.setText("Max Lose Streak:");
+
+        lblCurrentWinStreak.setText("Current Win Streak:");
+
+        lblCurrentLoseStreak.setText("Current Lose Streak:");
 
         javax.swing.GroupLayout ProfileLayout = new javax.swing.GroupLayout(Profile);
         Profile.setLayout(ProfileLayout);
@@ -124,17 +134,17 @@ public class HomePage extends javax.swing.JFrame {
                     .addComponent(lblSex, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblBirthday, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProfileLayout.createSequentialGroup()
-                        .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblBirthday2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblBirthday1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lblMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblBirthday3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblBirthday4, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
-                    .addGroup(ProfileLayout.createSequentialGroup()
-                        .addComponent(lblBirthday5, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                        .addComponent(lblWinRate, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblCurrentWinStreak, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+                    .addComponent(lblCurrentLoseStreak, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+                    .addComponent(lblMaxLoseStreak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblMaxWinStreak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProfileLayout.createSequentialGroup()
+                        .addComponent(lblWinMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblBirthday6, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)))
+                        .addComponent(lblLoseMatch, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         ProfileLayout.setVerticalGroup(
@@ -144,23 +154,27 @@ public class HomePage extends javax.swing.JFrame {
                 .addComponent(lblProfile)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblSex, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBirthday1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBirthday3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(lblMatch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblWinRate, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBirthday2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBirthday4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBirthday5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBirthday6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(268, Short.MAX_VALUE))
+                    .addComponent(lblLoseMatch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblWinMatch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblMaxWinStreak, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblMaxLoseStreak, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblCurrentWinStreak, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblCurrentLoseStreak, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout JPanel2Layout = new javax.swing.GroupLayout(JPanel2);
@@ -175,7 +189,8 @@ public class HomePage extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(JPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblUserName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(lblID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblGrade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(Profile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -186,10 +201,12 @@ public class HomePage extends javax.swing.JFrame {
                 .addGroup(JPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JPanel2Layout.createSequentialGroup()
                         .addComponent(lblID, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(Avatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
+                .addGap(42, 42, 42)
                 .addComponent(Profile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -200,6 +217,7 @@ public class HomePage extends javax.swing.JFrame {
         lblGameName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblGameName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tic-tac-toe.png"))); // NOI18N
 
+        btnPlayNow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/match.png"))); // NOI18N
         btnPlayNow.setText("Play Now");
         btnPlayNow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,10 +225,13 @@ public class HomePage extends javax.swing.JFrame {
             }
         });
 
+        btnNewRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/button.png"))); // NOI18N
         btnNewRoom.setText("New Room");
 
+        btnListRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/waiting-room.png"))); // NOI18N
         btnListRoom.setText("List Room");
 
+        btnRank.setIcon(new javax.swing.ImageIcon(getClass().getResource("/medal.png"))); // NOI18N
         btnRank.setText("Rank");
         btnRank.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,6 +239,7 @@ public class HomePage extends javax.swing.JFrame {
             }
         });
 
+        btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/log-out.png"))); // NOI18N
         btnLogOut.setText("Log Out");
         btnLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,6 +247,7 @@ public class HomePage extends javax.swing.JFrame {
             }
         });
 
+        btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/exit.png"))); // NOI18N
         btnExit.setText("Exit");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -239,15 +262,15 @@ public class HomePage extends javax.swing.JFrame {
             .addGroup(JPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(JPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(JPanel3Layout.createSequentialGroup()
-                        .addComponent(lblGameName, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(btnPlayNow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnNewRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnListRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnRank, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(JPanel3Layout.createSequentialGroup()
+                        .addComponent(lblGameName, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRank, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         JPanel3Layout.setVerticalGroup(
@@ -255,7 +278,7 @@ public class HomePage extends javax.swing.JFrame {
             .addGroup(JPanel3Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(lblGameName, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(79, 79, 79)
+                .addGap(29, 29, 29)
                 .addComponent(btnPlayNow)
                 .addGap(18, 18, 18)
                 .addComponent(btnNewRoom)
@@ -267,7 +290,7 @@ public class HomePage extends javax.swing.JFrame {
                 .addComponent(btnLogOut)
                 .addGap(18, 18, 18)
                 .addComponent(btnExit)
-                .addContainerGap(252, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         JPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -276,7 +299,9 @@ public class HomePage extends javax.swing.JFrame {
         areaChatBox.setRows(5);
         jScrollPane1.setViewportView(areaChatBox);
 
+        btnSend.setBackground(new java.awt.Color(242, 242, 242));
         btnSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/share.png"))); // NOI18N
+        btnSend.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         javax.swing.GroupLayout JPanel4Layout = new javax.swing.GroupLayout(JPanel4);
         JPanel4.setLayout(JPanel4Layout);
@@ -284,21 +309,21 @@ public class HomePage extends javax.swing.JFrame {
             JPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(JPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanel4Layout.createSequentialGroup()
+                .addGroup(JPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(JPanel4Layout.createSequentialGroup()
                         .addComponent(txtMessage)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnSend))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         JPanel4Layout.setVerticalGroup(
             JPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(JPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(JPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtMessage))
                 .addContainerGap())
@@ -347,7 +372,7 @@ public class HomePage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblOnlineUser)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)
+                .addComponent(jScrollPane2)
                 .addContainerGap())
         );
 
@@ -388,7 +413,7 @@ public class HomePage extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(JPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(JPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 774, Short.MAX_VALUE)
         );
 
         pack();
@@ -471,19 +496,22 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblBirthday;
-    private javax.swing.JLabel lblBirthday1;
-    private javax.swing.JLabel lblBirthday2;
-    private javax.swing.JLabel lblBirthday3;
-    private javax.swing.JLabel lblBirthday4;
-    private javax.swing.JLabel lblBirthday5;
-    private javax.swing.JLabel lblBirthday6;
+    private javax.swing.JLabel lblCurrentLoseStreak;
+    private javax.swing.JLabel lblCurrentWinStreak;
     private javax.swing.JLabel lblGameName;
+    private javax.swing.JLabel lblGrade;
     private javax.swing.JLabel lblID;
+    private javax.swing.JLabel lblLoseMatch;
+    private javax.swing.JLabel lblMatch;
+    private javax.swing.JLabel lblMaxLoseStreak;
+    private javax.swing.JLabel lblMaxWinStreak;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblOnlineUser;
     private javax.swing.JLabel lblProfile;
     private javax.swing.JLabel lblSex;
     private javax.swing.JLabel lblUserName;
+    private javax.swing.JLabel lblWinMatch;
+    private javax.swing.JLabel lblWinRate;
     private javax.swing.JTable tblOnlineUser;
     private javax.swing.JTextField txtMessage;
     // End of variables declaration//GEN-END:variables

@@ -83,9 +83,8 @@ public class Rank extends javax.swing.JFrame {
         jTabbedPane1.addTab("Win Rate", jScrollPane3);
 
         Rank.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        Rank.setForeground(new java.awt.Color(255, 204, 0));
         Rank.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Rank.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ranking.png"))); // NOI18N
+        Rank.setIcon(new javax.swing.ImageIcon(getClass().getResource("/championship.png"))); // NOI18N
         Rank.setText("Rank");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
