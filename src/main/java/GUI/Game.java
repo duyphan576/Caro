@@ -4,19 +4,36 @@
  */
 package GUI;
 
+import java.awt.Color;
+import java.awt.GridLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
 /**
  *
  * @author duyph
  */
 public class Game extends javax.swing.JFrame {
-
+    private JButton[][] button;
+    private int size = 15;
     /**
      * Creates new form Game
      */
     public Game() {
+//      tao nut button cho bang
         initComponents();
+        jPanel2.setLayout(new GridLayout(size, size));
+        button = new JButton[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                button[i][j] = new JButton(" ");
+                button[i][j].setBackground(Color.white);
+                button[i][j].setDisabledIcon(new ImageIcon("/resource/border.jpg"));
+                jPanel2.add(button[i][j]);
+            }
+        }
     }
-
+       
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
