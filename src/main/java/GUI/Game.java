@@ -20,7 +20,7 @@ public class Game extends javax.swing.JFrame {
      * Creates new form Game
      */
     public Game() {
-//      tao nut button cho bang
+        //Create game zone
         initComponents();
         jPanel2.setLayout(new GridLayout(size, size));
         button = new JButton[size][size];
@@ -28,7 +28,6 @@ public class Game extends javax.swing.JFrame {
             for (int j = 0; j < size; j++) {
                 button[i][j] = new JButton(" ");
                 button[i][j].setBackground(Color.white);
-                button[i][j].setDisabledIcon(new ImageIcon("/resource/border.jpg"));
                 jPanel2.add(button[i][j]);
             }
         }

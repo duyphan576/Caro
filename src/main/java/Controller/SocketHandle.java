@@ -23,6 +23,7 @@ public class SocketHandle implements Runnable {
     private BufferedReader is;
     private Socket socketOfClient;
     private int ID_Server;
+    private static String key;
 
     @Override
     public void run() {
