@@ -4,7 +4,14 @@
  */
 package GUI;
 
+import Controller.SocketHandle;
+import Crypto.ClientCryptography;
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 
 /**
@@ -15,9 +22,11 @@ public class Login extends javax.swing.JFrame {
 
     /**
      * Creates new form LogIn
+     * @throws java.lang.Exception
      */
-    public Login() {
+    public Login() throws Exception {
         initComponents();
+        SocketHandle.start();
     }
 
     /**
@@ -53,20 +62,8 @@ public class Login extends javax.swing.JFrame {
         lblUserName.setForeground(new java.awt.Color(0, 0, 153));
         lblUserName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user.png"))); // NOI18N
 
-        txtUserName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUserNameActionPerformed(evt);
-            }
-        });
-
         lblPassword.setForeground(new java.awt.Color(0, 0, 153));
         lblPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/password.png"))); // NOI18N
-
-        pwPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pwPasswordActionPerformed(evt);
-            }
-        });
 
         checkRememberMe.setForeground(new java.awt.Color(0, 0, 153));
 
@@ -77,6 +74,11 @@ public class Login extends javax.swing.JFrame {
         btnLogin.setForeground(new java.awt.Color(0, 0, 153));
         btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/login.png"))); // NOI18N
         btnLogin.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         btnRegister.setBackground(new java.awt.Color(242, 242, 242));
         btnRegister.setForeground(new java.awt.Color(255, 51, 51));
@@ -123,9 +125,9 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(lblUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pwPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pwPassword))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(checkRememberMe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -154,13 +156,36 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUserNameActionPerformed
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        try {
+            // TODO add your handling code here:
+            String username = txtUserName.getText();
+            if (username.isEmpty()) {
+                throw new Exception("Username can't be empty.");
+            }
+            String password = String.copyValueOf(pwPassword.getPassword());
+            if (password.isEmpty()) {
+                throw new Exception("Password can't be empty.");
+            }
+            String msg = "Login;" + username + ";" + password;
+            byte[] encryptedMsg = SocketHandle.cc.createInitialMsg(msg);
+            SocketHandle.push(encryptedMsg);
+            // Read length of incoming message
+            int length = SocketHandle.in.readInt();
+            byte[] encryptedInput = new byte[0];
+            if (length > 0) {
+                encryptedInput = new byte[length];
+                // Read the message
+                SocketHandle.in.readFully(encryptedInput, 0, encryptedInput.length);
+            }
+            // Read from server: byte[] encryptedInput;
+            String decrytpedInput = SocketHandle.cc.symmetricDecryption(encryptedInput);
+            System.out.println("Client received: " + decrytpedInput);
+        } catch (Exception ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-    private void pwPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pwPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pwPasswordActionPerformed
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -221,16 +246,19 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+                try {
+                    new Login().setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

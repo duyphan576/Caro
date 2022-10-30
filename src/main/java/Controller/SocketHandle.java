@@ -5,6 +5,7 @@
 package Controller;
 
 import Crypto.ClientCryptography;
+import GUI.Login;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -23,10 +24,10 @@ public class SocketHandle {
     private static Socket socket;
     private static int port = 1234;
     private static String host = "localhost";
-    private static DataInputStream in;
-    private static DataOutputStream out;
-    private static BufferedReader stdIn;
-    private static ClientCryptography cc;
+    public static DataInputStream in;
+    public static DataOutputStream out;
+    public static BufferedReader stdIn;
+    public static ClientCryptography cc;
 
     public static void start() throws IOException, Exception {
         socket = new Socket(host, port);
@@ -46,23 +47,13 @@ public class SocketHandle {
         // Set public key and generate symmetric keys
         cc.setServersPublicKey(key);
         cc.generateSymmetricKeys();
+        
     }
 
     public static void process() throws IOException, Exception {
         while (true) {
             // Client nhận dữ liệu từ keyboard và gửi vào stream -> server
-            System.out.print("Client input: ");
-            String line = stdIn.readLine();
-
-            byte[] encryptedMsg = cc.createInitialMsg(line);
-            // Write to server: byte[] encryptedMsg
-            out.writeInt(encryptedMsg.length);
-            out.write(encryptedMsg);
-            out.flush();
-
-            if (line.equals("bye")) {
-                break;
-            }
+            new Login().setVisible(true);
             // Client nhận phản hồi từ server
             // Read length of incoming message
             int length = in.readInt();
@@ -76,6 +67,12 @@ public class SocketHandle {
             String decrytpedInput = cc.symmetricDecryption(encryptedInput);
             System.out.println("Client received: " + decrytpedInput);
         }
+    }
+
+    public static void push(byte[] encryptedMsg) throws IOException {
+        out.writeInt(encryptedMsg.length);
+        out.write(encryptedMsg);
+        out.flush();
     }
 
     public static void main(String[] args) throws IOException {
