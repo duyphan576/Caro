@@ -28,7 +28,6 @@ public class User {
         this.birthday = birthday;
         this.avatar = avatar;
     }
-
     public int getUserId() {
         return userId;
     }

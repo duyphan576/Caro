@@ -20,7 +20,6 @@ import java.util.logging.Logger;
  * @author duyph
  */
 public class SocketHandle {
-
     private static Socket socket;
     private static int port = 1234;
     private static String host = "localhost";
@@ -47,7 +46,6 @@ public class SocketHandle {
         // Set public key and generate symmetric keys
         cc.setServersPublicKey(key);
         cc.generateSymmetricKeys();
-        
     }
 
     public static void process() throws IOException, Exception {
