@@ -4,17 +4,35 @@
  */
 package GUI;
 
+import Model.Grade;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author jukut
  */
 public class Rank extends javax.swing.JFrame {
-
+    private DefaultTableModel model;
+    private DefaultTableModel model1;
+    private ArrayList<Grade> list = Grade.class.get
+    
     /**
      * Creates new form Rank
      */
     public Rank() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        model = (DefaultTableModel) tblrankponint.getModel();
+        model1 = (DefaultTableModel) tblrankrate.getModel();
+    }
+    public void showTable() {
+        model.setRowCount(0);
+        for (Nhanvien c : list) {
+            model.addRow(new Object[]{
+                c.getVatnum(), c.getName(), c.getMaloainv(), c.getPhonenum(), c.getGioitinh()
+            });
+        }
     }
 
     /**
@@ -28,15 +46,15 @@ public class Rank extends javax.swing.JFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblrankponint = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tblrankrate = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         Rank = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblrankponint.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -55,11 +73,11 @@ public class Rank extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblrankponint);
 
         jTabbedPane1.addTab("Point", jScrollPane1);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tblrankrate.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -78,7 +96,7 @@ public class Rank extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(tblrankrate);
 
         jTabbedPane1.addTab("Win Rate", jScrollPane3);
 
@@ -157,7 +175,7 @@ public class Rank extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable3;
+    private javax.swing.JTable tblrankponint;
+    private javax.swing.JTable tblrankrate;
     // End of variables declaration//GEN-END:variables
 }
