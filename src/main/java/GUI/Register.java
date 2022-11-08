@@ -4,10 +4,14 @@
  */
 package GUI;
 
+import Controller.SocketHandle;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Image;
 import java.io.File;
-import javax.swing.Icon;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
@@ -22,6 +26,7 @@ public class Register extends javax.swing.JFrame {
     /**
      * Creates new form SignUp
      */
+    private static File file;
     public Register() {
         initComponents();
     }
@@ -42,7 +47,7 @@ public class Register extends javax.swing.JFrame {
         lblPassword = new javax.swing.JLabel();
         pwPassword = new javax.swing.JPasswordField();
         lblConfirmPassword = new javax.swing.JLabel();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        pwConfirm = new javax.swing.JPasswordField();
         lblFullName = new javax.swing.JLabel();
         txtFullName = new javax.swing.JTextField();
         lblSex = new javax.swing.JLabel();
@@ -135,6 +140,11 @@ public class Register extends javax.swing.JFrame {
         btnRegister.setBackground(new java.awt.Color(242, 242, 242));
         btnRegister.setIcon(new javax.swing.ImageIcon(getClass().getResource("/register.png"))); // NOI18N
         btnRegister.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterActionPerformed(evt);
+            }
+        });
 
         btnBack.setBackground(new java.awt.Color(242, 242, 242));
         btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/back.png"))); // NOI18N
@@ -184,7 +194,7 @@ public class Register extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(rdAnother))
                             .addComponent(pwPassword)
-                            .addComponent(jPasswordField2))))
+                            .addComponent(pwConfirm))))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -203,7 +213,7 @@ public class Register extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pwConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFullName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -262,15 +272,60 @@ public class Register extends javax.swing.JFrame {
     private void btnChooseFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseFileActionPerformed
         // TODO add your handling code here:
         JFileChooser jfchoose = new JFileChooser();
-        FileNameExtensionFilter imgafiller = new FileNameExtensionFilter("Hình Ảnh", "jpg","png");
+        FileNameExtensionFilter imgafiller = new FileNameExtensionFilter("Hình ảnh", "jpg","png");
         jfchoose.setFileFilter(imgafiller);
         jfchoose.setMultiSelectionEnabled(false);
-        int x = jfchoose.showDialog(this, "Chon file");
+        int x = jfchoose.showDialog(this, "Chọn file");
         if ( x == jfchoose.APPROVE_OPTION){
-            File file = jfchoose.getSelectedFile();
+            file = jfchoose.getSelectedFile();
+            System.out.println(file.toPath());
             lblAvatarImage.setIcon(new ImageIcon(new ImageIcon(file.getAbsolutePath()).getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
         }
     }//GEN-LAST:event_btnChooseFileActionPerformed
+
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        try {
+            String username, password, confirmPassword, fullName, sex, birthday, avatar;
+            username = txtUserName.getText();
+            password = String.copyValueOf(pwPassword.getPassword());
+            confirmPassword = String.copyValueOf(pwConfirm.getPassword());
+            fullName = txtFullName.getText();
+            sex="1";
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            birthday=  dateFormat.format(DateChooser.getDate());
+            avatar = file.getPath();
+            String msg = "Register;"+username+";"+password+";"+fullName+";"+sex+";"+birthday+";"+avatar;
+            byte[] encryptedMsg = null;
+            try {
+                encryptedMsg = SocketHandle.cc.createInitialMsg(msg);
+            } catch (Exception ex) {
+                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            SocketHandle.push(encryptedMsg);
+            // Read length of incoming message
+            int length = SocketHandle.in.readInt();
+            byte[] encryptedInput = new byte[0];
+            if (length > 0) {
+                try {
+                    encryptedInput = new byte[length];
+                    // Read the message
+                    SocketHandle.in.readFully(encryptedInput, 0, encryptedInput.length);
+                } catch (IOException ex) {
+                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            // Read from server: byte[] encryptedInput;
+            String decrytpedInput = null;
+            try {
+                decrytpedInput = SocketHandle.cc.symmetricDecryption(encryptedInput);
+            } catch (Exception ex) {
+                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("Client received: " + decrytpedInput);
+        } catch (IOException ex) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnRegisterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -328,7 +383,6 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JButton btnChooseFile;
     private javax.swing.JButton btnRegister;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JLabel lblAvatar;
     private javax.swing.JLabel lblAvatarImage;
     private javax.swing.JLabel lblBirthday;
@@ -338,6 +392,7 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JLabel lblRegisterPage;
     private javax.swing.JLabel lblSex;
     private javax.swing.JLabel lblUserName;
+    private javax.swing.JPasswordField pwConfirm;
     private javax.swing.JPasswordField pwPassword;
     private javax.swing.JRadioButton rdAnother;
     private javax.swing.JRadioButton rdFemale;

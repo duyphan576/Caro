@@ -18,11 +18,12 @@ public class Grade {
     int MaxWinStreak;
     int CurrentLoseStreak;
     int MaxLoseStreak;
+    String Rate;
 
     public Grade() {
     }
 
-    public Grade(int UserId, int Grade, int WinMatch, int LoseMatch, int DrawMatch, int CurrentWinStreak, int MaxWinStreak, int CurrentLoseStreak, int MaxLoseStreak) {
+    public Grade(int UserId, int Grade, int WinMatch, int LoseMatch, int DrawMatch, int CurrentWinStreak, int MaxWinStreak, int CurrentLoseStreak, int MaxLoseStreak, String Rate) {
         this.UserId = UserId;
         this.Grade = Grade;
         this.WinMatch = WinMatch;
@@ -32,6 +33,7 @@ public class Grade {
         this.MaxWinStreak = MaxWinStreak;
         this.CurrentLoseStreak = CurrentLoseStreak;
         this.MaxLoseStreak = MaxLoseStreak;
+        this.Rate = Rate;
     }
 
     public int getUserId() {
@@ -104,6 +106,14 @@ public class Grade {
 
     public void setMaxLoseStreak(int MaxLoseStreak) {
         this.MaxLoseStreak = MaxLoseStreak;
+    }
+
+    public String getRate() {
+        return Rate;
+    }
+
+    public void setRate(String Rate) {
+        this.Rate = Rate;
     }
     
     

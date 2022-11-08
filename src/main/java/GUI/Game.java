@@ -6,22 +6,30 @@ package GUI;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JProgressBar;
 
 /**
  *
  * @author duyph
  */
 public class Game extends javax.swing.JFrame {
+    
     private JButton[][] button;
+    private JProgressBar time;
+    private JProgressBar turnTime;
     private int size = 15;
+
     /**
      * Creates new form Game
      */
     public Game() {
         //Create game zone
         initComponents();
+        
         jPanel2.setLayout(new GridLayout(size, size));
         button = new JButton[size][size];
         for (int i = 0; i < size; i++) {
@@ -31,8 +39,37 @@ public class Game extends javax.swing.JFrame {
                 jPanel2.add(button[i][j]);
             }
         }
+        Thread time = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 300; i >= 0; i--) {
+                    try {
+                        pcbTime.setValue(i);
+                        pcbTime.setString(String.valueOf(i));
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+        Thread turn = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 100; i >= 0; i--) {
+                    try {
+                        pcbYourTurn.setValue(i);
+                        Thread.sleep(200);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+        time.start();
+        turn.start();
     }
-       
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -71,7 +108,7 @@ public class Game extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 844, Short.MAX_VALUE)
+            .addGap(0, 849, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,7 +162,7 @@ public class Game extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -144,17 +181,18 @@ public class Game extends javax.swing.JFrame {
         btnSurrender.setPreferredSize(new java.awt.Dimension(120, 30));
 
         btnDraw.setText("Draw");
+        btnDraw.setPreferredSize(new java.awt.Dimension(130, 30));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(84, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSurrender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
-                .addComponent(btnDraw)
-                .addGap(59, 59, 59))
+                .addGap(57, 57, 57)
+                .addComponent(btnDraw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(82, 82, 82))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,7 +208,12 @@ public class Game extends javax.swing.JFrame {
 
         lblTime.setText("Time");
 
+        pcbTime.setString("0");
+        pcbTime.setStringPainted(true);
+
         lblYourTurn.setText("Your turn");
+
+        pcbYourTurn.setString("0");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -261,6 +304,7 @@ public class Game extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    // function to increase progress 
     /**
      * @param args the command line arguments
      */
@@ -291,7 +335,9 @@ public class Game extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                Game a = new Game();
                 new Game().setVisible(true);
+                
             }
         });
     }
