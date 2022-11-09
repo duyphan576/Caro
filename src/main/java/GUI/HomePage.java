@@ -4,8 +4,11 @@
  */
 package GUI;
 
+import Model.Grade;
+import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -15,9 +18,23 @@ public class HomePage extends javax.swing.JFrame {
 
     /**
      * Creates new form HomePage
+     *
+     * @param us
      */
-    public HomePage() {
-        initComponents();
+    private User user;
+    private Grade grade;
+
+    public HomePage(User us, Grade gr) {
+        try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            this.user = us;
+            this.grade = gr;
+            initComponents();
+            setInfo();
+        } catch (UnsupportedLookAndFeelException ex) {
+            System.err.println("Failed to initialize LaF");
+        }
+
     }
 
     /**
@@ -31,7 +48,6 @@ public class HomePage extends javax.swing.JFrame {
 
         JPanel1 = new javax.swing.JPanel();
         JPanel2 = new javax.swing.JPanel();
-        Avatar = new javax.swing.JPanel();
         lblID = new javax.swing.JLabel();
         lblUserName = new javax.swing.JLabel();
         lblGrade = new javax.swing.JLabel();
@@ -48,6 +64,7 @@ public class HomePage extends javax.swing.JFrame {
         lblMaxLoseStreak = new javax.swing.JLabel();
         lblCurrentWinStreak = new javax.swing.JLabel();
         lblCurrentLoseStreak = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         JPanel3 = new javax.swing.JPanel();
         lblGameName = new javax.swing.JLabel();
         btnPlayNow = new javax.swing.JButton();
@@ -73,23 +90,9 @@ public class HomePage extends javax.swing.JFrame {
 
         JPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        Avatar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Avatar.setPreferredSize(new java.awt.Dimension(128, 128));
+        lblID.setText("ID:");
 
-        javax.swing.GroupLayout AvatarLayout = new javax.swing.GroupLayout(Avatar);
-        Avatar.setLayout(AvatarLayout);
-        AvatarLayout.setHorizontalGroup(
-            AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 126, Short.MAX_VALUE)
-        );
-        AvatarLayout.setVerticalGroup(
-            AvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 126, Short.MAX_VALUE)
-        );
-
-        lblID.setText("ID :");
-
-        lblUserName.setText("User Name :");
+        lblUserName.setText("User Name:");
 
         lblGrade.setText("Grade :");
 
@@ -104,7 +107,7 @@ public class HomePage extends javax.swing.JFrame {
         lblProfile.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblProfile.setForeground(new java.awt.Color(0, 204, 255));
         lblProfile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resume.png"))); // NOI18N
+        lblProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/resume.png"))); // NOI18N
 
         lblMatch.setText("Match:");
 
@@ -174,8 +177,11 @@ public class HomePage extends javax.swing.JFrame {
                 .addComponent(lblCurrentWinStreak, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblCurrentLoseStreak, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/user.png"))); // NOI18N
 
         javax.swing.GroupLayout JPanel2Layout = new javax.swing.GroupLayout(JPanel2);
         JPanel2.setLayout(JPanel2Layout);
@@ -185,8 +191,8 @@ public class HomePage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(JPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JPanel2Layout.createSequentialGroup()
-                        .addComponent(Avatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(JPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblUserName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -198,15 +204,15 @@ public class HomePage extends javax.swing.JFrame {
             JPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(JPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(JPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(JPanel2Layout.createSequentialGroup()
                         .addComponent(lblID, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(lblUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(20, 20, 20)
                         .addComponent(lblGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(Avatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(44, 44, 44)
                 .addComponent(Profile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -215,45 +221,25 @@ public class HomePage extends javax.swing.JFrame {
 
         lblGameName.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         lblGameName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblGameName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tic-tac-toe.png"))); // NOI18N
+        lblGameName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/tic-tac-toe.png"))); // NOI18N
 
-        btnPlayNow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/match.png"))); // NOI18N
+        btnPlayNow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/match.png"))); // NOI18N
         btnPlayNow.setText("Play Now");
-        btnPlayNow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPlayNowActionPerformed(evt);
-            }
-        });
 
-        btnNewRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/button.png"))); // NOI18N
+        btnNewRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/button.png"))); // NOI18N
         btnNewRoom.setText("New Room");
 
-        btnListRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/waiting-room.png"))); // NOI18N
+        btnListRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/waiting-room.png"))); // NOI18N
         btnListRoom.setText("List Room");
 
-        btnRank.setIcon(new javax.swing.ImageIcon(getClass().getResource("/medal.png"))); // NOI18N
+        btnRank.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/medal.png"))); // NOI18N
         btnRank.setText("Rank");
-        btnRank.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRankActionPerformed(evt);
-            }
-        });
 
-        btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/log-out.png"))); // NOI18N
+        btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/log-out.png"))); // NOI18N
         btnLogOut.setText("Log Out");
-        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogOutActionPerformed(evt);
-            }
-        });
 
-        btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/exit.png"))); // NOI18N
+        btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/exit.png"))); // NOI18N
         btnExit.setText("Exit");
-        btnExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExitActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout JPanel3Layout = new javax.swing.GroupLayout(JPanel3);
         JPanel3.setLayout(JPanel3Layout);
@@ -300,7 +286,7 @@ public class HomePage extends javax.swing.JFrame {
         jScrollPane1.setViewportView(areaChatBox);
 
         btnSend.setBackground(new java.awt.Color(242, 242, 242));
-        btnSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/share.png"))); // NOI18N
+        btnSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/share.png"))); // NOI18N
         btnSend.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         javax.swing.GroupLayout JPanel4Layout = new javax.swing.GroupLayout(JPanel4);
@@ -332,7 +318,7 @@ public class HomePage extends javax.swing.JFrame {
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblOnlineUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblOnlineUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user1.png"))); // NOI18N
+        lblOnlineUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/user-list.png"))); // NOI18N
 
         tblOnlineUser.setAutoCreateRowSorter(true);
         tblOnlineUser.setModel(new javax.swing.table.DefaultTableModel(
@@ -420,65 +406,39 @@ public class HomePage extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLogOutActionPerformed
+    private void setInfo() {
+        lblID.setText(lblID.getText() + " " + Integer.toString(user.getUserId()));
+        lblUserName.setText(lblUserName.getText() + " " + user.getUserName());
+        lblGrade.setText(lblGrade.getText() + " " + Integer.toString(grade.getGrade()));
+        lblName.setText(lblName.getText() + " " + user.getNickname());
+        switch (user.getSex()) {
+            case 0:
+                lblSex.setText(lblSex.getText() + " Male");
+                break;
+            case 1:
+                lblSex.setText(lblSex.getText() + " Female");
+                break;
+            default:
+                lblSex.setText(lblSex.getText() + " Unknown");
+                break;
+        }
+        lblBirthday.setText(lblBirthday.getText() + " " + user.getBirthday().toString());
+        lblMatch.setText(lblMatch.getText() + " " + Integer.toString((grade.getWinMatch() + grade.getLoseMatch() + grade.getDrawMatch())));
+        lblWinRate.setText(lblWinRate.getText() + " " + grade.getRate());
+        lblWinMatch.setText(lblWinMatch.getText() + " " + Integer.toString(grade.getWinMatch()));
+        lblLoseMatch.setText(lblLoseMatch.getText() + " " + Integer.toString(grade.getLoseMatch()));
+        lblCurrentWinStreak.setText(lblCurrentWinStreak.getText() + " " + Integer.toString(grade.getCurrentWinStreak()));
+        lblCurrentLoseStreak.setText(lblCurrentLoseStreak.getText() + " " + Integer.toString(grade.getCurrentLoseStreak()));
+        lblMaxWinStreak.setText(lblMaxWinStreak.getText() + " " + Integer.toString(grade.getMaxWinStreak()));
+        lblMaxLoseStreak.setText(lblMaxLoseStreak.getText() + " " + Integer.toString(grade.getMaxLoseStreak()));
 
-    private void btnRankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRankActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRankActionPerformed
-
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnExitActionPerformed
-
-    private void btnPlayNowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayNowActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPlayNowActionPerformed
-
+    }
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        try {
-            UIManager.setLookAndFeel(new FlatIntelliJLaf());
-        } catch (Exception ex) {
-            System.err.println("Failed to initialize LaF");
-        }
-        
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new HomePage().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel Avatar;
     private javax.swing.JPanel JPanel1;
     private javax.swing.JPanel JPanel2;
     private javax.swing.JPanel JPanel3;
@@ -492,6 +452,7 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JButton btnPlayNow;
     private javax.swing.JButton btnRank;
     private javax.swing.JButton btnSend;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

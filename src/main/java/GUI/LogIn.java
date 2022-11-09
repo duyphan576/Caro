@@ -6,13 +6,19 @@ package GUI;
 
 import Controller.SocketHandle;
 import Crypto.ClientCryptography;
+import Model.Grade;
+import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -22,6 +28,7 @@ public class Login extends javax.swing.JFrame {
 
     /**
      * Creates new form LogIn
+     *
      * @throws java.lang.Exception
      */
     public Login() throws Exception {
@@ -57,13 +64,13 @@ public class Login extends javax.swing.JFrame {
         lblLoginPage.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblLoginPage.setForeground(new java.awt.Color(0, 0, 153));
         lblLoginPage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblLoginPage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/login-page.png"))); // NOI18N
+        lblLoginPage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/login-page.png"))); // NOI18N
 
         lblUserName.setForeground(new java.awt.Color(0, 0, 153));
-        lblUserName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user.png"))); // NOI18N
+        lblUserName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/user.png"))); // NOI18N
 
         lblPassword.setForeground(new java.awt.Color(0, 0, 153));
-        lblPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/password.png"))); // NOI18N
+        lblPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/password.png"))); // NOI18N
 
         checkRememberMe.setForeground(new java.awt.Color(0, 0, 153));
 
@@ -72,7 +79,7 @@ public class Login extends javax.swing.JFrame {
 
         btnLogin.setBackground(new java.awt.Color(242, 242, 242));
         btnLogin.setForeground(new java.awt.Color(0, 0, 153));
-        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/login.png"))); // NOI18N
+        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/login.png"))); // NOI18N
         btnLogin.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -82,8 +89,13 @@ public class Login extends javax.swing.JFrame {
 
         btnRegister.setBackground(new java.awt.Color(242, 242, 242));
         btnRegister.setForeground(new java.awt.Color(255, 51, 51));
-        btnRegister.setIcon(new javax.swing.ImageIcon(getClass().getResource("/register.png"))); // NOI18N
+        btnRegister.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/register.png"))); // NOI18N
         btnRegister.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -180,13 +192,57 @@ public class Login extends javax.swing.JFrame {
             }
             // Read from server: byte[] encryptedInput;
             String decrytpedInput = SocketHandle.cc.symmetricDecryption(encryptedInput);
-            System.out.println("Client received: " + decrytpedInput);
+            String[] parts = decrytpedInput.split(";");
+            if (parts[0].equals("Success")) {
+                System.out.println("Client received: " + decrytpedInput);
+                User us = setUser(parts);
+                Grade gr = setGrade(parts);
+                HomePage h = new HomePage(us, gr);
+                h.setVisible(true);
+            } else {
+                System.out.println("Connection false");
+            }
         } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_btnLoginActionPerformed
 
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new Register().setVisible(true);
+    }//GEN-LAST:event_btnRegisterActionPerformed
+
+    private User setUser(String[] parts) throws ParseException {
+        User us = new User();
+        us.setUserId(Integer.parseInt(parts[1]));
+        us.setUserName(parts[2]);
+        us.setPassword(parts[3]);
+        us.setNickname(parts[4]);
+        us.setSex(Integer.parseInt(parts[5]));
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date parsed = format.parse(parts[6]);
+        java.sql.Date sql = new java.sql.Date(parsed.getTime());
+        System.out.println(sql);
+        us.setBirthday(sql);
+        return us;
+    }
+
+    private Grade setGrade(String[] parts){
+        Grade gr = new Grade();
+        gr.setUserId(Integer.parseInt(parts[7]));
+        gr.setGrade(Integer.parseInt(parts[8]));
+        gr.setWinMatch(Integer.parseInt(parts[9]));
+        gr.setLoseMatch(Integer.parseInt(parts[10]));
+        gr.setDrawMatch(Integer.parseInt(parts[11]));
+        gr.setCurrentWinStreak(Integer.parseInt(parts[12]));
+        gr.setMaxWinStreak(Integer.parseInt(parts[13]));
+        gr.setCurrentLoseStreak(Integer.parseInt(parts[14]));
+        gr.setMaxLoseStreak(Integer.parseInt(parts[15]));
+        gr.setRate(parts[16]);
+        return gr;
+    }
     /**
      * @param args the command line arguments
      */
@@ -248,17 +304,15 @@ public class Login extends javax.swing.JFrame {
         /* Create and display the form */
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
-        } catch (Exception ex) {
+        } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Login().setVisible(true);
-                } catch (Exception ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new Login().setVisible(true);
+            } catch (Exception ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }
