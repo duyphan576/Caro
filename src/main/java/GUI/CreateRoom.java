@@ -9,10 +9,7 @@ package GUI;
  * @author jukut
  */
 public class CreateRoom extends javax.swing.JFrame {
-
-    /**
-     * Creates new form CreateRoom
-     */
+    
     public CreateRoom() {
         initComponents();
     }

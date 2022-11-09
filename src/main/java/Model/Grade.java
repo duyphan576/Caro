@@ -8,7 +8,7 @@ package Model;
  *
  * @author duyph
  */
-public class Grade {
+public class Grade implements Comparable<Grade>{
     int UserId;
     int Grade;
     int WinMatch;
@@ -18,11 +18,11 @@ public class Grade {
     int MaxWinStreak;
     int CurrentLoseStreak;
     int MaxLoseStreak;
-
+    float WinRate;
     public Grade() {
     }
 
-    public Grade(int UserId, int Grade, int WinMatch, int LoseMatch, int DrawMatch, int CurrentWinStreak, int MaxWinStreak, int CurrentLoseStreak, int MaxLoseStreak) {
+    public Grade(int UserId, int Grade, int WinMatch, int LoseMatch, int DrawMatch, int CurrentWinStreak, int MaxWinStreak, int CurrentLoseStreak, int MaxLoseStreak,float WinRate) {
         this.UserId = UserId;
         this.Grade = Grade;
         this.WinMatch = WinMatch;
@@ -32,10 +32,19 @@ public class Grade {
         this.MaxWinStreak = MaxWinStreak;
         this.CurrentLoseStreak = CurrentLoseStreak;
         this.MaxLoseStreak = MaxLoseStreak;
+        this.WinRate = WinRate;
     }
 
     public int getUserId() {
         return UserId;
+    }
+
+    public float getWinRate() {
+        return WinRate;
+    }
+
+    public void setWinRate(float WinRate) {
+        this.WinRate = WinRate;
     }
 
     public void setUserId(int UserId) {
@@ -104,6 +113,11 @@ public class Grade {
 
     public void setMaxLoseStreak(int MaxLoseStreak) {
         this.MaxLoseStreak = MaxLoseStreak;
+    }
+
+    @Override
+    public int compareTo(Grade o) {
+       return  (int) (this.getWinRate()-o.getWinRate());
     }
     
     
