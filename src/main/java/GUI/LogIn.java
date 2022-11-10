@@ -5,6 +5,7 @@
 package GUI;
 
 import Controller.Client;
+import static Controller.Main.client;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
@@ -27,12 +28,23 @@ public class Login extends javax.swing.JFrame {
      *
      * @throws java.lang.Exception
      */
-    public static Client client = new Client();
+//    public static Client client = new Client();
+    public String decrytpedInput;
 
     public Login() throws Exception {
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
-            initComponents();
+            initComponents();            
+        } catch (UnsupportedLookAndFeelException ex) {
+            System.err.println("Failed to initialize LaF");
+        }
+    }
+    
+    public Login(String decrytpedInput) throws Exception {
+        try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            this.decrytpedInput = decrytpedInput;
+            initComponents();            
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
@@ -184,27 +196,27 @@ public class Login extends javax.swing.JFrame {
             String msg = "Login;" + username + ";" + password;
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
-            // Read length of incoming message
-            int length = client.in.readInt();
-            byte[] encryptedInput = new byte[0];
-            if (length > 0) {
-                encryptedInput = new byte[length];
-                // Read the message
-                client.in.readFully(encryptedInput, 0, encryptedInput.length);
-            }
-            // Read from server: byte[] encryptedInput;
-            String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
-            String[] parts = decrytpedInput.split(";");
-            if (parts[0].equals("Success")) {
-                System.out.println("Client received: " + decrytpedInput);
-                User us = setUser(parts);
-                Grade gr = setGrade(parts);
-                HomePage h = new HomePage(us, gr);
-                this.setVisible(false);
-                h.setVisible(true);
-            } else {
-                System.out.println("Connection false");
-            }
+//            // Read length of incoming message
+//            int length = client.in.readInt();
+//            byte[] encryptedInput = new byte[0];
+//            if (length > 0) {
+//                encryptedInput = new byte[length];
+//                // Read the message
+//                client.in.readFully(encryptedInput, 0, encryptedInput.length);
+//            }
+//            // Read from server: byte[] encryptedInput;
+//            String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
+//            String[] parts = decrytpedInput.split(";");
+//            if (parts[0].equals("Login")) {
+//                System.out.println("Client received: " + decrytpedInput);
+//                User us = setUser(parts);
+//                Grade gr = setGrade(parts);
+//                HomePage h = new HomePage(us, gr);
+//                this.setVisible(false);
+//                h.setVisible(true);
+//            } else {
+//                System.out.println("Connection false");
+//            }
         } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -220,104 +232,6 @@ public class Login extends javax.swing.JFrame {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRegisterActionPerformed
-
-    private User setUser(String[] parts) throws ParseException {
-        User us = new User();
-        us.setUserId(Integer.parseInt(parts[1]));
-        us.setUserName(parts[2]);
-        us.setPassword(parts[3]);
-        us.setNickname(parts[4]);
-        us.setSex(Integer.parseInt(parts[5]));
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date parsed = format.parse(parts[6]);
-        java.sql.Date sql = new java.sql.Date(parsed.getTime());
-        System.out.println(sql);
-        us.setBirthday(sql);
-        return us;
-    }
-
-    private Grade setGrade(String[] parts) {
-        Grade gr = new Grade();
-        gr.setUserId(Integer.parseInt(parts[7]));
-        gr.setGrade(Integer.parseInt(parts[8]));
-        gr.setWinMatch(Integer.parseInt(parts[9]));
-        gr.setLoseMatch(Integer.parseInt(parts[10]));
-        gr.setDrawMatch(Integer.parseInt(parts[11]));
-        gr.setCurrentWinStreak(Integer.parseInt(parts[12]));
-        gr.setMaxWinStreak(Integer.parseInt(parts[13]));
-        gr.setCurrentLoseStreak(Integer.parseInt(parts[14]));
-        gr.setMaxLoseStreak(Integer.parseInt(parts[15]));
-        gr.setWinRate(Float.parseFloat(parts[16]));
-        return gr;
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            try {
-                new Login().setVisible(true);
-            } catch (Exception ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;

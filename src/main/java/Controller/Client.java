@@ -5,13 +5,20 @@
 package Controller;
 
 import static Controller.Client.cc;
+import static Controller.Client.login;
 import Crypto.ClientCryptography;
+import GUI.HomePage;
+import GUI.Login;
+import Model.Grade;
+import Model.User;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -21,46 +28,6 @@ import java.util.logging.Logger;
  *
  * @author duyph
  */
-class Receive implements Runnable {
-
-    private Socket socket;
-    private DataInputStream is;
-
-    public Receive(Socket s, DataInputStream r) {
-        try {
-            this.socket = s;
-            this.is = r;
-
-        } catch (Exception ex) {
-            Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void run() {
-        try {
-            while (true) {
-                String data = decrypt();
-                System.out.println("Received: " + data);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        } catch (Exception ex) {
-            Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public String decrypt() throws IOException, Exception {
-        int length = is.readInt();
-        byte[] encryptedInput = new byte[0];
-        if (length > 0) {
-            encryptedInput = new byte[length];
-            // read the message
-            is.readFully(encryptedInput, 0, encryptedInput.length);
-        }
-        return cc.symmetricDecryption(encryptedInput);
-    }
-}
-
 public class Client {
 
     public static Socket socket;
@@ -71,6 +38,7 @@ public class Client {
     public static BufferedReader stdIn;
     public static boolean closed = false;
     public static ClientCryptography cc;
+    public static Login login;
 
     public Client() {
         try {
@@ -92,9 +60,12 @@ public class Client {
             out.writeInt(encryptedMsg.length);
             out.write(encryptedMsg);
             out.flush();
-//            Receive recv = new Receive(socket, in);
-//            ExecutorService excutor = Executors.newCachedThreadPool();
-//            excutor.execute(recv);
+
+            login = new Login();
+            login.setVisible(true);
+            Receive recv = new Receive(socket, in);
+            ExecutorService excutor = Executors.newCachedThreadPool();
+            excutor.execute(recv);
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -110,10 +81,6 @@ public class Client {
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    public static byte[] encrypt(String msg) throws Exception {
-        return cc.symmetricEncryption(msg);
     }
 
 }

@@ -4,7 +4,8 @@
  */
 package GUI;
 
-import static GUI.Login.client;
+import static Controller.Main.client;
+//import static GUI.Login.client;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;

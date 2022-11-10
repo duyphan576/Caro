@@ -4,7 +4,7 @@
  */
 package GUI;
 
-import static GUI.Login.client;
+import static Controller.Main.client;
 import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.UIManager;
 import Model.User;
