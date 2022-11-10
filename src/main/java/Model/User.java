@@ -11,14 +11,14 @@ import java.sql.Date;
  * @author duyph
  */
 public class User {
-    int userId, sex, isBlocked;
+    int userId, sex, isBlocked,status;
     String userName, password, nickname, avatar;
     Date birthday;
 
     public User(){
         
     }
-    public User(int userId, int sex, int isBlocked, String userName, String password, String nickname, Date birthday, String avatar) {
+    public User(int userId, int sex, int isBlocked,int status, String userName, String password, String nickname, Date birthday, String avatar) {
         this.userId = userId;
         this.sex = sex;
         this.isBlocked = isBlocked;
@@ -27,7 +27,17 @@ public class User {
         this.nickname = nickname;
         this.birthday = birthday;
         this.avatar = avatar;
+        this.status=status;
     }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+    
     public int getUserId() {
         return userId;
     }

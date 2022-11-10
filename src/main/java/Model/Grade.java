@@ -19,6 +19,7 @@ public class Grade implements Comparable<Grade>{
     int CurrentLoseStreak;
     int MaxLoseStreak;
     float WinRate;
+    
     public Grade() {
     }
 

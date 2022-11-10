@@ -34,7 +34,6 @@ public class Register extends javax.swing.JFrame {
     private static User user = new User();
     public Register() throws Exception {
         initComponents(); 
-        SocketHandle.start();
     }
 
     /**

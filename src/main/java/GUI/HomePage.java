@@ -4,11 +4,14 @@
  */
 package GUI;
 
+import Controller.SocketHandle;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import java.util.ArrayList;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -23,14 +26,17 @@ public class HomePage extends javax.swing.JFrame {
      */
     private User user;
     private Grade grade;
-
-    public HomePage(User us, Grade gr) {
+    private DefaultTableModel model;
+    private int iduser;
+    public HomePage(User us, Grade gr) throws Exception {
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
             this.user = us;
+            iduser=us.getUserId();
             this.grade = gr;
             initComponents();
             setInfo();
+            setFriendOnl();
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
@@ -424,7 +430,7 @@ public class HomePage extends javax.swing.JFrame {
         }
         lblBirthday.setText(lblBirthday.getText() + " " + user.getBirthday().toString());
         lblMatch.setText(lblMatch.getText() + " " + Integer.toString((grade.getWinMatch() + grade.getLoseMatch() + grade.getDrawMatch())));
-        lblWinRate.setText(lblWinRate.getText() + " " + grade.getRate());
+        lblWinRate.setText(lblWinRate.getText() + " " + grade.getWinRate() + "%");
         lblWinMatch.setText(lblWinMatch.getText() + " " + Integer.toString(grade.getWinMatch()));
         lblLoseMatch.setText(lblLoseMatch.getText() + " " + Integer.toString(grade.getLoseMatch()));
         lblCurrentWinStreak.setText(lblCurrentWinStreak.getText() + " " + Integer.toString(grade.getCurrentWinStreak()));
@@ -432,6 +438,47 @@ public class HomePage extends javax.swing.JFrame {
         lblMaxWinStreak.setText(lblMaxWinStreak.getText() + " " + Integer.toString(grade.getMaxWinStreak()));
         lblMaxLoseStreak.setText(lblMaxLoseStreak.getText() + " " + Integer.toString(grade.getMaxLoseStreak()));
 
+    }
+    //thieu loai tru chinh minh trong danh sach friend
+    private void setFriendOnl() throws Exception {
+        String msg = "FriendOnl";
+        byte[] encryptedMsg = SocketHandle.cc.createInitialMsg(msg);
+        SocketHandle.push(encryptedMsg);
+        // Read length of incoming message
+        int length = SocketHandle.in.readInt();
+        byte[] encryptedInput = new byte[0];
+        if (length > 0) {
+            encryptedInput = new byte[length];
+            // Read the message
+            SocketHandle.in.readFully(encryptedInput, 0, encryptedInput.length);
+        }
+        String decrytpedInput = SocketHandle.cc.symmetricDecryption(encryptedInput);
+        String[] part = decrytpedInput.split(";");
+        int temp = Integer.parseInt(part[0].trim());
+        int count = 1;
+        ArrayList<User> l = new ArrayList();
+        for (int i = 0; i < temp; i++) {
+            User us = new User();
+            us.setNickname(part[count++]);
+            us.setStatus(Integer.parseInt(part[count++]));
+            l.add(us);
+        }
+        model = (DefaultTableModel) tblOnlineUser.getModel();
+        model.setRowCount(0);
+        int i = 0;
+        for (User u : l) {
+            String te = "";
+            if (u.getStatus() == 1) {
+                te = "Online";
+            } else {
+                te = "Ofline";
+            }
+            if(!(u.getUserId()==iduser)){
+                model.addRow(new Object[]{
+                u.getNickname(), te
+            });
+            }
+        }
     }
     /**
      * @param args the command line arguments

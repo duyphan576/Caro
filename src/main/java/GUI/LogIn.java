@@ -209,9 +209,13 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
-        // TODO add your handling code here:
-        this.setVisible(false);
-        new Register().setVisible(true);
+        try {
+            // TODO add your handling code here:
+            this.setVisible(false);
+            new Register().setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private User setUser(String[] parts) throws ParseException {
@@ -240,7 +244,7 @@ public class Login extends javax.swing.JFrame {
         gr.setMaxWinStreak(Integer.parseInt(parts[13]));
         gr.setCurrentLoseStreak(Integer.parseInt(parts[14]));
         gr.setMaxLoseStreak(Integer.parseInt(parts[15]));
-        gr.setRate(parts[16]);
+        gr.setWinRate(Float.parseFloat(parts[16]));
         return gr;
     }
     /**
