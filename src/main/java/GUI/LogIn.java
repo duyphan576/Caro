@@ -4,14 +4,10 @@
  */
 package GUI;
 
-import Controller.SocketHandle;
-import Crypto.ClientCryptography;
+import Controller.Client;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,9 +27,16 @@ public class Login extends javax.swing.JFrame {
      *
      * @throws java.lang.Exception
      */
+    public static Client client;
+
     public Login() throws Exception {
-        initComponents();
-        SocketHandle.start();
+        try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            initComponents();
+            client = new Client();
+        } catch (UnsupportedLookAndFeelException ex) {
+            System.err.println("Failed to initialize LaF");
+        }
     }
 
     /**
@@ -180,18 +183,18 @@ public class Login extends javax.swing.JFrame {
                 throw new Exception("Password can't be empty.");
             }
             String msg = "Login;" + username + ";" + password;
-            byte[] encryptedMsg = SocketHandle.cc.symmetricEncryption(msg);
-            SocketHandle.push(encryptedMsg);
+//            byte[] encryptedMsg = Client.cc.symmetricEncryption(msg);
+            Client.push(client.encrypt(msg));
             // Read length of incoming message
-            int length = SocketHandle.in.readInt();
+            int length = client.in.readInt();
             byte[] encryptedInput = new byte[0];
             if (length > 0) {
                 encryptedInput = new byte[length];
                 // Read the message
-                SocketHandle.in.readFully(encryptedInput, 0, encryptedInput.length);
+                client.in.readFully(encryptedInput, 0, encryptedInput.length);
             }
             // Read from server: byte[] encryptedInput;
-            String decrytpedInput = SocketHandle.cc.symmetricDecryption(encryptedInput);
+            String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
             String[] parts = decrytpedInput.split(";");
             if (parts[0].equals("Success")) {
                 System.out.println("Client received: " + decrytpedInput);
@@ -233,7 +236,7 @@ public class Login extends javax.swing.JFrame {
         return us;
     }
 
-    private Grade setGrade(String[] parts){
+    private Grade setGrade(String[] parts) {
         Grade gr = new Grade();
         gr.setUserId(Integer.parseInt(parts[7]));
         gr.setGrade(Integer.parseInt(parts[8]));
@@ -247,6 +250,7 @@ public class Login extends javax.swing.JFrame {
         gr.setWinRate(Float.parseFloat(parts[16]));
         return gr;
     }
+
     /**
      * @param args the command line arguments
      */
@@ -306,12 +310,6 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        try {
-            UIManager.setLookAndFeel(new FlatIntelliJLaf());
-        } catch (UnsupportedLookAndFeelException ex) {
-            System.err.println("Failed to initialize LaF");
-        }
-
         java.awt.EventQueue.invokeLater(() -> {
             try {
                 new Login().setVisible(true);

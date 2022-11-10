@@ -4,23 +4,13 @@
  */
 package GUI;
 
-import Controller.SocketHandle;
+import static GUI.Login.client;
 import com.formdev.flatlaf.FlatLightLaf;
-import java.awt.Image;
-import java.io.File;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.UIManager;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import Model.User;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JColorChooser;
-import javax.swing.JOptionPane;
-import sun.security.provider.MD5;
 
 /**
  *
@@ -291,9 +281,9 @@ public class Register extends javax.swing.JFrame {
 
                 txterro.setText("");
                 int i = 0;
-                user.setUserName(txtUserName.getText().toString());
+                user.setUserName(txtUserName.getText());
                 user.setPassword(password1);
-                user.setNickname(txtFullName.getText().toString());
+                user.setNickname(txtFullName.getText());
                 if (rdMale.isSelected()) {
                     i = 0;
                 } else if (rdFemale.isSelected()) {
@@ -306,18 +296,18 @@ public class Register extends javax.swing.JFrame {
                 String startDateString = dateFormat.format(DateChooser.getDate());
                 user.setIsBlocked(0);
                 String msg = "Register;" +user.getUserName() + ";" + user.getPassword() + ";" + user.getNickname() + ";" + user.getSex() + ";" + startDateString;
-                byte[] encryptedMsg = SocketHandle.cc.createInitialMsg(msg);
-                SocketHandle.push(encryptedMsg);
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
                 // Read length of incoming message
-                int length = SocketHandle.in.readInt();
+                int length = client.in.readInt();
                 byte[] encryptedInput = new byte[0];
                 if (length > 0) {
                     encryptedInput = new byte[length];
                     // Read the message
-                    SocketHandle.in.readFully(encryptedInput, 0, encryptedInput.length);
+                    client.in.readFully(encryptedInput, 0, encryptedInput.length);
                 }
                 // Read from server: byte[] encryptedInput;
-                String decrytpedInput = SocketHandle.cc.symmetricDecryption(encryptedInput);
+                String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
                 System.out.println("Client received: " + decrytpedInput);
                 System.out.println(msg);
             }

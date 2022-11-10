@@ -4,7 +4,7 @@
  */
 package GUI;
 
-import Controller.SocketHandle;
+import Controller.Client;
 import Model.Grade;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,20 +26,19 @@ public class Rank extends javax.swing.JFrame {
      */
     public Rank() throws Exception {
         initComponents();
-        SocketHandle.start();
         this.setLocationRelativeTo(null);
         String msg = "Rank";
-        byte[] encryptedMsg = SocketHandle.cc.createInitialMsg(msg);
-                SocketHandle.push(encryptedMsg);
+        byte[] encryptedMsg = Client.cc.symmetricEncryption(msg);
+                Client.push(encryptedMsg);
                 // Read length of incoming message
-                int length = SocketHandle.in.readInt();
+                int length = Client.in.readInt();
                 byte[] encryptedInput = new byte[0];
                 if (length > 0) {
                     encryptedInput = new byte[length];
                     // Read the message
-                    SocketHandle.in.readFully(encryptedInput, 0, encryptedInput.length);
+                    Client.in.readFully(encryptedInput, 0, encryptedInput.length);
                 }
-        String decrytpedInput = SocketHandle.cc.symmetricDecryption(encryptedInput);
+        String decrytpedInput = Client.cc.symmetricDecryption(encryptedInput);
         System.out.println(decrytpedInput);
         String[] part = decrytpedInput.split(";");
         int temp = (part.length-1)/10;
