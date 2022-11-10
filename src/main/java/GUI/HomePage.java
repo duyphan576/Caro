@@ -240,6 +240,11 @@ public class HomePage extends javax.swing.JFrame {
 
         btnRank.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/medal.png"))); // NOI18N
         btnRank.setText("Rank");
+        btnRank.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRankActionPerformed(evt);
+            }
+        });
 
         btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/log-out.png"))); // NOI18N
         btnLogOut.setText("Log Out");
@@ -411,6 +416,11 @@ public class HomePage extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRankActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnRankActionPerformed
 
     private void setInfo() {
         lblID.setText(lblID.getText() + " " + Integer.toString(user.getUserId()));
