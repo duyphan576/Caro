@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author duyph
  */
-public class SocketHandle{
+public class SocketHandle {
 
     public static Socket socket;
     public static int port = 1234;
@@ -29,7 +29,7 @@ public class SocketHandle{
     public static boolean closed = false;
     public static ClientCryptography cc;
 
-    public static void start(){
+    public static void start() {
         try {
             socket = new Socket(host, port);
             in = new DataInputStream(new DataInputStream(socket.getInputStream()));
@@ -48,6 +48,10 @@ public class SocketHandle{
             // Set public key and generate symmetric keys
             cc.setServersPublicKey(key);
             cc.generateSymmetricKeys();
+            byte[] encryptedMsg = cc.createInitialMsg("Hello World!");
+            out.writeInt(encryptedMsg.length);
+            out.write(encryptedMsg);
+            out.flush();
         } catch (IOException ex) {
             Logger.getLogger(SocketHandle.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -87,7 +91,7 @@ public class SocketHandle{
         }
     }
 
-    public static void push(byte[] encryptedMsg){
+    public static void push(byte[] encryptedMsg) {
         try {
             out.writeInt(encryptedMsg.length);
             out.write(encryptedMsg);
