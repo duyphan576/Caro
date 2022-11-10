@@ -27,13 +27,12 @@ public class Login extends javax.swing.JFrame {
      *
      * @throws java.lang.Exception
      */
-    public static Client client;
+    public static Client client = new Client();
 
     public Login() throws Exception {
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
             initComponents();
-            client = new Client();
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
@@ -183,8 +182,8 @@ public class Login extends javax.swing.JFrame {
                 throw new Exception("Password can't be empty.");
             }
             String msg = "Login;" + username + ";" + password;
-//            byte[] encryptedMsg = Client.cc.symmetricEncryption(msg);
-            Client.push(client.encrypt(msg));
+            byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+            client.push(encryptedMsg);
             // Read length of incoming message
             int length = client.in.readInt();
             byte[] encryptedInput = new byte[0];
@@ -201,6 +200,7 @@ public class Login extends javax.swing.JFrame {
                 User us = setUser(parts);
                 Grade gr = setGrade(parts);
                 HomePage h = new HomePage(us, gr);
+                this.setVisible(false);
                 h.setVisible(true);
             } else {
                 System.out.println("Connection false");

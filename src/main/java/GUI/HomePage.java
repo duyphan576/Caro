@@ -4,7 +4,7 @@
  */
 package GUI;
 
-import Controller.Client;
+import static GUI.Login.client;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
@@ -28,11 +28,12 @@ public class HomePage extends javax.swing.JFrame {
     private Grade grade;
     private DefaultTableModel model;
     private int userID;
+
     public HomePage(User us, Grade gr) throws Exception {
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
             this.user = us;
-            userID=us.getUserId();
+            userID = us.getUserId();
             this.grade = gr;
             initComponents();
             setInfo();
@@ -439,20 +440,21 @@ public class HomePage extends javax.swing.JFrame {
         lblMaxLoseStreak.setText(lblMaxLoseStreak.getText() + " " + Integer.toString(grade.getMaxLoseStreak()));
 
     }
+
     //thieu loai tru chinh minh trong danh sach friend
     private void setFriendOnl() throws Exception {
         String msg = "FriendOnl";
-        byte[] encryptedMsg = Client.cc.createInitialMsg(msg);
-        Client.push(encryptedMsg);
+        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+        client.push(encryptedMsg);
         // Read length of incoming message
-        int length = Client.in.readInt();
+        int length = client.in.readInt();
         byte[] encryptedInput = new byte[0];
         if (length > 0) {
             encryptedInput = new byte[length];
             // Read the message
-            Client.in.readFully(encryptedInput, 0, encryptedInput.length);
+            client.in.readFully(encryptedInput, 0, encryptedInput.length);
         }
-        String decrytpedInput = Client.cc.symmetricDecryption(encryptedInput);
+        String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
         String[] part = decrytpedInput.split(";");
         int temp = Integer.parseInt(part[0].trim());
         int count = 1;
@@ -473,10 +475,10 @@ public class HomePage extends javax.swing.JFrame {
             } else {
                 status = "Ofline";
             }
-            if(!(u.getUserId()==userID)){
+            if (!(u.getUserId() == userID)) {
                 model.addRow(new Object[]{
-                u.getNickname(), status
-            });
+                    u.getNickname(), status
+                });
             }
         }
     }

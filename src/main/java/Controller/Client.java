@@ -92,74 +92,12 @@ public class Client {
             out.writeInt(encryptedMsg.length);
             out.write(encryptedMsg);
             out.flush();
-            Receive recv = new Receive(socket, in);
-            ExecutorService excutor = Executors.newCachedThreadPool();
-            excutor.execute(recv);
+//            Receive recv = new Receive(socket, in);
+//            ExecutorService excutor = Executors.newCachedThreadPool();
+//            excutor.execute(recv);
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public static void start() {
-        try {
-            socket = new Socket(host, port);
-            in = new DataInputStream(new DataInputStream(socket.getInputStream()));
-            out = new DataOutputStream(new DataOutputStream(socket.getOutputStream()));
-            stdIn = new BufferedReader(new InputStreamReader(System.in));
-            cc = new ClientCryptography();
-            // Read from server: byte[] publicKey
-            // Read length of incoming message
-            int length = in.readInt();
-            byte[] key = new byte[0];
-            if (length > 0) {
-                key = new byte[length];
-                // Read the message
-                in.readFully(key, 0, key.length);
-            }
-            // Set public key and generate symmetric keys
-            cc.setServersPublicKey(key);
-            cc.generateSymmetricKeys();
-            byte[] encryptedMsg = cc.createInitialMsg("Hello World!");
-            out.writeInt(encryptedMsg.length);
-            out.write(encryptedMsg);
-            out.flush();
-        } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public static void process() throws IOException, Exception {
-
-        while (true) {
-            // Client nhận dữ liệu từ keyboard và gửi vào stream -> server
-            System.out.println("Write something");
-            byte[] msg = cc.createInitialMsg("hello");
-            push(msg);
-            // Client nhận phản hồi từ server
-            // Read length of incoming message
-            int length = in.readInt();
-            byte[] encryptedInput = new byte[0];
-            if (length > 0) {
-                encryptedInput = new byte[length];
-                // Read the message
-                in.readFully(encryptedInput, 0, encryptedInput.length);
-            }
-            // Read from server: byte[] encryptedInput;
-            String decrytpedInput = cc.symmetricDecryption(encryptedInput);
-            System.out.println("Client received: " + decrytpedInput);
-        }
-    }
-
-    public static void close() {
-        try {
-            socket.close();
-            in.close();
-            out.close();
-        } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -178,18 +116,4 @@ public class Client {
         return cc.symmetricEncryption(msg);
     }
 
-//    public static void main(String[] args) throws IOException {
-//        try {
-//            start();
-//            process();
-//            close();
-//        } catch (Exception ex) {
-//            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            if (socket != null) {
-//                socket.close();
-//                System.out.println("Client socket closed");
-//            }
-//        }
-//    }
 }
