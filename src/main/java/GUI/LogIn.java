@@ -180,7 +180,7 @@ public class Login extends javax.swing.JFrame {
                 throw new Exception("Password can't be empty.");
             }
             String msg = "Login;" + username + ";" + password;
-            byte[] encryptedMsg = SocketHandle.cc.createInitialMsg(msg);
+            byte[] encryptedMsg = SocketHandle.cc.symmetricEncryption(msg);
             SocketHandle.push(encryptedMsg);
             // Read length of incoming message
             int length = SocketHandle.in.readInt();
