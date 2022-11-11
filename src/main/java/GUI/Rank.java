@@ -4,7 +4,8 @@
  */
 package GUI;
 
-import Controller.SocketHandle;
+import static Controller.Main.client;
+//import static GUI.Login.client;
 import Model.Grade;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,71 +18,73 @@ import javax.swing.table.DefaultTableModel;
  * @author jukut
  */
 public class Rank extends javax.swing.JFrame {
+
     private DefaultTableModel model;
     private DefaultTableModel model1;
     private ArrayList<Grade> list = new ArrayList<>();
     private ArrayList<Grade> list1 = new ArrayList<>();
+
     /**
      * Creates new form Rank
      */
     public Rank() throws Exception {
         initComponents();
-        SocketHandle.start();
         this.setLocationRelativeTo(null);
         String msg = "Rank";
-        byte[] encryptedMsg = SocketHandle.cc.createInitialMsg(msg);
-                SocketHandle.push(encryptedMsg);
-                // Read length of incoming message
-                int length = SocketHandle.in.readInt();
-                byte[] encryptedInput = new byte[0];
-                if (length > 0) {
-                    encryptedInput = new byte[length];
-                    // Read the message
-                    SocketHandle.in.readFully(encryptedInput, 0, encryptedInput.length);
-                }
-        String decrytpedInput = SocketHandle.cc.symmetricDecryption(encryptedInput);
+        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+        client.push(encryptedMsg);
+        // Read length of incoming message
+        int length = client.in.readInt();
+        byte[] encryptedInput = new byte[0];
+        if (length > 0) {
+            encryptedInput = new byte[length];
+            // Read the message
+            client.in.readFully(encryptedInput, 0, encryptedInput.length);
+        }
+        String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
         System.out.println(decrytpedInput);
         String[] part = decrytpedInput.split(";");
-        int temp = (part.length-1)/10;
+        int temp = (part.length - 1) / 10;
         int count = 1;
-        for(int i =0 ; i<temp ; i++){
-           Grade gr = new Grade();
-           gr.setUserId(Integer.parseInt(part[count++]));
-           gr.setGrade(Integer.parseInt(part[count++]));
-           gr.setWinMatch(Integer.parseInt(part[count++]));
-           gr.setLoseMatch(Integer.parseInt(part[count++]));
-           gr.setDrawMatch(Integer.parseInt(part[count++]));
-           gr.setCurrentWinStreak(Integer.parseInt(part[count++]));
-           gr.setCurrentLoseStreak(Integer.parseInt(part[count++]));
-           gr.setMaxWinStreak(Integer.parseInt(part[count++]));
-           gr.setMaxLoseStreak(Integer.parseInt(part[count++]));
-           gr.setWinRate(Float.valueOf(part[count++]));
-           list.add(gr);
+        for (int i = 0; i < temp; i++) {
+            Grade gr = new Grade();
+            gr.setUserId(Integer.parseInt(part[count++]));
+            gr.setGrade(Integer.parseInt(part[count++]));
+            gr.setWinMatch(Integer.parseInt(part[count++]));
+            gr.setLoseMatch(Integer.parseInt(part[count++]));
+            gr.setDrawMatch(Integer.parseInt(part[count++]));
+            gr.setCurrentWinStreak(Integer.parseInt(part[count++]));
+            gr.setCurrentLoseStreak(Integer.parseInt(part[count++]));
+            gr.setMaxWinStreak(Integer.parseInt(part[count++]));
+            gr.setMaxLoseStreak(Integer.parseInt(part[count++]));
+            gr.setWinRate(Float.valueOf(part[count++]));
+            list.add(gr);
         }
         model = (DefaultTableModel) tblrankponint.getModel();
         model1 = (DefaultTableModel) tblrankrate.getModel();
         showTable();
-        list1=list;
+        list1 = list;
         Collections.sort(list1);
         showTable1();
     }
+
     public void showTable() {
         model.setRowCount(0);
-        int i =0;
+        int i = 0;
         for (Grade gr : list) {
             model.addRow(new Object[]{
-                i+=1,gr.getUserId(),gr.getGrade()
+                i += 1, gr.getUserId(), gr.getGrade()
             });
         }
     }
-    
+
     public void showTable1() {
-        
+
         model1.setRowCount(0);
-        int i =0;
+        int i = 0;
         for (Grade gr : list1) {
             model1.addRow(new Object[]{
-                i+=1,gr.getUserId(),gr.getWinMatch()+gr.getLoseMatch()+gr.getDrawMatch(),gr.getWinMatch(),gr.getMaxWinStreak(),gr.getWinRate()
+                i += 1, gr.getUserId(), gr.getWinMatch() + gr.getLoseMatch() + gr.getDrawMatch(), gr.getWinMatch(), gr.getMaxWinStreak(), gr.getWinRate()
             });
         }
     }

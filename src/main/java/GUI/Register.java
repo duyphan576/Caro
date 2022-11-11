@@ -4,23 +4,13 @@
  */
 package GUI;
 
-import Controller.SocketHandle;
+import static Controller.Main.client;
 import com.formdev.flatlaf.FlatLightLaf;
-import java.awt.Image;
-import java.io.File;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.UIManager;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import Model.User;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JColorChooser;
-import javax.swing.JOptionPane;
-import sun.security.provider.MD5;
 
 /**
  *
@@ -32,8 +22,9 @@ public class Register extends javax.swing.JFrame {
      * Creates new form SignUp
      */
     private static User user = new User();
+
     public Register() throws Exception {
-        initComponents(); 
+        initComponents();
     }
 
     /**
@@ -145,6 +136,11 @@ public class Register extends javax.swing.JFrame {
         btnBack.setBackground(new java.awt.Color(242, 242, 242));
         btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/back.png"))); // NOI18N
         btnBack.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -223,7 +219,7 @@ public class Register extends javax.swing.JFrame {
                         .addComponent(Male, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(rdFemale, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(rdAnother, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblBirthday, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(DateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -291,9 +287,9 @@ public class Register extends javax.swing.JFrame {
 
                 txterro.setText("");
                 int i = 0;
-                user.setUserName(txtUserName.getText().toString());
+                user.setUserName(txtUserName.getText());
                 user.setPassword(password1);
-                user.setNickname(txtFullName.getText().toString());
+                user.setNickname(txtFullName.getText());
                 if (rdMale.isSelected()) {
                     i = 0;
                 } else if (rdFemale.isSelected()) {
@@ -305,26 +301,43 @@ public class Register extends javax.swing.JFrame {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String startDateString = dateFormat.format(DateChooser.getDate());
                 user.setIsBlocked(0);
-                String msg = "Register;" +user.getUserName() + ";" + user.getPassword() + ";" + user.getNickname() + ";" + user.getSex() + ";" + startDateString;
-                byte[] encryptedMsg = SocketHandle.cc.createInitialMsg(msg);
-                SocketHandle.push(encryptedMsg);
+                String msg = "Register;" + user.getUserName() + ";" + user.getPassword() + ";" + user.getNickname() + ";" + user.getSex() + ";" + startDateString;
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
                 // Read length of incoming message
-                int length = SocketHandle.in.readInt();
+                int length = client.in.readInt();
                 byte[] encryptedInput = new byte[0];
                 if (length > 0) {
                     encryptedInput = new byte[length];
                     // Read the message
-                    SocketHandle.in.readFully(encryptedInput, 0, encryptedInput.length);
+                    client.in.readFully(encryptedInput, 0, encryptedInput.length);
                 }
                 // Read from server: byte[] encryptedInput;
-                String decrytpedInput = SocketHandle.cc.symmetricDecryption(encryptedInput);
-                System.out.println("Client received: " + decrytpedInput);
-                System.out.println(msg);
+                String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
+                String[] parts = decrytpedInput.split(";");
+                if (parts[0].equals("Success")) {
+                    Login l = new Login();
+                    this.setVisible(false);
+                    l.setVisible(true);
+                } else {
+                    System.out.println("Connection false");
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRegisterActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        try {
+            // TODO add your handling code here:
+            Login l = new Login();
+            this.setVisible(false);
+            l.setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnBackActionPerformed
 
     /**
      * @param args the command line arguments

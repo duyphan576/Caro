@@ -4,7 +4,8 @@
  */
 package GUI;
 
-import Controller.SocketHandle;
+import static Controller.Main.client;
+//import static GUI.Login.client;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
@@ -27,12 +28,13 @@ public class HomePage extends javax.swing.JFrame {
     private User user;
     private Grade grade;
     private DefaultTableModel model;
-    private int iduser;
+    private int userID;
+
     public HomePage(User us, Grade gr) throws Exception {
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
             this.user = us;
-            iduser=us.getUserId();
+            userID = us.getUserId();
             this.grade = gr;
             initComponents();
             setInfo();
@@ -449,20 +451,21 @@ public class HomePage extends javax.swing.JFrame {
         lblMaxLoseStreak.setText(lblMaxLoseStreak.getText() + " " + Integer.toString(grade.getMaxLoseStreak()));
 
     }
+
     //thieu loai tru chinh minh trong danh sach friend
     private void setFriendOnl() throws Exception {
         String msg = "FriendOnl";
-        byte[] encryptedMsg = SocketHandle.cc.createInitialMsg(msg);
-        SocketHandle.push(encryptedMsg);
+        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+        client.push(encryptedMsg);
         // Read length of incoming message
-        int length = SocketHandle.in.readInt();
+        int length = client.in.readInt();
         byte[] encryptedInput = new byte[0];
         if (length > 0) {
             encryptedInput = new byte[length];
             // Read the message
-            SocketHandle.in.readFully(encryptedInput, 0, encryptedInput.length);
+            client.in.readFully(encryptedInput, 0, encryptedInput.length);
         }
-        String decrytpedInput = SocketHandle.cc.symmetricDecryption(encryptedInput);
+        String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
         String[] part = decrytpedInput.split(";");
         int temp = Integer.parseInt(part[0].trim());
         int count = 1;
@@ -477,16 +480,16 @@ public class HomePage extends javax.swing.JFrame {
         model.setRowCount(0);
         int i = 0;
         for (User u : l) {
-            String te = "";
+            String status = "";
             if (u.getStatus() == 1) {
-                te = "Online";
+                status = "Online";
             } else {
-                te = "Ofline";
+                status = "Ofline";
             }
-            if(!(u.getUserId()==iduser)){
+            if (!(u.getUserId() == userID)) {
                 model.addRow(new Object[]{
-                u.getNickname(), te
-            });
+                    u.getNickname(), status
+                });
             }
         }
     }

@@ -145,7 +145,7 @@
                       </Group>
                       <Component id="rdAnother" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="17" max="32767" attributes="0"/>
+                  <EmptySpace pref="18" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="lblBirthday" max="32767" attributes="0"/>
                       <Component id="DateChooser" max="32767" attributes="0"/>
@@ -361,6 +361,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBackActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="txterro">
         </Component>
