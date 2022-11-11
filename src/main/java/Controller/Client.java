@@ -30,13 +30,13 @@ import java.util.logging.Logger;
  */
 public class Client {
 
-    public static Socket socket;
-    public static int port = 1234;
-    public static String host = "localhost";
-    public static DataInputStream in;
-    public static DataOutputStream out;
-    public static BufferedReader stdIn;
-    public static boolean closed = false;
+    private static Socket socket;
+    private static int port = 1234;
+    private static String host = "localhost";
+    public  DataInputStream in;
+    public  DataOutputStream out;
+    private static BufferedReader stdIn;
+    private static boolean closed = false;
     public static ClientCryptography cc;
     public static Login login;
 
@@ -73,7 +73,7 @@ public class Client {
         }
     }
 
-    public static void push(byte[] encryptedMsg) {
+    public  void push(byte[] encryptedMsg) {
         try {
             out.writeInt(encryptedMsg.length);
             out.write(encryptedMsg);

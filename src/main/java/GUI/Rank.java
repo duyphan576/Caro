@@ -9,6 +9,7 @@ import static Controller.Main.client;
 import Model.Grade;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -28,46 +29,19 @@ public class Rank extends javax.swing.JFrame {
      * Creates new form Rank
      */
     public Rank() throws Exception {
+        
+    }
+    public Rank(ArrayList<Grade> l){
         initComponents();
         this.setLocationRelativeTo(null);
-        String msg = "Rank";
-        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
-        client.push(encryptedMsg);
-        // Read length of incoming message
-        int length = client.in.readInt();
-        byte[] encryptedInput = new byte[0];
-        if (length > 0) {
-            encryptedInput = new byte[length];
-            // Read the message
-            client.in.readFully(encryptedInput, 0, encryptedInput.length);
-        }
-        String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
-        System.out.println(decrytpedInput);
-        String[] part = decrytpedInput.split(";");
-        int temp = (part.length - 1) / 10;
-        int count = 1;
-        for (int i = 0; i < temp; i++) {
-            Grade gr = new Grade();
-            gr.setUserId(Integer.parseInt(part[count++]));
-            gr.setGrade(Integer.parseInt(part[count++]));
-            gr.setWinMatch(Integer.parseInt(part[count++]));
-            gr.setLoseMatch(Integer.parseInt(part[count++]));
-            gr.setDrawMatch(Integer.parseInt(part[count++]));
-            gr.setCurrentWinStreak(Integer.parseInt(part[count++]));
-            gr.setCurrentLoseStreak(Integer.parseInt(part[count++]));
-            gr.setMaxWinStreak(Integer.parseInt(part[count++]));
-            gr.setMaxLoseStreak(Integer.parseInt(part[count++]));
-            gr.setWinRate(Float.valueOf(part[count++]));
-            list.add(gr);
-        }
         model = (DefaultTableModel) tblrankponint.getModel();
         model1 = (DefaultTableModel) tblrankrate.getModel();
-        showTable();
+        list = l;
         list1 = list;
         Collections.sort(list1);
+        showTable();
         showTable1();
     }
-
     public void showTable() {
         model.setRowCount(0);
         int i = 0;
@@ -191,41 +165,6 @@ public class Rank extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Rank.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Rank.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Rank.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Rank.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Rank().setVisible(true);
-                } catch (Exception ex) {
-                    Logger.getLogger(Rank.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Rank;

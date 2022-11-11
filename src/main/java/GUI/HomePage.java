@@ -10,6 +10,8 @@ import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
@@ -250,9 +252,19 @@ public class HomePage extends javax.swing.JFrame {
 
         btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/log-out.png"))); // NOI18N
         btnLogOut.setText("Log Out");
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
+            }
+        });
 
         btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/exit.png"))); // NOI18N
         btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JPanel3Layout = new javax.swing.GroupLayout(JPanel3);
         JPanel3.setLayout(JPanel3Layout);
@@ -301,6 +313,11 @@ public class HomePage extends javax.swing.JFrame {
         btnSend.setBackground(new java.awt.Color(242, 242, 242));
         btnSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/share.png"))); // NOI18N
         btnSend.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JPanel4Layout = new javax.swing.GroupLayout(JPanel4);
         JPanel4.setLayout(JPanel4Layout);
@@ -421,8 +438,47 @@ public class HomePage extends javax.swing.JFrame {
 
     private void btnRankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRankActionPerformed
         // TODO add your handling code here:
-        
+        try {
+        String msg = "Rank;";
+        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+        client.push(encryptedMsg);
+        } catch (Exception e) {
+        }
+         
     }//GEN-LAST:event_btnRankActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        // TODO add your handling code here:
+try {
+        String msg = "bye";
+        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+        client.push(encryptedMsg);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        // TODO add your handling code here:
+                try {
+            // TODO add your handling code here:
+            Login l = new Login();
+            this.setVisible(false);
+            l.setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        // TODO add your handling code here:
+        try {
+        String msg = "Chathomepage;"+user.getNickname()+":"+txtMessage.getText();
+        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+        client.push(encryptedMsg);
+        txtMessage.setText("");
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btnSendActionPerformed
 
     private void setInfo() {
         lblID.setText(lblID.getText() + " " + Integer.toString(user.getUserId()));
@@ -492,6 +548,9 @@ public class HomePage extends javax.swing.JFrame {
                 });
             }
         }
+    }
+    public void areachatbox(String mes){
+        areaChatBox.setText("\n"+mes);
     }
     /**
      * @param args the command line arguments
