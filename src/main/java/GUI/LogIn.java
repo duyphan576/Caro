@@ -6,6 +6,7 @@ package GUI;
 
 import Controller.Client;
 import static Controller.Main.client;
+import static Controller.Receive.register;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
@@ -34,16 +35,6 @@ public class Login extends javax.swing.JFrame {
     public Login() throws Exception {
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
-            initComponents();            
-        } catch (UnsupportedLookAndFeelException ex) {
-            System.err.println("Failed to initialize LaF");
-        }
-    }
-    
-    public Login(String decrytpedInput) throws Exception {
-        try {
-            UIManager.setLookAndFeel(new FlatIntelliJLaf());
-            this.decrytpedInput = decrytpedInput;
             initComponents();            
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
@@ -196,27 +187,6 @@ public class Login extends javax.swing.JFrame {
             String msg = "Login;" + username + ";" + password;
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
-//            // Read length of incoming message
-//            int length = client.in.readInt();
-//            byte[] encryptedInput = new byte[0];
-//            if (length > 0) {
-//                encryptedInput = new byte[length];
-//                // Read the message
-//                client.in.readFully(encryptedInput, 0, encryptedInput.length);
-//            }
-//            // Read from server: byte[] encryptedInput;
-//            String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
-//            String[] parts = decrytpedInput.split(";");
-//            if (parts[0].equals("Login")) {
-//                System.out.println("Client received: " + decrytpedInput);
-//                User us = setUser(parts);
-//                Grade gr = setGrade(parts);
-//                HomePage h = new HomePage(us, gr);
-//                this.setVisible(false);
-//                h.setVisible(true);
-//            } else {
-//                System.out.println("Connection false");
-//            }
         } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -227,7 +197,8 @@ public class Login extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             this.setVisible(false);
-            new Register().setVisible(true);
+            register = new Register();
+            register.setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }

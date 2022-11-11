@@ -22,7 +22,7 @@ public class Register extends javax.swing.JFrame {
      * Creates new form SignUp
      */
     private static User user = new User();
-
+    
     public Register() throws Exception {
         initComponents();
     }
@@ -284,7 +284,7 @@ public class Register extends javax.swing.JFrame {
                 g = 0;
             }
             if (g == 0) {
-
+                
                 txterro.setText("");
                 int i = 0;
                 user.setUserName(txtUserName.getText());
@@ -304,24 +304,25 @@ public class Register extends javax.swing.JFrame {
                 String msg = "Register;" + user.getUserName() + ";" + user.getPassword() + ";" + user.getNickname() + ";" + user.getSex() + ";" + startDateString;
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
-                // Read length of incoming message
-                int length = client.in.readInt();
-                byte[] encryptedInput = new byte[0];
-                if (length > 0) {
-                    encryptedInput = new byte[length];
-                    // Read the message
-                    client.in.readFully(encryptedInput, 0, encryptedInput.length);
-                }
-                // Read from server: byte[] encryptedInput;
-                String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
-                String[] parts = decrytpedInput.split(";");
-                if (parts[0].equals("Success")) {
-                    Login l = new Login();
-                    this.setVisible(false);
-                    l.setVisible(true);
-                } else {
-                    System.out.println("Connection false");
-                }
+//                // Read length of incoming message
+//                int length = client.in.readInt();
+//                byte[] encryptedInput = new byte[0];
+//                if (length > 0) {
+//                    encryptedInput = new byte[length];
+//                    // Read the message
+//                    client.in.readFully(encryptedInput, 0, encryptedInput.length);
+//                }
+//                // Read from server: byte[] encryptedInput;
+//                String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
+//                String[] parts = decrytpedInput.split(";");
+//                if (parts[0].equals("Success")) {
+//                    Login l = new Login();
+//                    this.setVisible(false);
+//                    l.setVisible(true);
+//                } else {
+//                    System.out.println("Connection false");
+//                }
+                this.setVisible(false);
             }
         } catch (Exception ex) {
             Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
@@ -379,7 +380,7 @@ public class Register extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
-
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {

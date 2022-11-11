@@ -5,8 +5,15 @@
 package Controller;
 
 import static Controller.Client.cc;
-import static Controller.Client.login;
+import GUI.CreateRoom;
+import GUI.Game;
 import GUI.HomePage;
+import GUI.JoinRoom;
+import GUI.ListRoom;
+import GUI.WaitingRoom;
+import GUI.Login;
+import GUI.Rank;
+import GUI.Register;
 import Model.Grade;
 import Model.User;
 import java.io.DataInputStream;
@@ -22,17 +29,30 @@ import java.util.logging.Logger;
  *
  * @author duyph
  */
-class Receive implements Runnable {
+
+public class Receive implements Runnable {
 
     private Socket socket;
     private DataInputStream is;
-    public static String data;
-
+    private String data;
+    public static Login login;
+    public static CreateRoom createRoom;
+    public static Game game;
+    public static HomePage homePage;
+    public static JoinRoom joinRoom;
+    public static ListRoom lítRoom;
+    public static WaitingRoom waitingRoom;
+    public static Rank rank;
+    public static Register register;
+    public static User us;
+    public static Grade gr;
+    
     public Receive(Socket s, DataInputStream r) {
         try {
             this.socket = s;
             this.is = r;
-
+            login = new Login();
+            login.setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(Receive.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -43,14 +63,21 @@ class Receive implements Runnable {
             while (true) {
                 data = decrypt();
                 String[] parts = data.split(";");
-                if (parts[0].equals("Login")) {
-                    System.out.println("Client received: " + data);
-                    User us = setUser(parts);
-                    Grade gr = setGrade(parts);
-                    HomePage h = new HomePage(us, gr);
+                if (parts[0].equals("loginSuccess")) {
+                    us = setUser(parts);
+                    gr = setGrade(parts);
+                    homePage = new HomePage();
                     login.setVisible(false);
-                    h.setVisible(true);
-                }
+                    homePage.setVisible(true);
+                } else if (parts[0].equals("registerSuccess")){
+                    login = new Login();
+                    register.setVisible(false);
+                    login.setVisible(true);
+                } else if (parts[0].equals("createRoomSuccess")){
+                    createRoom.setVisible(false);
+                    waitingRoom = new WaitingRoom();
+                    waitingRoom.setVisible(true);
+                }              
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());

@@ -5,14 +5,18 @@
 package GUI;
 
 import static Controller.Main.client;
-//import static GUI.Login.client;
+import static Controller.Receive.createRoom;
+import static Controller.Receive.gr;
+import static Controller.Receive.us;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -30,7 +34,7 @@ public class HomePage extends javax.swing.JFrame {
     private DefaultTableModel model;
     private int userID;
 
-    public HomePage(User us, Grade gr) throws Exception {
+    public HomePage() throws Exception {
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
             this.user = us;
@@ -236,12 +240,22 @@ public class HomePage extends javax.swing.JFrame {
 
         btnNewRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/button.png"))); // NOI18N
         btnNewRoom.setText("New Room");
+        btnNewRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewRoomActionPerformed(evt);
+            }
+        });
 
         btnListRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/waiting-room.png"))); // NOI18N
         btnListRoom.setText("List Room");
 
         btnRank.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/medal.png"))); // NOI18N
         btnRank.setText("Rank");
+        btnRank.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRankActionPerformed(evt);
+            }
+        });
 
         btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/log-out.png"))); // NOI18N
         btnLogOut.setText("Log Out");
@@ -414,6 +428,28 @@ public class HomePage extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnRankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRankActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRankActionPerformed
+
+    private void btnNewRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewRoomActionPerformed
+        // TODO add your handling code here:
+        int res = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn đặt mật khẩu cho phòng không?", "Tạo phòng", JOptionPane.YES_NO_OPTION);
+        if (res == JOptionPane.YES_OPTION) {
+            createRoom = new CreateRoom();
+            createRoom.setVisible(true);
+            this.setVisible(false);
+        } else if (res == JOptionPane.NO_OPTION) {
+            try {
+                String msg = "createRoom;";
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnNewRoomActionPerformed
+
     private void setInfo() {
         lblID.setText(lblID.getText() + " " + Integer.toString(user.getUserId()));
         lblUserName.setText(lblUserName.getText() + " " + user.getUserName());
@@ -444,7 +480,7 @@ public class HomePage extends javax.swing.JFrame {
 
     //thieu loai tru chinh minh trong danh sach friend
     private void setFriendOnl() throws Exception {
-        String msg = "FriendOnl";
+        String msg = "FriendOnl;";
         byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
         client.push(encryptedMsg);
         // Read length of incoming message
@@ -471,10 +507,16 @@ public class HomePage extends javax.swing.JFrame {
         int i = 0;
         for (User u : l) {
             String status = "";
-            if (u.getStatus() == 1) {
-                status = "Online";
-            } else {
-                status = "Ofline";
+            switch (u.getStatus()) {
+                case 1:
+                    status = "Online";
+                    break;
+                case 2:
+                    status = "Playing";
+                    break;
+                default:
+                    status = "Offline";
+                    break;
             }
             if (!(u.getUserId() == userID)) {
                 model.addRow(new Object[]{
