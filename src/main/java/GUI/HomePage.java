@@ -4,19 +4,24 @@
  */
 package GUI;
 
+import Controller.Client;
 import static Controller.Main.client;
 import static Controller.Receive.createRoom;
 import static Controller.Receive.gr;
+import static Controller.Receive.homePage;
+import static Controller.Receive.listUser;
+import static Controller.Receive.login;
 import static Controller.Receive.us;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
-
 
 /**
  *
@@ -37,12 +42,13 @@ public class HomePage extends javax.swing.JFrame {
     public HomePage() throws Exception {
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            initComponents();
             this.user = us;
             userID = us.getUserId();
             this.grade = gr;
-            initComponents();
+            areaChatBox.setEditable(false);
             setInfo();
-            setFriendOnl();
+            getUserStatus();
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
@@ -259,9 +265,19 @@ public class HomePage extends javax.swing.JFrame {
 
         btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/log-out.png"))); // NOI18N
         btnLogOut.setText("Log Out");
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
+            }
+        });
 
         btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/exit.png"))); // NOI18N
         btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JPanel3Layout = new javax.swing.GroupLayout(JPanel3);
         JPanel3.setLayout(JPanel3Layout);
@@ -310,6 +326,11 @@ public class HomePage extends javax.swing.JFrame {
         btnSend.setBackground(new java.awt.Color(242, 242, 242));
         btnSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/share.png"))); // NOI18N
         btnSend.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JPanel4Layout = new javax.swing.GroupLayout(JPanel4);
         JPanel4.setLayout(JPanel4Layout);
@@ -430,11 +451,17 @@ public class HomePage extends javax.swing.JFrame {
 
     private void btnRankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRankActionPerformed
         // TODO add your handling code here:
+        try {
+            String msg = "Rank;";
+            byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+            client.push(encryptedMsg);
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_btnRankActionPerformed
 
     private void btnNewRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewRoomActionPerformed
         // TODO add your handling code here:
-        int res = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn đặt mật khẩu cho phòng không?", "Tạo phòng", JOptionPane.YES_NO_OPTION);
+        int res = JOptionPane.showConfirmDialog(rootPane, "Do you want to set password?", "Create room", JOptionPane.YES_NO_OPTION);
         if (res == JOptionPane.YES_OPTION) {
             createRoom = new CreateRoom();
             createRoom.setVisible(true);
@@ -449,6 +476,50 @@ public class HomePage extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnNewRoomActionPerformed
+
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        try {
+            // TODO add your handling code here:
+            String msg = "Logout;" + userID;
+            byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+            client.push(encryptedMsg);
+            login = new Login();
+            homePage.setVisible(false);
+            login.setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        // TODO add your handling code here:
+        try {            
+            String msg = "Exit";
+            byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+            client.push(encryptedMsg);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        try {
+            // TODO add your handling code here:
+            if (txtMessage.getText().isEmpty()) {
+                throw new Exception("Message is empty.");
+            } else {               
+                String msg = "Broadcast;" + user.getNickname() + ": " + txtMessage.getText();
+                String txt = areaChatBox.getText() + user.getNickname() + ": " + txtMessage.getText() + "\n";
+                areaChatBox.setText(txt);
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+                txtMessage.setText("");
+                areaChatBox.setCaretPosition(areaChatBox.getDocument().getLength());
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSendActionPerformed
 
     private void setInfo() {
         lblID.setText(lblID.getText() + " " + Integer.toString(user.getUserId()));
@@ -479,35 +550,19 @@ public class HomePage extends javax.swing.JFrame {
     }
 
     //thieu loai tru chinh minh trong danh sach friend
-    private void setFriendOnl() throws Exception {
-        String msg = "FriendOnl;";
+    private void getUserStatus() throws Exception {
+        String msg = "userStatus;";      
         byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
         client.push(encryptedMsg);
-        // Read length of incoming message
-        int length = client.in.readInt();
-        byte[] encryptedInput = new byte[0];
-        if (length > 0) {
-            encryptedInput = new byte[length];
-            // Read the message
-            client.in.readFully(encryptedInput, 0, encryptedInput.length);
-        }
-        String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
-        String[] part = decrytpedInput.split(";");
-        int temp = Integer.parseInt(part[0].trim());
-        int count = 1;
-        ArrayList<User> l = new ArrayList();
-        for (int i = 0; i < temp; i++) {
-            User us = new User();
-            us.setNickname(part[count++]);
-            us.setStatus(Integer.parseInt(part[count++]));
-            l.add(us);
-        }
+    }
+
+    public void setUserStatus(ArrayList<User> list){
         model = (DefaultTableModel) tblOnlineUser.getModel();
         model.setRowCount(0);
         int i = 0;
-        for (User u : l) {
+        for (User us : list) {
             String status = "";
-            switch (u.getStatus()) {
+            switch (us.getStatus()) {
                 case 1:
                     status = "Online";
                     break;
@@ -518,12 +573,18 @@ public class HomePage extends javax.swing.JFrame {
                     status = "Offline";
                     break;
             }
-            if (!(u.getUserId() == userID)) {
+            if (!(us.getUserId() == userID)) {
                 model.addRow(new Object[]{
-                    u.getNickname(), status
+                    us.getNickname(), status
                 });
             }
         }
+    }
+    public void addMessage(String msg) {
+        String message = areaChatBox.getText();
+        message += msg + "\n";
+        areaChatBox.setText(message);
+        areaChatBox.setCaretPosition(areaChatBox.getDocument().getLength());
     }
     /**
      * @param args the command line arguments

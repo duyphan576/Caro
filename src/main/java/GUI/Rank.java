@@ -4,8 +4,7 @@
  */
 package GUI;
 
-import static Controller.Main.client;
-//import static GUI.Login.client;
+import static Controller.Receive.listRank;
 import Model.Grade;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,48 +26,19 @@ public class Rank extends javax.swing.JFrame {
     /**
      * Creates new form Rank
      */
-    public Rank() throws Exception {
+    public Rank(){
         initComponents();
         this.setLocationRelativeTo(null);
-        String msg = "Rank";
-        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
-        client.push(encryptedMsg);
-        // Read length of incoming message
-        int length = client.in.readInt();
-        byte[] encryptedInput = new byte[0];
-        if (length > 0) {
-            encryptedInput = new byte[length];
-            // Read the message
-            client.in.readFully(encryptedInput, 0, encryptedInput.length);
-        }
-        String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
-        System.out.println(decrytpedInput);
-        String[] part = decrytpedInput.split(";");
-        int temp = (part.length - 1) / 10;
-        int count = 1;
-        for (int i = 0; i < temp; i++) {
-            Grade gr = new Grade();
-            gr.setUserId(Integer.parseInt(part[count++]));
-            gr.setGrade(Integer.parseInt(part[count++]));
-            gr.setWinMatch(Integer.parseInt(part[count++]));
-            gr.setLoseMatch(Integer.parseInt(part[count++]));
-            gr.setDrawMatch(Integer.parseInt(part[count++]));
-            gr.setCurrentWinStreak(Integer.parseInt(part[count++]));
-            gr.setCurrentLoseStreak(Integer.parseInt(part[count++]));
-            gr.setMaxWinStreak(Integer.parseInt(part[count++]));
-            gr.setMaxLoseStreak(Integer.parseInt(part[count++]));
-            gr.setWinRate(Float.valueOf(part[count++]));
-            list.add(gr);
-        }
         model = (DefaultTableModel) tblrankponint.getModel();
         model1 = (DefaultTableModel) tblrankrate.getModel();
-        showTable();
+        list = listRank;
         list1 = list;
         Collections.sort(list1);
+        showTable();
         showTable1();
     }
 
-    public void showTable() {
+    private void showTable() {
         model.setRowCount(0);
         int i = 0;
         for (Grade gr : list) {
@@ -78,7 +48,7 @@ public class Rank extends javax.swing.JFrame {
         }
     }
 
-    public void showTable1() {
+    private void showTable1() {
 
         model1.setRowCount(0);
         int i = 0;

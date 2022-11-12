@@ -5,6 +5,8 @@
 package GUI;
 
 import static Controller.Main.client;
+import static Controller.Receive.login;
+import static Controller.Receive.register;
 import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.UIManager;
 import Model.User;
@@ -24,7 +26,12 @@ public class Register extends javax.swing.JFrame {
     private static User user = new User();
     
     public Register() throws Exception {
-        initComponents();
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+            initComponents();
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize LaF");
+        }      
     }
 
     /**
@@ -304,25 +311,6 @@ public class Register extends javax.swing.JFrame {
                 String msg = "Register;" + user.getUserName() + ";" + user.getPassword() + ";" + user.getNickname() + ";" + user.getSex() + ";" + startDateString;
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
-//                // Read length of incoming message
-//                int length = client.in.readInt();
-//                byte[] encryptedInput = new byte[0];
-//                if (length > 0) {
-//                    encryptedInput = new byte[length];
-//                    // Read the message
-//                    client.in.readFully(encryptedInput, 0, encryptedInput.length);
-//                }
-//                // Read from server: byte[] encryptedInput;
-//                String decrytpedInput = client.cc.symmetricDecryption(encryptedInput);
-//                String[] parts = decrytpedInput.split(";");
-//                if (parts[0].equals("Success")) {
-//                    Login l = new Login();
-//                    this.setVisible(false);
-//                    l.setVisible(true);
-//                } else {
-//                    System.out.println("Connection false");
-//                }
-                this.setVisible(false);
             }
         } catch (Exception ex) {
             Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
@@ -332,65 +320,12 @@ public class Register extends javax.swing.JFrame {
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         try {
             // TODO add your handling code here:
-            Login l = new Login();
-            this.setVisible(false);
-            l.setVisible(true);
+            register.setVisible(false);
+            login = new Login();
         } catch (Exception ex) {
             Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnBackActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
-        } catch (Exception ex) {
-            System.err.println("Failed to initialize LaF");
-        }
-        
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Register().setVisible(true);
-                } catch (Exception ex) {
-                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser DateChooser;

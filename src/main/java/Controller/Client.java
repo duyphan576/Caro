@@ -4,9 +4,7 @@
  */
 package Controller;
 
-import static Controller.Client.cc;
 import Crypto.ClientCryptography;
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -22,22 +20,19 @@ import java.util.logging.Logger;
  */
 public class Client {
 
-    public static Socket socket;
-    public static int port = 1234;
-    public static String host = "localhost";
-    public DataInputStream in;
-    public DataOutputStream out;
-    public BufferedReader stdIn;
-    public static boolean closed = false;
+    private Socket socket;
+    private static int port = 1234;
+    private static String host = "localhost";
     public static ClientCryptography cc;
-    
+    private DataInputStream in;
+    public static DataOutputStream out;
 
     public Client() {
         try {
             socket = new Socket(host, port);
             System.out.println("Client connected");
-            out = new DataOutputStream(new DataOutputStream(socket.getOutputStream()));
             in = new DataInputStream(new DataInputStream(socket.getInputStream()));
+            out = new DataOutputStream(new DataOutputStream(socket.getOutputStream()));
             cc = new ClientCryptography();
             int length = in.readInt();
             byte[] encryptedInput = new byte[0];
@@ -63,7 +58,7 @@ public class Client {
         }
     }
 
-    public void push(byte[] encryptedMsg) {
+    public static void push(byte[] encryptedMsg) {
         try {
             out.writeInt(encryptedMsg.length);
             out.write(encryptedMsg);
@@ -72,5 +67,7 @@ public class Client {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    
 
 }

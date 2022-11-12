@@ -6,13 +6,9 @@ package GUI;
 
 import Controller.Client;
 import static Controller.Main.client;
+import static Controller.Receive.login;
 import static Controller.Receive.register;
-import Model.Grade;
-import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -29,7 +25,6 @@ public class Login extends javax.swing.JFrame {
      *
      * @throws java.lang.Exception
      */
-//    public static Client client = new Client();
     public String decrytpedInput;
 
     public Login() throws Exception {
@@ -196,7 +191,7 @@ public class Login extends javax.swing.JFrame {
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         try {
             // TODO add your handling code here:
-            this.setVisible(false);
+            login.setVisible(false);
             register = new Register();
             register.setVisible(true);
         } catch (Exception ex) {
