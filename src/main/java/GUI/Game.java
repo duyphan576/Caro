@@ -6,10 +6,17 @@ package GUI;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 
 /**
@@ -17,11 +24,19 @@ import javax.swing.JProgressBar;
  * @author duyph
  */
 public class Game extends javax.swing.JFrame {
-    
+
     private JButton[][] button;
     private JProgressBar time;
     private JProgressBar turnTime;
+    private int[][] competitorMatrix;// cac button doi thu danh
+    private int[][] matrix;//tong cac button danh va chua danh
+    private int[][] userMatrix;//cac button user danh
     private int size = 15;
+    private int numberOfMatch;
+    private String normalItem[];
+    private String winItem[];
+    private String iconItem[];
+    private String preItem[];
 
     /**
      * Creates new form Game
@@ -29,16 +44,7 @@ public class Game extends javax.swing.JFrame {
     public Game() {
         //Create game zone
         initComponents();
-        
-        jPanel2.setLayout(new GridLayout(size, size));
-        button = new JButton[size][size];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                button[i][j] = new JButton(" ");
-                button[i][j].setBackground(Color.white);
-                jPanel2.add(button[i][j]);
-            }
-        }
+        setupgame();
         Thread time = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -144,7 +150,7 @@ public class Game extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                        .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(4, 4, 4))
                     .addComponent(fieldMessage))
                 .addContainerGap())
@@ -188,7 +194,7 @@ public class Game extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(14, Short.MAX_VALUE)
                 .addComponent(btnSurrender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57)
                 .addComponent(btnDraw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -337,9 +343,437 @@ public class Game extends javax.swing.JFrame {
             public void run() {
                 Game a = new Game();
                 new Game().setVisible(true);
-                
+
             }
         });
+    }
+
+    private void setupgame() {
+        jPanel2.setLayout(new GridLayout(size, size));
+        button = new JButton[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                button[i][j] = new JButton(" ");
+                button[i][j].setBackground(Color.white);
+                button[i][j].setDisabledIcon(new ImageIcon("assets/image/border.jpg"));
+                jPanel2.add(button[i][j]);
+            }
+        }
+        competitorMatrix = new int[size][size];
+        matrix = new int[size][size];
+        userMatrix = new int[size][size];
+        //Setup icon
+        normalItem = new String[2];
+        normalItem[1] = "assets/image/o2.jpg";
+        normalItem[0] = "assets/image/x2.jpg";
+        winItem = new String[2];
+        winItem[1] = "assets/image/owin.jpg";
+        winItem[0] = "assets/image/xwin.jpg";
+        iconItem = new String[2];
+        iconItem[1] = "assets/image/o3.jpg";
+        iconItem[0] = "assets/image/x3.jpg";
+        preItem = new String[2];
+        preItem[1] = "assets/image/o2_pre.jpg";
+        preItem[0] = "assets/image/x2_pre.jpg";
+        setEnableButton(true);
+    }
+
+    void setupButton() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                final int a = i, b = j;
+
+                button[a][b].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            button[a][b].setDisabledIcon(new ImageIcon(normalItem[not(numberOfMatch % 2)]));
+                            button[a][b].setEnabled(false);
+                            matrix[a][b] = 1;
+                            userMatrix[a][b] = 1;
+                            button[a][b].setEnabled(false);
+                            try {
+                                if (checkRowWin() == 1 || checkColumnWin() == 1 || checkRightCrossWin() == 1 || checkLeftCrossWin() == 1) {
+                                    //Xử lý khi người chơi này thắng
+                                    setEnableButton(false);
+                                    increaseWinMatchToUser();
+                                    Client.openView(Client.View.GAMENOTICE, "Bạn đã thắng", "Đang thiết lập ván chơi mới");
+                                    Client.socketHandle.write("win," + a + "," + b);
+                                } else {
+                                    Client.socketHandle.write("caro," + a + "," + b);
+                                    displayCompetitorTurn();
+
+                                }
+                                setEnableButton(false);
+                                timer.stop();
+                            } catch (Exception ie) {
+                                ie.printStackTrace();
+                            }
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                        }
+                    }
+                });
+                button[a][b].addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        if (button[a][b].isEnabled()) {
+                            button[a][b].setBackground(Color.GREEN);
+                            button[a][b].setIcon(new ImageIcon(normalItem[not(numberOfMatch % 2)]));
+                        }
+                    }
+
+                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                        if (button[a][b].isEnabled()) {
+                            button[a][b].setBackground(null);
+                            button[a][b].setIcon(new ImageIcon("assets/image/blank.jpg"));
+                        }
+                    }
+                });
+            }
+        }
+    }
+    //thuat toan tinh thang thua
+
+    public int checkRow() {
+        int win = 0, hang = 0, n = 0, k = 0;
+        boolean check = false;
+        List<JButton> list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (check) {
+                    if (competitorMatrix[i][j] == 1) {
+                        hang++;
+                        list.add(button[i][j]);
+                        if (hang > 4) {
+                            for (JButton jButton : list) {
+                                button[i][j].setDisabledIcon(new ImageIcon(winItem[numberOfMatch % 2]));
+                            }
+                            win = 1;
+                            break;
+                        }
+                        continue;
+                    } else {
+                        list = new ArrayList<>();
+                        check = false;
+                        hang = 0;
+                    }
+                }
+                if (competitorMatrix[i][j] == 1) {
+                    check = true;
+                    list.add(button[i][j]);
+                    hang++;
+                } else {
+                    list = new ArrayList<>();
+                    check = false;
+                }
+            }
+            list = new ArrayList<>();
+            hang = 0;
+        }
+        return win;
+    }
+
+    public int checkColumn() {
+        int win = 0, cot = 0;
+        boolean check = false;
+        List<JButton> list = new ArrayList<>();
+        for (int j = 0; j < size; j++) {
+            for (int i = 0; i < size; i++) {
+                if (check) {
+                    if (competitorMatrix[i][j] == 1) {
+                        cot++;
+                        list.add(button[i][j]);
+                        if (cot > 4) {
+                            for (JButton jButton : list) {
+                                jButton.setDisabledIcon(new ImageIcon(winItem[numberOfMatch % 2]));
+                            }
+                            win = 1;
+                            break;
+                        }
+                        continue;
+                    } else {
+                        check = false;
+                        cot = 0;
+                        list = new ArrayList<>();
+                    }
+                }
+                if (competitorMatrix[i][j] == 1) {
+                    check = true;
+                    list.add(button[i][j]);
+                    cot++;
+                } else {
+                    list = new ArrayList<>();
+                    check = false;
+                }
+            }
+            list = new ArrayList<>();
+            cot = 0;
+        }
+        return win;
+    }
+
+    public int checkRightCross() {
+        int win = 0, cheop = 0, n = 0, k = 0;
+        boolean check = false;
+        List<JButton> list = new ArrayList<>();
+        for (int i = size - 1; i >= 0; i--) {
+            for (int j = 0; j < size; j++) {
+                if (check) {
+                    if (n - j >= 0 && competitorMatrix[n - j][j] == 1) {
+                        cheop++;
+                        list.add(button[n - j][j]);
+                        if (cheop > 4) {
+                            for (JButton jButton : list) {
+                                jButton.setDisabledIcon(new ImageIcon(winItem[numberOfMatch % 2]));
+                            }
+                            win = 1;
+                            break;
+                        }
+                        continue;
+                    } else {
+                        list = new ArrayList<>();
+                        check = false;
+                        cheop = 0;
+                    }
+                }
+                if (competitorMatrix[i][j] == 1) {
+                    n = i + j;
+                    check = true;
+                    list.add(button[i][j]);
+                    cheop++;
+                } else {
+                    check = false;
+                    list = new ArrayList<>();
+                }
+            }
+            cheop = 0;
+            check = false;
+            list = new ArrayList<>();
+        }
+        return win;
+    }
+
+    public int checkLeftCross() {
+        int win = 0, cheot = 0, n = 0;
+        boolean check = false;
+        List<JButton> list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            for (int j = size - 1; j >= 0; j--) {
+                if (check) {
+                    if (n - j - 2 * cheot >= 0 && competitorMatrix[n - j - 2 * cheot][j] == 1) {
+                        list.add(button[n - j - 2 * cheot][j]);
+                        cheot++;
+                        System.out.print("+" + j);
+                        if (cheot > 4) {
+                            for (JButton jButton : list) {
+                                jButton.setDisabledIcon(new ImageIcon(winItem[numberOfMatch % 2]));
+                            }
+                            win = 1;
+                            break;
+                        }
+                        continue;
+                    } else {
+                        list = new ArrayList<>();
+                        check = false;
+                        cheot = 0;
+                    }
+                }
+                if (competitorMatrix[i][j] == 1) {
+                    list.add(button[i][j]);
+                    n = i + j;
+                    check = true;
+                    cheot++;
+                } else {
+                    check = false;
+                }
+            }
+            list = new ArrayList<>();
+            n = 0;
+            cheot = 0;
+            check = false;
+        }
+        return win;
+    }
+
+    public int checkRowWin() {
+        int win = 0, hang = 0, n = 0, k = 0;
+        boolean check = false;
+        List<JButton> list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (check) {
+                    if (userMatrix[i][j] == 1) {
+                        hang++;
+                        list.add(button[i][j]);
+                        if (hang > 4) {
+                            for (JButton jButton : list) {
+                                jButton.setDisabledIcon(new ImageIcon(winItem[(numberOfMatch % 2)]));
+                            }
+                            win = 1;
+                            break;
+                        }
+                        continue;
+                    } else {
+                        list = new ArrayList<>();
+                        check = false;
+                        hang = 0;
+                    }
+                }
+                if (userMatrix[i][j] == 1) {
+                    check = true;
+                    list.add(button[i][j]);
+                    hang++;
+                } else {
+                    list = new ArrayList<>();
+                    check = false;
+                }
+            }
+            list = new ArrayList<>();
+            hang = 0;
+        }
+        return win;
+    }
+
+    public int checkColumnWin() {
+        int win = 0, cot = 0;
+        boolean check = false;
+        List<JButton> list = new ArrayList<>();
+        for (int j = 0; j < size; j++) {
+            for (int i = 0; i < size; i++) {
+                if (check) {
+                    if (userMatrix[i][j] == 1) {
+                        cot++;
+                        list.add(button[i][j]);
+                        if (cot > 4) {
+                            for (JButton jButton : list) {
+                                jButton.setDisabledIcon(new ImageIcon(winItem[(numberOfMatch % 2)]));
+                            }
+                            win = 1;
+                            break;
+                        }
+                        continue;
+                    } else {
+                        check = false;
+                        cot = 0;
+                        list = new ArrayList<>();
+                    }
+                }
+                if (userMatrix[i][j] == 1) {
+                    check = true;
+                    list.add(button[i][j]);
+                    cot++;
+                } else {
+                    check = false;
+                }
+            }
+            list = new ArrayList<>();
+            cot = 0;
+        }
+        return win;
+    }
+
+    public int checkRightCrossWin() {
+        int win = 0, cheop = 0, n = 0, k = 0;
+        boolean check = false;
+        List<JButton> list = new ArrayList<>();
+        for (int i = size - 1; i >= 0; i--) {
+            for (int j = 0; j < size; j++) {
+                if (check) {
+                    if (n >= j && userMatrix[n - j][j] == 1) {
+                        cheop++;
+                        list.add(button[n - j][j]);
+                        if (cheop > 4) {
+                            for (JButton jButton : list) {
+                                jButton.setDisabledIcon(new ImageIcon(winItem[(numberOfMatch % 2)]));
+                            }
+                            win = 1;
+                            break;
+                        }
+                        continue;
+                    } else {
+                        list = new ArrayList<>();
+                        check = false;
+                        cheop = 0;
+                    }
+                }
+                if (userMatrix[i][j] == 1) {
+                    n = i + j;
+                    check = true;
+                    list.add(button[i][j]);
+                    cheop++;
+                } else {
+                    check = false;
+                    list = new ArrayList<>();
+                }
+            }
+            cheop = 0;
+            check = false;
+            list = new ArrayList<>();
+        }
+        return win;
+    }
+
+    public int checkLeftCrossWin() {
+        int win = 0, cheot = 0, n = 0;
+        boolean check = false;
+        List<JButton> list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            for (int j = size - 1; j >= 0; j--) {
+                if (check) {
+                    if (n - j - 2 * cheot >= 0 && userMatrix[n - j - 2 * cheot][j] == 1) {
+                        list.add(button[n - j - 2 * cheot][j]);
+                        cheot++;
+                        System.out.print("+" + j);
+                        if (cheot > 4) {
+                            for (JButton jButton : list) {
+                                jButton.setDisabledIcon(new ImageIcon(winItem[(numberOfMatch % 2)]));
+                            }
+                            win = 1;
+                            break;
+                        }
+                        continue;
+                    } else {
+                        list = new ArrayList<>();
+                        check = false;
+                        cheot = 0;
+                    }
+                }
+                if (userMatrix[i][j] == 1) {
+                    list.add(button[i][j]);
+                    n = i + j;
+                    check = true;
+                    cheot++;
+                } else {
+                    check = false;
+                }
+            }
+            list = new ArrayList<>();
+            n = 0;
+            cheot = 0;
+            check = false;
+        }
+        return win;
+    }
+
+    //chuyển tất cả các button giá trị thành true enable
+    public void setEnableButton(boolean b) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (matrix[i][j] == 0) {
+                    button[i][j].setEnabled(b);
+                }
+            }
+        }
+    }
+
+    int not(int i) {
+        if (i == 1) {
+            return 0;
+        }
+        if (i == 0) {
+            return 1;
+        }
+        return 0;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
