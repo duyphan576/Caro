@@ -495,9 +495,10 @@ public class HomePage extends javax.swing.JFrame {
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
         try {            
-            String msg = "Exit";
+            String msg = "Exit;" + userID;
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
+            homePage.setVisible(false);
         } catch (Exception e) {
         }
     }//GEN-LAST:event_btnExitActionPerformed

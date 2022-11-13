@@ -375,7 +375,7 @@ public class Game extends javax.swing.JFrame {
         preItem = new String[2];
         preItem[1] = "assets/image/o2_pre.jpg";
         preItem[0] = "assets/image/x2_pre.jpg";
-        setEnableButton(true);
+        setEnableButton(true);//mo cho bam tat ca cac button chua duoc chon
     }
 
     void setupButton() {
@@ -383,23 +383,25 @@ public class Game extends javax.swing.JFrame {
             for (int j = 0; j < size; j++) {
                 final int a = i, b = j;
 
-                button[a][b].addActionListener(new ActionListener() {
+                button[a][b].addActionListener(new ActionListener() { // khi bam button nay se thuc hien tat ca cac hanh dong sau
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         try {
                             button[a][b].setDisabledIcon(new ImageIcon(normalItem[not(numberOfMatch % 2)]));
-                            button[a][b].setEnabled(false);
-                            matrix[a][b] = 1;
-                            userMatrix[a][b] = 1;
+                            button[a][b].setEnabled(false); //khong cho bam nut nay nua
+                            matrix[a][b] = 1; // danh dau nut nay da duoc bam
+                            userMatrix[a][b] = 1; // danh dau user nay da danh nut nay
                             button[a][b].setEnabled(false);
                             try {
-                                if (checkRowWin() == 1 || checkColumnWin() == 1 || checkRightCrossWin() == 1 || checkLeftCrossWin() == 1) {
+                                if (checkRowWin() == 1 || checkColumnWin() == 1 || checkRightCrossWin() == 1 || checkLeftCrossWin() == 1) { //kiem tra coi user thang chua 
                                     //Xử lý khi người chơi này thắng
-                                    setEnableButton(false);
-                                    increaseWinMatchToUser();
-                                    Client.openView(Client.View.GAMENOTICE, "Bạn đã thắng", "Đang thiết lập ván chơi mới");
-                                    Client.socketHandle.write("win," + a + "," + b);
+                                    setEnableButton(false); //sau khi thang tat tat ca cac nut
+                                    // cap nhat va so diem thang
+//                                    increaseWinMatchToUser();
+//                                    Client.openView(Client.View.GAMENOTICE, "Bạn đã thắng", "Đang thiết lập ván chơi mới");
+//                                    Client.socketHandle.write("win," + a + "," + b);
                                 } else {
+                                    //ghi gui toa do ma tran da danh
                                     Client.socketHandle.write("caro," + a + "," + b);
                                     displayCompetitorTurn();
 
@@ -755,7 +757,7 @@ public class Game extends javax.swing.JFrame {
         return win;
     }
 
-    //chuyển tất cả các button giá trị thành true enable
+    //chuyển tất cả các button giá trị thành true hay false
     public void setEnableButton(boolean b) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
