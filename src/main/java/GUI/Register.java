@@ -13,6 +13,7 @@ import Model.User;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -267,25 +268,25 @@ public class Register extends javax.swing.JFrame {
             String password2 = String.copyValueOf(jPasswordField2.getPassword());
             int g = 0;
             if (txtUserName.getText().equals("")) {
-                txterro.setText("Please enter User Name");
+                JOptionPane.showMessageDialog(rootPane, "Please enter User Name");
                 g = 1;
             } else if (password1.equals("")) {
-                txterro.setText("Please enter Password");
+                JOptionPane.showMessageDialog(rootPane, "Please enter Password");
                 g = 1;
             } else if (!password2.equals(password1)) {
-                txterro.setText("Please Confirm Password is not equal Password");
+                JOptionPane.showMessageDialog(rootPane, "Please Confirm Password is not equal Password");
                 g = 1;
             } else if (password2.equals("")) {
-                txterro.setText("Please enter Confirm Password");
+                JOptionPane.showMessageDialog(rootPane, "Please enter Confirm Password");
                 g = 1;
             } else if ((!rdMale.isSelected() & !rdFemale.isSelected() & !rdAnother.isSelected())) {
-                txterro.setText("Please selected sex");
+                JOptionPane.showMessageDialog(rootPane, "Please selected sex");
                 g = 1;
             } else if (txtFullName.getText().equals("")) {
-                txterro.setText("Please enter FullName");
+                JOptionPane.showMessageDialog(rootPane, "Please enter FullName");
                 g = 1;
             } else if (DateChooser.getDate().equals("")) {
-                txterro.setText("Please choose Date");
+                JOptionPane.showMessageDialog(rootPane, "Please choose Date");
                 g = 1;
             } else {
                 g = 0;

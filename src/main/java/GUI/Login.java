@@ -11,6 +11,7 @@ import static Controller.Receive.register;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -173,11 +174,11 @@ public class Login extends javax.swing.JFrame {
             // TODO add your handling code here:
             String username = txtUserName.getText();
             if (username.isEmpty()) {
-                throw new Exception("Username can't be empty.");
+                JOptionPane.showMessageDialog(rootPane, "Username can't be empty");
             }
             String password = String.copyValueOf(pwPassword.getPassword());
             if (password.isEmpty()) {
-                throw new Exception("Password can't be empty.");
+                JOptionPane.showMessageDialog(rootPane, "Password can't be empty.");
             }
             String msg = "Login;" + username + ";" + password;
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
