@@ -1,8 +1,9 @@
-
 package GUI;
 
 import static Controller.Main.client;
+import static Controller.Receive.closeAllViews;
 import static Controller.Receive.gr;
+import static Controller.Receive.homePage;
 import static Controller.Receive.us;
 import Model.Grade;
 import Model.User;
@@ -12,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
+import javax.swing.Timer;
 
 /**
  *
@@ -27,32 +30,45 @@ import javax.swing.JProgressBar;
  */
 public class Game extends javax.swing.JFrame {
 
+    private User competitor;
     private JButton[][] button;
-    private JProgressBar time;
-    private JProgressBar turnTime;
-    private int[][] competitorMatrix;// cac button doi thu danh
-    private int[][] matrix;//tong cac button danh va chua danh
-    private int[][] userMatrix;//cac button user danh
-    private int size = 15;
+    private int[][] competitorMatrix;
+    private int[][] matrix;
+    private int[][] userMatrix;
+
+    //if you change size you will need to redesign icon
+    private final int size = 15;
+    // Server Socket
+    private Timer timer;
+    private Integer second, minute;
+
     private int numberOfMatch;
     private String normalItem[];
     private String winItem[];
     private String iconItem[];
     private String preItem[];
-    private User user1;
-    private Grade gr1;
+
+    private JButton preButton;
+    private Thread sendThread;
+    private boolean isSending;
+    private Thread listenThread;
+    private boolean isListening;
+    private String competitorIP;
+
     /**
      * Creates new form Game
      */
-    public Game(User competitor, int isStart, String competitorIP) {
+    public Game(User competitor, int roomID, int isStart, String competitorIP) {
         //Create game zone
         initComponents();
-        this.user1 = us;
-        this.gr1=gr;
-        txtmyname.setText(user1.getNickname());
-        txtmywinmatch.setText(String.valueOf(gr1.getWinMatch()));
-        txtmylosematch.setText(String.valueOf(gr1.getLoseMatch()));
-        setupgame();
+        numberOfMatch = isStart;
+        this.competitor = competitor;
+        this.competitorIP = competitorIP;
+        //
+        isSending = false;
+        isListening = false;
+        areaChatBox.setEditable(false);
+        setupGame();
         Thread time = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -67,21 +83,7 @@ public class Game extends javax.swing.JFrame {
                 }
             }
         });
-        Thread turn = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 100; i >= 0; i--) {
-                    try {
-                        pcbYourTurn.setValue(i);
-                        Thread.sleep(200);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        });
         time.start();
-        turn.start();
     }
 
     /**
@@ -98,30 +100,21 @@ public class Game extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         btnSurrender = new javax.swing.JButton();
-        btnDraw = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         lblTime = new javax.swing.JLabel();
         pcbTime = new javax.swing.JProgressBar();
         lblYourTurn = new javax.swing.JLabel();
-        pcbYourTurn = new javax.swing.JProgressBar();
         jPanel4 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         fieldMessage = new javax.swing.JTextField();
         btnSend = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         areaChatBox = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
-        txtmyname = new javax.swing.JLabel();
-        txtmywinmatch = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        txtmylosematch = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        txtcompetitorname = new javax.swing.JLabel();
+        lblMe = new javax.swing.JLabel();
+        lblMyName = new javax.swing.JLabel();
+        lblCompetitorName = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        txtcompetitorwinmatch = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        txtcompetitorlosematch = new javax.swing.JLabel();
+        lblTimer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -134,7 +127,7 @@ public class Game extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 822, Short.MAX_VALUE)
+            .addGap(0, 838, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,27 +141,20 @@ public class Game extends javax.swing.JFrame {
         btnSurrender.setText("Surrender");
         btnSurrender.setPreferredSize(new java.awt.Dimension(120, 30));
 
-        btnDraw.setText("Draw");
-        btnDraw.setPreferredSize(new java.awt.Dimension(130, 30));
-
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSurrender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57)
-                .addComponent(btnDraw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(82, 82, 82))
+                .addGap(136, 136, 136))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSurrender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnSurrender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -180,8 +166,6 @@ public class Game extends javax.swing.JFrame {
         pcbTime.setStringPainted(true);
 
         lblYourTurn.setText("Your turn");
-
-        pcbYourTurn.setString("0");
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -210,7 +194,7 @@ public class Game extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                         .addGap(4, 4, 4))
                     .addComponent(fieldMessage))
                 .addContainerGap())
@@ -220,17 +204,9 @@ public class Game extends javax.swing.JFrame {
         areaChatBox.setRows(5);
         jScrollPane1.setViewportView(areaChatBox);
 
-        jLabel1.setText("Tôi :");
-
-        jLabel4.setText("Win Match :");
-
-        jLabel6.setText("Lose Match :");
+        lblMe.setText("Tôi :");
 
         jLabel8.setText("Đối thủ :");
-
-        jLabel9.setText("Win Match :");
-
-        jLabel11.setText("Lose Match :");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -239,37 +215,19 @@ public class Game extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
+                                .addComponent(lblMe)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtmyname, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lblMyName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtcompetitorname, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtmywinmatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel6))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtcompetitorwinmatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel11)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtmylosematch, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtcompetitorlosematch, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))))
+                                .addComponent(lblCompetitorName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -277,27 +235,14 @@ public class Game extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtmyname, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtmywinmatch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtmylosematch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                    .addComponent(lblMe, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblMyName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtcompetitorname, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtcompetitorlosematch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtcompetitorwinmatch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                    .addComponent(lblCompetitorName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -309,27 +254,30 @@ public class Game extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblYourTurn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pcbTime, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
-                    .addComponent(pcbYourTurn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblYourTurn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pcbTime, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                            .addComponent(lblTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
+                .addGap(22, 22, 22)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pcbTime, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblYourTurn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pcbYourTurn, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -350,8 +298,8 @@ public class Game extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -392,45 +340,7 @@ public class Game extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    // function to increase progress 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-//                Game() a = new Game();
-//                new Game().setVisible(true);
-
-            }
-        });
-    }
-
-    private void setupgame() {
+    private void setupGame() {
         jPanel2.setLayout(new GridLayout(size, size));
         button = new JButton[size][size];
         for (int i = 0; i < size; i++) {
@@ -441,9 +351,44 @@ public class Game extends javax.swing.JFrame {
                 jPanel2.add(button[i][j]);
             }
         }
+        //SetUp play Matrix
         competitorMatrix = new int[size][size];
         matrix = new int[size][size];
         userMatrix = new int[size][size];
+        //Setup timer
+        second = 60;
+        minute = 0;
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String temp = minute.toString();
+                String temp1 = second.toString();
+                if (temp.length() == 1) {
+                    temp = "0" + temp;
+                }
+                if (temp1.length() == 1) {
+                    temp1 = "0" + temp1;
+                }
+                if (second == 0) {
+                    lblTimer.setText("Thời Gian:" + temp + ":" + temp1);
+                    second = 60;
+                    minute = 0;
+                    try {
+                        String msg = "Lose";
+                        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                        client.push(encryptedMsg);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                    }
+
+                } else {
+                    lblTimer.setText("Thời Gian:" + temp + ":" + temp1);
+                    second--;
+                }
+
+            }
+
+        });
         //Setup icon
         normalItem = new String[2];
         normalItem[1] = "assets/image/o2.jpg";
@@ -457,7 +402,34 @@ public class Game extends javax.swing.JFrame {
         preItem = new String[2];
         preItem[1] = "assets/image/o2_pre.jpg";
         preItem[0] = "assets/image/x2_pre.jpg";
+        setupButton();
         setEnableButton(true);//mo cho bam tat ca cac button chua duoc chon
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                exitGame();
+            }
+        });
+    }
+
+    public void exitGame() {
+        try {
+            try {
+                timer.stop();
+                String msg = "leftRoom;";
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+                homePage = new HomePage();
+                homePage.setVisible(true);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+            }
+            closeAllViews();
+            homePage = new HomePage();
+            homePage.setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null,ex);
+        }
     }
 
     void setupButton() {
@@ -474,26 +446,22 @@ public class Game extends javax.swing.JFrame {
                             matrix[a][b] = 1; // danh dau nut nay da duoc bam
                             userMatrix[a][b] = 1; // danh dau user nay da danh nut nay
                             button[a][b].setEnabled(false);
-                            try {
-                                if (checkRowWin() == 1 || checkColumnWin() == 1 || checkRightCrossWin() == 1 || checkLeftCrossWin() == 1) { //kiem tra coi user thang chua 
-                                    //Xử lý khi người chơi này thắng
-                                    setEnableButton(false); //sau khi thang tat tat ca cac nut
-                                    // cap nhat va so diem thang
+
+                            if (checkRowWin() == 1 || checkColumnWin() == 1 || checkRightCrossWin() == 1 || checkLeftCrossWin() == 1) { //kiem tra coi user thang chua 
+                                //Xử lý khi người chơi này thắng
+                                setEnableButton(false); //sau khi thang tat tat ca cac nut
+                                // cap nhat va so diem thang
 //                                    increaseWinMatchToUser();
 //                                    Client.openView(Client.View.GAMENOTICE, "Bạn đã thắng", "Đang thiết lập ván chơi mới");
 //                                    Client.socketHandle.write("win," + a + "," + b);
-                                } else {
-                                    //ghi gui toa do ma tran da danh
-                                    String msg = "caro," + a + "," + b;
-                                    byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
-                                    client.push(encryptedMsg);
-                                    displayCompetitorTurn();
-                                    
-                                }
-                                setEnableButton(false);
-                            } catch (Exception ie) {
-                                ie.printStackTrace();
+                            } else {
+                                //ghi gui toa do ma tran da danh
+                                String msg = "Caro;" + a + ";" + b;
+                                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                                client.push(encryptedMsg);
+                                displayCompetitorTurn();
                             }
+                            setEnableButton(false);
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
                         }
@@ -851,6 +819,17 @@ public class Game extends javax.swing.JFrame {
         }
     }
 
+    public void startTimer() {
+        lblTimer.setVisible(true);
+        second = 60;
+        minute = 0;
+        timer.start();
+    }
+
+    public void stopTimer() {
+        timer.stop();
+    }
+
     int not(int i) {
         if (i == 1) {
             return 0;
@@ -860,26 +839,97 @@ public class Game extends javax.swing.JFrame {
         }
         return 0;
     }
- public void displayCompetitorTurn() {
+
+    public void addCompetitorMove(String x, String y) {
+        displayUserTurn();
+        startTimer();
+        setEnableButton(true);
+        caro(x, y);
+    }
+
+    public void displayCompetitorTurn() {
         jPanel2.setVisible(false);
-        pcbYourTurn.setVisible(false);
+        lblTimer.setVisible(false);
     }
-    public void displayUserTurn(){
+
+    public void displayUserTurn() {
         jPanel2.setVisible(true);
-        pcbYourTurn.setVisible(true);
+        lblTimer.setVisible(true);
     }
+
+    public void newGame() {
+
+        if (numberOfMatch % 2 == 0) {
+            JOptionPane.showMessageDialog(rootPane, "Đến lượt bạn đi trước");
+            startTimer();
+            displayUserTurn();
+            lblTimer.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Đối thủ đi trước");
+            displayCompetitorTurn();
+        }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                button[i][j].setIcon(new ImageIcon("assets/image/blank.jpg"));
+                button[i][j].setDisabledIcon(new ImageIcon("assets/image/border.jpg"));
+                button[i][j].setText("");
+                competitorMatrix[i][j] = 0;
+                matrix[i][j] = 0;
+                userMatrix[i][j] = 0;
+            }
+        }
+        setEnableButton(true);
+        if (numberOfMatch % 2 != 0) {
+            blockGame();
+        }
+
+        preButton = null;
+        numberOfMatch++;
+    }
+
+    public void blockGame() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                button[i][j].setBackground(Color.white);
+                button[i][j].setDisabledIcon(new ImageIcon("assets/image/border.jpg"));
+                button[i][j].setText("");
+                competitorMatrix[i][j] = 0;
+                matrix[i][j] = 0;
+            }
+        }
+        timer.stop();
+        setEnableButton(false);
+    }
+
+    public void caro(String x, String y) {
+        int xx, yy;
+        xx = Integer.parseInt(x);
+        yy = Integer.parseInt(y);
+        // danh dau vi tri danh
+        competitorMatrix[xx][yy] = 1;
+        matrix[xx][yy] = 1;
+        button[xx][yy].setEnabled(false);
+        if (preButton != null) {
+            preButton.setDisabledIcon(new ImageIcon(normalItem[numberOfMatch % 2]));
+        }
+        preButton = button[xx][yy];
+        button[xx][yy].setDisabledIcon(new ImageIcon(preItem[numberOfMatch % 2]));
+        if (checkRow() == 1 || checkColumn() == 1 || checkLeftCross() == 1 || checkRightCross() == 1) {
+            timer.stop();
+            setEnableButton(false);
+        }
+    }
+
+    public void stopAllThread() {
+        timer.stop();
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaChatBox;
-    private javax.swing.JButton btnDraw;
     private javax.swing.JButton btnSend;
     private javax.swing.JButton btnSurrender;
     private javax.swing.JTextField fieldMessage;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -888,15 +938,12 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblCompetitorName;
+    private javax.swing.JLabel lblMe;
+    private javax.swing.JLabel lblMyName;
     private javax.swing.JLabel lblTime;
+    private javax.swing.JLabel lblTimer;
     private javax.swing.JLabel lblYourTurn;
     private javax.swing.JProgressBar pcbTime;
-    private javax.swing.JProgressBar pcbYourTurn;
-    private javax.swing.JLabel txtcompetitorlosematch;
-    private javax.swing.JLabel txtcompetitorname;
-    private javax.swing.JLabel txtcompetitorwinmatch;
-    private javax.swing.JLabel txtmylosematch;
-    private javax.swing.JLabel txtmyname;
-    private javax.swing.JLabel txtmywinmatch;
     // End of variables declaration//GEN-END:variables
 }

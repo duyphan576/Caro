@@ -5,6 +5,7 @@
 package GUI;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import java.awt.Color;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
@@ -19,16 +20,36 @@ public class WaitingRoom extends javax.swing.JFrame {
     /**
      * Creates new form Loading
      */
-    
+    private boolean isOpenning;
+
     public WaitingRoom() {
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            initComponents();
+            Icon gif = new ImageIcon(this.getClass().getResource("/loading.gif"));
+            lblLoading.setIcon(gif);
+            isOpenning = false;
+            lblPass.setVisible(false);
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
-        initComponents();
-        Icon gif = new ImageIcon(this.getClass().getResource("/loading.gif"));
-        lblLoading.setIcon(gif);
+
+    }
+
+    public void setRoomName(String roomName) {
+        lblRoom.setText("Room: " + roomName);
+    }
+
+    public void setRoomPassword(String password) {
+        lblPass.setText("Password: " + password);
+        lblPass.setVisible(true);
+    }
+
+    public void showFindedCompetitor() {
+        isOpenning = true;
+        lblText.setText("Found another player, joining the room");
+        lblText.setForeground(Color.BLUE);
+        lblText.setVisible(false);
     }
 
     /**
@@ -42,15 +63,21 @@ public class WaitingRoom extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         lblLoading = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        lblText = new javax.swing.JLabel();
+        lblRoom = new javax.swing.JLabel();
+        lblPass = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblLoading.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLoading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading.gif"))); // NOI18N
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Waiting for orther player join room");
+        lblText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblText.setText("Waiting for orther player join the room");
+
+        lblRoom.setText("Room: ");
+
+        lblPass.setText("Pass: ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -59,29 +86,43 @@ public class WaitingRoom extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblLoading, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE))
+                    .addComponent(lblText, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+                    .addComponent(lblLoading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(127, 127, 127)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblRoom, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                    .addComponent(lblPass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(lblRoom)
+                .addGap(18, 18, 18)
+                .addComponent(lblPass)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(lblLoading)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addComponent(lblText)
+                .addGap(75, 75, 75))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -125,8 +166,10 @@ public class WaitingRoom extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblLoading;
+    private javax.swing.JLabel lblPass;
+    private javax.swing.JLabel lblRoom;
+    private javax.swing.JLabel lblText;
     // End of variables declaration//GEN-END:variables
 }

@@ -6,6 +6,7 @@ package GUI;
 
 import static Controller.Main.client;
 import static Controller.Receive.createRoom;
+import static Controller.Receive.findRoom;
 import static Controller.Receive.gr;
 import static Controller.Receive.homePage;
 import static Controller.Receive.login;
@@ -242,6 +243,11 @@ public class HomePage extends javax.swing.JFrame {
 
         btnPlayNow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/match.png"))); // NOI18N
         btnPlayNow.setText("Play Now");
+        btnPlayNow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlayNowActionPerformed(evt);
+            }
+        });
 
         btnNewRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/button.png"))); // NOI18N
         btnNewRoom.setText("New Room");
@@ -540,6 +546,12 @@ public class HomePage extends javax.swing.JFrame {
             Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnListRoomActionPerformed
+
+    private void btnPlayNowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayNowActionPerformed
+        // TODO add your handling code here:
+        findRoom = new FindRoom();
+        findRoom.setVisible(true);
+    }//GEN-LAST:event_btnPlayNowActionPerformed
 
     private void setInfo() {
         lblID.setText(lblID.getText() + " " + Integer.toString(user.getUserId()));

@@ -6,6 +6,7 @@ package Controller;
 
 import static Controller.Client.cc;
 import GUI.CreateRoom;
+import GUI.FindRoom;
 import GUI.Game;
 import GUI.HomePage;
 import GUI.JoinRoom;
@@ -26,6 +27,7 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -45,6 +47,7 @@ public class Receive implements Runnable {
     public static WaitingRoom waitingRoom;
     public static Rank rank;
     public static Register register;
+    public static FindRoom findRoom;
     public static User us;
     public static Grade gr;
     public static ArrayList<Grade> listRank = new ArrayList<>();
@@ -68,7 +71,7 @@ public class Receive implements Runnable {
                 data = decrypt();
                 String[] parts = data.split(";");
                 if (parts[0].equals("loginSuccess")) {
-                    us = setUser(parts);
+                    us = setUser(0,parts);
                     gr = setGrade(parts);
                     homePage = new HomePage();
                     login.setVisible(false);
@@ -85,10 +88,13 @@ public class Receive implements Runnable {
                     if (parts.length == 2) {
                         waitingRoom = new WaitingRoom();
                         waitingRoom.setVisible(true);
+                        waitingRoom.setRoomName(parts[1]);
                     } else {
                         createRoom.setVisible(false);
                         waitingRoom = new WaitingRoom();
                         waitingRoom.setVisible(true);
+                        waitingRoom.setRoomName(parts[1]);
+                        waitingRoom.setRoomPassword(parts[2]);
                     }
                 } else if (parts[0].equals("userStatusSuccess")) {
                     listUser = setUserStatus(parts);
@@ -105,6 +111,37 @@ public class Receive implements Runnable {
                         passwords.add(parts[i + 1]);
                     }
                     listRoom.updateRoomList(rooms, passwords);
+                } else if (parts[0].equals("goToRoom")) {
+                    int roomID = Integer.parseInt(parts[1]);
+                    String competitorIP = parts[2];
+                    int isStart = Integer.parseInt(parts[3]);
+                    User competitor = setUser(3, parts);
+                    if(findRoom!=null){
+                        findRoom.showFindedRoom();
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException ex) {
+                            JOptionPane.showMessageDialog(findRoom, "Lỗi khi sleep thread");
+                        }
+                    } else if(waitingRoom!=null){
+                        waitingRoom.showFindedCompetitor();
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException ex) {
+                            JOptionPane.showMessageDialog(waitingRoom, "Lỗi khi sleep thread");
+                        }
+                    }
+                    closeAllViews();
+                    game = new Game(competitor, roomID, isStart, competitorIP);
+                    game.newGame();
+                } else if (parts[0].equals("caro")) {
+                    game.addCompetitorMove(parts[1], parts[2]);
+                } else if (parts[0].equals("Exit")) {
+                    break;
+                } else if (parts[0].equals("Exit")) {
+                    break;
+                } else if (parts[0].equals("Exit")) {
+                    break;
                 } else if (parts[0].equals("Exit")) {
                     break;
                 }
@@ -127,15 +164,15 @@ public class Receive implements Runnable {
         return cc.symmetricDecryption(encryptedInput);
     }
 
-    private User setUser(String[] parts) throws ParseException {
+    private User setUser(int start, String[] parts) throws ParseException {
         User user = new User();
-        user.setUserId(Integer.parseInt(parts[1]));
-        user.setUserName(parts[2]);
-        user.setPassword(parts[3]);
-        user.setNickname(parts[4]);
-        user.setSex(Integer.parseInt(parts[5]));
+        user.setUserId(Integer.parseInt(parts[start + 1]));
+        user.setUserName(parts[start + 2]);
+        user.setPassword(parts[start + 3]);
+        user.setNickname(parts[start + 4]);
+        user.setSex(Integer.parseInt(parts[start + 5]));
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date parsed = format.parse(parts[6]);
+        Date parsed = format.parse(parts[start + 6]);
         java.sql.Date sql = new java.sql.Date(parsed.getTime());
         user.setBirthday(sql);
         return user;
@@ -188,5 +225,27 @@ public class Receive implements Runnable {
             l.add(user);
         }
         return l;
+    }
+    
+    public static void closeAllViews(){
+        if(login!=null) login.dispose();
+        if(register!=null) register.dispose();
+        if(homePage!=null) homePage.dispose();
+        if(listRoom!=null) listRoom.dispose();
+        if(rank!=null){
+            rank.dispose();
+        } 
+        if(findRoom!=null){
+            findRoom.stopAllThread();
+            findRoom.dispose();
+        } 
+        if(waitingRoom!=null) waitingRoom.dispose();
+        if(game!=null){
+            game.stopAllThread();
+            game.dispose();
+        } 
+        if(createRoom!=null) createRoom.dispose();
+        if(joinRoom!=null) joinRoom.dispose();
+        if(rank!=null) rank.dispose();
     }
 }
