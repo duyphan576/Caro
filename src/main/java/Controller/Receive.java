@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,7 +41,7 @@ public class Receive implements Runnable {
     public static Game game;
     public static HomePage homePage;
     public static JoinRoom joinRoom;
-    public static ListRoom lítRoom;
+    public static ListRoom listRoom;
     public static WaitingRoom waitingRoom;
     public static Rank rank;
     public static Register register;
@@ -81,9 +82,14 @@ public class Receive implements Runnable {
                     register.setVisible(false);
                     login.setVisible(true);
                 } else if (parts[0].equals("createRoomSuccess")) {
-                    createRoom.setVisible(false);
-                    waitingRoom = new WaitingRoom();
-                    waitingRoom.setVisible(true);
+                    if (parts.length == 2) {
+                        waitingRoom = new WaitingRoom();
+                        waitingRoom.setVisible(true);
+                    } else {
+                        createRoom.setVisible(false);
+                        waitingRoom = new WaitingRoom();
+                        waitingRoom.setVisible(true);
+                    }
                 } else if (parts[0].equals("userStatusSuccess")) {
                     listUser = setUserStatus(parts);
                     homePage.setUserStatus(listUser);
@@ -91,6 +97,14 @@ public class Receive implements Runnable {
                     if (homePage.isShowing()) {
                         homePage.addMessage(parts[1]);
                     }
+                } else if (parts[0].equals("viewListRoomSuccess")) {
+                    Vector<String> rooms = new Vector<>();
+                    Vector<String> passwords = new Vector<>();
+                    for (int i = 1; i < parts.length; i = i + 2) {
+                        rooms.add("Room " + parts[i]);
+                        passwords.add(parts[i + 1]);
+                    }
+                    listRoom.updateRoomList(rooms, passwords);
                 } else if (parts[0].equals("Exit")) {
                     break;
                 }

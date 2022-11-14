@@ -389,6 +389,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="List Room"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnListRoomActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnRank">
               <Properties>

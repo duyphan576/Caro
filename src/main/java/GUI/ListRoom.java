@@ -4,6 +4,14 @@
  */
 package GUI;
 
+import static Controller.Main.client;
+import static Controller.Receive.joinRoom;
+import static Controller.Receive.listRoom;
+import java.util.Vector;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author jukut
@@ -13,8 +21,34 @@ public class ListRoom extends javax.swing.JFrame {
     /**
      * Creates new form ListRoom
      */
+    private Vector<String> Room;
+    private Vector<String> Password;
+    private Thread thread;
+    private boolean isPlayThread;
+    private boolean isFiltered;
+    DefaultTableModel defaultTableModel;
+
     public ListRoom() {
         initComponents();
+        defaultTableModel = (DefaultTableModel) tblRoom.getModel();
+        isPlayThread = true;
+        isFiltered = false;
+        thread = new Thread() {
+            @Override
+            public void run() {
+                while (listRoom.isDisplayable() && isPlayThread && !isFiltered) {
+                    try {
+                        String msg = "viewListRoom;";
+                        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                        client.push(encryptedMsg);
+                        Thread.sleep(500);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                    }
+                }
+            }
+        };
+        thread.start();
     }
 
     /**
@@ -32,6 +66,7 @@ public class ListRoom extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
+        Object[][] rows = { }; String[] columns = {"Room",""}; DefaultTableModel model = new DefaultTableModel(rows, columns){     @Override     public Class<?> getColumnClass(int column){         switch(column){             case 0: return String.class;             case 1: return ImageIcon.class;             default: return Object.class;         }     } };
         tblRoom = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -66,24 +101,11 @@ public class ListRoom extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tblRoom.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "#", "RoomID", "User", "Password"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+        tblRoom.setModel(model);
+        tblRoom.getTableHeader().setReorderingAllowed(false);
+        tblRoom.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRoomMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tblRoom);
@@ -92,13 +114,13 @@ public class ListRoom extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -131,42 +153,52 @@ public class ListRoom extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+    private void tblRoomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRoomMouseClicked
+        // TODO add your handling code here:
+        if (tblRoom.getSelectedRow() == -1) {
+        } else {
+            try {
+                isPlayThread = false;
+                int index = tblRoom.getSelectedRow();
+                int room = Integer.parseInt(Room.get(index).split(" ")[1]);
+                String password = Password.get(index);
+                String msg = "joinRoom;";
+                if (password.equals(" ")) {
+                    byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                    client.push(encryptedMsg);
+                    listRoom.setVisible(false);
+                } else {
+                    listRoom.setVisible(false);
+                    joinRoom = new JoinRoom();
+                    joinRoom.setVisible(true);
                 }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListRoom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListRoom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListRoom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListRoom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+    }//GEN-LAST:event_tblRoomMouseClicked
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ListRoom().setVisible(true);
+    public void updateRoomList(Vector<String> room, Vector<String> password) {
+        this.Room = room;
+        this.Password = password;
+        defaultTableModel.setRowCount(0);
+        ImageIcon imageIcon;
+        for (int i = 0; i < Room.size(); i++) {
+            if (Password.get(i).equals(" ")) {
+                imageIcon = new ImageIcon(getClass().getResource("/swords-1-mini.png"));
+            } else {
+                imageIcon = new ImageIcon(getClass().getResource("/swords-1-lock-mini.png"));
             }
-        });
+            defaultTableModel.addRow(new Object[]{
+                Room.get(i),
+                ""
+            });
+        }
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

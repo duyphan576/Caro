@@ -4,14 +4,13 @@
  */
 package GUI;
 
-import Controller.Client;
 import static Controller.Main.client;
 import static Controller.Receive.createRoom;
 import static Controller.Receive.gr;
 import static Controller.Receive.homePage;
-import static Controller.Receive.listUser;
 import static Controller.Receive.login;
 import static Controller.Receive.us;
+import static Controller.Receive.listRoom;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
@@ -254,6 +253,11 @@ public class HomePage extends javax.swing.JFrame {
 
         btnListRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/waiting-room.png"))); // NOI18N
         btnListRoom.setText("List Room");
+        btnListRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListRoomActionPerformed(evt);
+            }
+        });
 
         btnRank.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/medal.png"))); // NOI18N
         btnRank.setText("Rank");
@@ -465,12 +469,12 @@ public class HomePage extends javax.swing.JFrame {
         if (res == JOptionPane.YES_OPTION) {
             createRoom = new CreateRoom();
             createRoom.setVisible(true);
-            this.setVisible(false);
         } else if (res == JOptionPane.NO_OPTION) {
             try {
                 String msg = "createRoom;";
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
+                createRoom = new CreateRoom();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage());
             }
@@ -494,7 +498,7 @@ public class HomePage extends javax.swing.JFrame {
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
-        try {            
+        try {
             String msg = "Exit";
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
@@ -507,7 +511,7 @@ public class HomePage extends javax.swing.JFrame {
             // TODO add your handling code here:
             if (txtMessage.getText().isEmpty()) {
                 throw new Exception("Message is empty.");
-            } else {               
+            } else {
                 String msg = "Broadcast;" + user.getNickname() + ": " + txtMessage.getText();
                 String txt = areaChatBox.getText() + user.getNickname() + ": " + txtMessage.getText() + "\n";
                 areaChatBox.setText(txt);
@@ -520,6 +524,21 @@ public class HomePage extends javax.swing.JFrame {
             Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSendActionPerformed
+
+    private void btnListRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListRoomActionPerformed
+        try {
+            // TODO add your handling code here:
+            listRoom = new ListRoom();
+            listRoom.setVisible(true);
+
+            String msg = "viewListRoom;";
+            byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+            client.push(encryptedMsg);
+
+        } catch (Exception ex) {
+            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnListRoomActionPerformed
 
     private void setInfo() {
         lblID.setText(lblID.getText() + " " + Integer.toString(user.getUserId()));
@@ -551,12 +570,12 @@ public class HomePage extends javax.swing.JFrame {
 
     //thieu loai tru chinh minh trong danh sach friend
     private void getUserStatus() throws Exception {
-        String msg = "userStatus;";      
+        String msg = "userStatus;";
         byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
         client.push(encryptedMsg);
     }
 
-    public void setUserStatus(ArrayList<User> list){
+    public void setUserStatus(ArrayList<User> list) {
         model = (DefaultTableModel) tblOnlineUser.getModel();
         model.setRowCount(0);
         int i = 0;
@@ -580,6 +599,7 @@ public class HomePage extends javax.swing.JFrame {
             }
         }
     }
+
     public void addMessage(String msg) {
         String message = areaChatBox.getText();
         message += msg + "\n";
