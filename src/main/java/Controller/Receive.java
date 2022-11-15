@@ -7,7 +7,7 @@ package Controller;
 import static Controller.Client.cc;
 import GUI.CreateRoom;
 import GUI.FindRoom;
-import GUI.Game;
+import GUI.GameClientFrm;
 import GUI.HomePage;
 import GUI.JoinRoom;
 import GUI.ListRoom;
@@ -40,7 +40,7 @@ public class Receive implements Runnable {
     private String data;
     public static Login login;
     public static CreateRoom createRoom;
-    public static Game game;
+    public static GameClientFrm game;
     public static HomePage homePage;
     public static JoinRoom joinRoom;
     public static ListRoom listRoom;
@@ -135,10 +135,11 @@ public class Receive implements Runnable {
                     }
                     System.out.println(data);
                     closeAllViews();
-                    game = new Game(competitor, roomID, isStart, competitorIP);
+                    game = new GameClientFrm(competitor, roomID, isStart, competitorIP);
                     game.setVisible(true);
-                    game.newGame();
+                    game.newgame();
                 } else if (parts[0].equals("caro")) {
+                    System.out.println(data);
                     game.addCompetitorMove(parts[1], parts[2]);
                 } else if (parts[0].equals("Exit")) {
                     break;
