@@ -167,8 +167,10 @@ public class ListRoom extends javax.swing.JFrame {
                 String password = Password.get(index);
                 String msg = "joinRoom;";
                 if (password.equals(" ")) {
+                    msg+=room;
                     byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                     client.push(encryptedMsg);
+                    System.out.println(msg);
                     listRoom.setVisible(false);
                 } else {
                     listRoom.setVisible(false);

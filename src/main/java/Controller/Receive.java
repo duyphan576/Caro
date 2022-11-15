@@ -69,6 +69,7 @@ public class Receive implements Runnable {
         try {
             while (true) {
                 data = decrypt();
+                System.out.println(data);
                 String[] parts = data.split(";");
                 if (parts[0].equals("loginSuccess")) {
                     us = setUser(0,parts);
@@ -114,7 +115,7 @@ public class Receive implements Runnable {
                 } else if (parts[0].equals("goToRoom")) {
                     int roomID = Integer.parseInt(parts[1]);
                     String competitorIP = parts[2];
-                    int isStart = Integer.parseInt(parts[3]);
+                    int isStart = Integer.parseInt(parts[3]);//la gi
                     User competitor = setUser(3, parts);
                     if(findRoom!=null){
                         findRoom.showFindedRoom();

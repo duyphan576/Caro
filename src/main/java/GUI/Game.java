@@ -352,9 +352,9 @@ public class Game extends javax.swing.JFrame {
             }
         }
         //SetUp play Matrix
-        competitorMatrix = new int[size][size];
-        matrix = new int[size][size];
-        userMatrix = new int[size][size];
+        competitorMatrix = new int[size][size];//danh dau doi thu danh
+        matrix = new int[size][size];//danh dau cac nuoc da danh
+        userMatrix = new int[size][size];//danh dau minh danh
         //Setup timer
         second = 60;
         minute = 0;

@@ -91,7 +91,7 @@ public class FindRoom extends javax.swing.JFrame {
         timer.stop();
         lblText.setText("Found another player, joining the room");
         lblTime.setVisible(false);
-
+        
     }
 
     /**
