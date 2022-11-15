@@ -113,6 +113,7 @@ public class Receive implements Runnable {
                     }
                     listRoom.updateRoomList(rooms, passwords);
                 } else if (parts[0].equals("goToRoom")) {
+                    
                     int roomID = Integer.parseInt(parts[1]);
                     String competitorIP = parts[2];
                     int isStart = Integer.parseInt(parts[3]);//la gi
@@ -124,7 +125,7 @@ public class Receive implements Runnable {
                         } catch (InterruptedException ex) {
                             JOptionPane.showMessageDialog(findRoom, "Lỗi khi sleep thread");
                         }
-                    } else if(waitingRoom!=null){
+                    } else if(!(waitingRoom==null)){
                         waitingRoom.showFindedCompetitor();
                         try {
                             Thread.sleep(3000);
@@ -134,6 +135,7 @@ public class Receive implements Runnable {
                     }
                     closeAllViews();
                     game = new Game(competitor, roomID, isStart, competitorIP);
+                    game.setVisible(true);
                     game.newGame();
                 } else if (parts[0].equals("caro")) {
                     game.addCompetitorMove(parts[1], parts[2]);
