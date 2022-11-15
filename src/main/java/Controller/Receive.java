@@ -132,8 +132,10 @@ public class Receive implements Runnable {
                             JOptionPane.showMessageDialog(waitingRoom, "Lỗi khi sleep thread");
                         }
                     }
+                    System.out.println(data);
                     closeAllViews();
                     game = new Game(competitor, roomID, isStart, competitorIP);
+                    game.setVisible(true);
                     game.newGame();
                 } else if (parts[0].equals("caro")) {
                     game.addCompetitorMove(parts[1], parts[2]);
