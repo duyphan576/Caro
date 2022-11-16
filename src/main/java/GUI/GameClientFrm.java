@@ -207,7 +207,7 @@ public class GameClientFrm extends javax.swing.JFrame {
             homePage = new HomePage();
             homePage.setVisible(true);
         } catch (Exception ex) {
-            Logger.getLogger(GameClientFrm.class.getName()).log(Level.SEVERE, null,ex);
+            Logger.getLogger(GameClientFrm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -344,7 +344,7 @@ public class GameClientFrm extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(102, 102, 102));
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("My");
+        jLabel1.setText("My:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -367,7 +367,7 @@ public class GameClientFrm extends javax.swing.JFrame {
         jPanel3.setForeground(new java.awt.Color(102, 102, 102));
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Competitor");
+        jLabel6.setText("Competitorn:");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -385,7 +385,7 @@ public class GameClientFrm extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(102, 102, 102));
 
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel18.setText("Room");
+        jLabel18.setText("Room :");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -587,18 +587,18 @@ public class GameClientFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-//        try {
-//            int res = JOptionPane.showConfirmDialog(rootPane, "Bạn có thực sự muốn cầu hòa ván chơi này", "Yêu cầu cầu hòa", JOptionPane.YES_NO_OPTION);
-//            if (res == JOptionPane.YES_OPTION) {
-//                Client.socketHandle.write("draw-request,");
-//                timer.stop();
-//                setEnableButton(false);
-//                Client.openView(Client.View.GAMENOTICE, "Yêu cầu hòa", "Đang chờ phản hồi từ đối thủ");
-//            }
-//        } catch (IOException ex) {
-//            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
-//        }
+        try {
+            int res = JOptionPane.showConfirmDialog(rootPane, "Bạn có thực sự muốn cầu hòa ván chơi này", "Yêu cầu cầu hòa", JOptionPane.YES_NO_OPTION);
+            if (res == JOptionPane.YES_OPTION) {
+                String msg = "draw-request;";
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+                timer.stop();
+                setEnableButton(false);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(GameClientFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
@@ -626,43 +626,6 @@ public class GameClientFrm extends javax.swing.JFrame {
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(rootPane, message);
     }
-
-//    public void playSound() {
-//        try {
-//            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("assets/sound/click.wav").getAbsoluteFile());
-//            Clip clip = AudioSystem.getClip();
-//            clip.open(audioInputStream);
-//            clip.start();
-//        } catch (Exception ex) {
-//            System.out.println("Error with playing sound.");
-//            ex.printStackTrace();
-//        }
-//    }
-
-//    public void playSound1() {
-//        try {
-//            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("assets/sound/1click.wav").getAbsoluteFile());
-//            Clip clip = AudioSystem.getClip();
-//            clip.open(audioInputStream);
-//            clip.start();
-//        } catch (Exception ex) {
-//            System.out.println("Error with playing sound.");
-//            ex.printStackTrace();
-//        }
-//    }
-//
-//    public void playSound2() {
-//        try {
-//            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("assets/sound/win.wav").getAbsoluteFile());
-//            Clip clip = AudioSystem.getClip();
-//            clip.open(audioInputStream);
-//            clip.start();
-//        } catch (Exception ex) {
-//            System.out.println("Error with playing sound.");
-//            ex.printStackTrace();
-//        }
-//    }
-
     public void stopTimer() {
         timer.stop();
     }
@@ -836,7 +799,6 @@ public class GameClientFrm extends javax.swing.JFrame {
 //            }
 //        }
 //    }
-
     private int getMax(byte[] bytes) {
         int max = bytes[0];
         for (int i = 1; i < bytes.length; i++) {
@@ -906,7 +868,6 @@ public class GameClientFrm extends javax.swing.JFrame {
 //        Client.user.setNumberOfGame(Client.user.getNumberOfGame() + 1);
 //        jLabel13.setText(Integer.toString(Client.user.getNumberOfGame()));
 //    }
-
     public void blockgame() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -929,6 +890,29 @@ public class GameClientFrm extends javax.swing.JFrame {
                 if (matrix[i][j] == 0) {
                     button[i][j].setEnabled(b);
                 }
+            }
+        }
+    }
+    public void showDrawRequest() throws Exception {
+        int res = JOptionPane.showConfirmDialog(rootPane, "Đối thử muốn cầu hóa ván này, bạn đồng ý chứ", "Yêu cầu cầu hòa", JOptionPane.YES_NO_OPTION);   
+        if (res == JOptionPane.YES_OPTION) {
+            try {
+                timer.stop();
+                setEnableButton(false);
+                String msg = "draw-confirm;";
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+            }
+        }
+        else{
+            try {
+                String msg ="draw-refuse;";
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
             }
         }
     }

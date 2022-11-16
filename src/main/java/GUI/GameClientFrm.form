@@ -343,7 +343,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="My"/>
+            <Property name="text" type="java.lang.String" value="My:"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -379,7 +379,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Competitor"/>
+            <Property name="text" type="java.lang.String" value="Competitorn:"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -413,7 +413,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Room"/>
+            <Property name="text" type="java.lang.String" value="Room :"/>
           </Properties>
         </Component>
       </SubComponents>

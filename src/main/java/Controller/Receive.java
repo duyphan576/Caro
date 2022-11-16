@@ -72,7 +72,7 @@ public class Receive implements Runnable {
                 System.out.println(data);
                 String[] parts = data.split(";");
                 if (parts[0].equals("loginSuccess")) {
-                    us = setUser(0,parts);
+                    us = setUser(0, parts);
                     gr = setGrade(parts);
                     homePage = new HomePage();
                     login.setVisible(false);
@@ -113,19 +113,19 @@ public class Receive implements Runnable {
                     }
                     listRoom.updateRoomList(rooms, passwords);
                 } else if (parts[0].equals("goToRoom")) {
-                    
+
                     int roomID = Integer.parseInt(parts[1]);
                     String competitorIP = parts[2];
                     int isStart = Integer.parseInt(parts[3]);//la gi
                     User competitor = setUser(3, parts);
-                    if(findRoom!=null){
+                    if (findRoom != null) {
                         findRoom.showFindedRoom();
                         try {
                             Thread.sleep(3000);
                         } catch (InterruptedException ex) {
                             JOptionPane.showMessageDialog(findRoom, "Lỗi khi sleep thread");
                         }
-                    } else if(!(waitingRoom==null)){
+                    } else if (!(waitingRoom == null)) {
                         waitingRoom.showFindedCompetitor();
                         try {
                             Thread.sleep(3000);
@@ -141,10 +141,13 @@ public class Receive implements Runnable {
                 } else if (parts[0].equals("caro")) {
                     System.out.println(data);
                     game.addCompetitorMove(parts[1], parts[2]);
-                } else if (parts[0].equals("Exit")) {
-                    break;
-                } else if (parts[0].equals("Exit")) {
-                    break;
+                } else if (parts[0].equals("draw-request")) {
+                    game.showDrawRequest();
+                } else if (parts[0].equals("draw-confirm-fishned")) {
+                    System.out.println(parts[0]);
+                    closeAllViews();
+                    homePage = new HomePage();
+                    homePage.setVisible(true);
                 } else if (parts[0].equals("Exit")) {
                     break;
                 } else if (parts[0].equals("Exit")) {
@@ -231,26 +234,42 @@ public class Receive implements Runnable {
         }
         return l;
     }
-    
-    public static void closeAllViews(){
-        if(login!=null) login.dispose();
-        if(register!=null) register.dispose();
-        if(homePage!=null) homePage.dispose();
-        if(listRoom!=null) listRoom.dispose();
-        if(rank!=null){
+
+    public static void closeAllViews() {
+        if (login != null) {
+            login.dispose();
+        }
+        if (register != null) {
+            register.dispose();
+        }
+        if (homePage != null) {
+            homePage.dispose();
+        }
+        if (listRoom != null) {
+            listRoom.dispose();
+        }
+        if (rank != null) {
             rank.dispose();
-        } 
-        if(findRoom!=null){
+        }
+        if (findRoom != null) {
             findRoom.stopAllThread();
             findRoom.dispose();
-        } 
-        if(waitingRoom!=null) waitingRoom.dispose();
-        if(game!=null){
+        }
+        if (waitingRoom != null) {
+            waitingRoom.dispose();
+        }
+        if (game != null) {
             game.stopAllThread();
             game.dispose();
-        } 
-        if(createRoom!=null) createRoom.dispose();
-        if(joinRoom!=null) joinRoom.dispose();
-        if(rank!=null) rank.dispose();
+        }
+        if (createRoom != null) {
+            createRoom.dispose();
+        }
+        if (joinRoom != null) {
+            joinRoom.dispose();
+        }
+        if (rank != null) {
+            rank.dispose();
+        }
     }
 }
