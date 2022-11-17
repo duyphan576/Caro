@@ -620,7 +620,18 @@ public class GameClientFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1KeyPressed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+       try {
+            int res1 = JOptionPane.showConfirmDialog(rootPane, "Bạn có thực sự muốn đầu hàng", "Yêu cầu đầu hàng", JOptionPane.YES_NO_OPTION);
+            if (res1 == JOptionPane.YES_OPTION) {
+                String msg1 = "lose-request;";
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg1);
+                client.push(encryptedMsg);
+                timer.stop();
+                setEnableButton(false);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(GameClientFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }                                      
     }//GEN-LAST:event_jButton3ActionPerformed
 
     public void showMessage(String message) {

@@ -144,12 +144,13 @@ public class Receive implements Runnable {
                 } else if (parts[0].equals("draw-request")) {
                     game.showDrawRequest();
                 } else if (parts[0].equals("draw-confirm-fishned")) {
-                    System.out.println(parts[0]);
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
-                } else if (parts[0].equals("Exit")) {
-                    break;
+                } else if (parts[0].equals("lose-confirm-fishned")) {
+                    closeAllViews();
+                    homePage = new HomePage();
+                    homePage.setVisible(true);
                 } else if (parts[0].equals("Exit")) {
                     break;
                 }
