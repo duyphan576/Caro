@@ -620,10 +620,10 @@ public class GameClientFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1KeyPressed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       try {
+        try {
             int res1 = JOptionPane.showConfirmDialog(rootPane, "Bạn có thực sự muốn đầu hàng", "Yêu cầu đầu hàng", JOptionPane.YES_NO_OPTION);
             if (res1 == JOptionPane.YES_OPTION) {
-                String msg1 = "lose-request;";
+                String msg1 = "lose-request;" + competitor.getUserId() + ";" + us.getUserId();
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg1);
                 client.push(encryptedMsg);
                 timer.stop();
@@ -631,12 +631,13 @@ public class GameClientFrm extends javax.swing.JFrame {
             }
         } catch (Exception ex) {
             Logger.getLogger(GameClientFrm.class.getName()).log(Level.SEVERE, null, ex);
-        }                                      
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(rootPane, message);
     }
+
     public void stopTimer() {
         timer.stop();
     }
@@ -672,6 +673,8 @@ public class GameClientFrm extends javax.swing.JFrame {
                                 if (checkRowWin() == 1 || checkColumnWin() == 1 || checkRightCrossWin() == 1 || checkLeftCrossWin() == 1) {
                                     //Xử lý khi người chơi này thắng
                                     setEnableButton(false);
+                                    sendlose(a, b);
+                                    winrequest();
 //                                    increaseWinMatchToUser();
 //                                    Client.openView(Client.View.GAMENOTICE, "Bạn đã thắng", "Đang thiết lập ván chơi mới");
 //                                    Client.socketHandle.write("win," + a + "," + b);
@@ -752,11 +755,17 @@ public class GameClientFrm extends javax.swing.JFrame {
         jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
     }
 
-    public void addCompetitorMove(String x, String y) {
-        displayUserTurn();
-        startTimer();
-        setEnableButton(true);
-        caro(x, y);
+    public void addCompetitorMove(String x, String y, boolean xx) {
+        if (xx) {
+            displayUserTurn();
+            startTimer();
+            setEnableButton(true);
+            caro(x, y);
+        } else {
+            setEnableButton(false);
+            caro(x, y);
+            JOptionPane.showMessageDialog(rootPane, "Bạn Thua");
+        }
     }
 
     public void setLose(String xx, String yy) {
@@ -904,8 +913,9 @@ public class GameClientFrm extends javax.swing.JFrame {
             }
         }
     }
+
     public void showDrawRequest() throws Exception {
-        int res = JOptionPane.showConfirmDialog(rootPane, "Đối thử muốn cầu hóa ván này, bạn đồng ý chứ", "Yêu cầu cầu hòa", JOptionPane.YES_NO_OPTION);   
+        int res = JOptionPane.showConfirmDialog(rootPane, "Đối thử muốn cầu hóa ván này, bạn đồng ý chứ", "Yêu cầu cầu hòa", JOptionPane.YES_NO_OPTION);
         if (res == JOptionPane.YES_OPTION) {
             try {
                 timer.stop();
@@ -916,10 +926,51 @@ public class GameClientFrm extends javax.swing.JFrame {
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage());
             }
-        }
-        else{
+        } else {
             try {
-                String msg ="draw-refuse;";
+                String msg = "draw-refuse;";
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+            }
+        }
+    }
+
+    public void showWinRequest() throws Exception {
+        int res = JOptionPane.showConfirmDialog(rootPane, "Play again", "Play agian", JOptionPane.YES_NO_OPTION);
+        if (res == JOptionPane.YES_OPTION) {
+            try {
+                String msg = "again-confirm;";
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+            }
+        } else {
+            try {
+                String msg = "again-refuse;";
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+            }
+        }
+    }
+
+    public void showWinRequest1() throws Exception {
+        int res = JOptionPane.showConfirmDialog(rootPane, "Play again", "Play agian", JOptionPane.YES_NO_OPTION);
+        if (res == JOptionPane.YES_OPTION) {
+            try {
+                String msg = "again-confirm-1;";
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+            }
+        } else {
+            try {
+                String msg = "again-refuse;";
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
             } catch (IOException ex) {
@@ -1270,6 +1321,19 @@ public class GameClientFrm extends javax.swing.JFrame {
 //            
 //            Client.openView(Client.View.GAMENOTICE, "Bạn đã thua", "Đang thiết lập ván chơi mới");
         }
+    }
+
+    public void winrequest() throws Exception {
+        JOptionPane.showMessageDialog(rootPane, "Bạn đã thắng");
+        String msg = "win-request;" + competitor.getUserId() + ";" + us.getUserId();
+        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+        client.push(encryptedMsg);
+    }
+
+    public void sendlose(int a, int b) throws Exception {
+        String msg = "send-lose;" + a + ";" + b;
+        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+        client.push(encryptedMsg);
     }
     /**
      * @param args the command line arguments

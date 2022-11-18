@@ -549,8 +549,14 @@ public class HomePage extends javax.swing.JFrame {
 
     private void btnPlayNowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayNowActionPerformed
         // TODO add your handling code here:
-        findRoom = new FindRoom();
-        findRoom.setVisible(true);
+        try {
+            String msg = "quick-room;";
+            byte[] encryptedMsg;
+            encryptedMsg = client.cc.symmetricEncryption(msg);
+            client.push(encryptedMsg);
+        } catch (Exception ex) {
+            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnPlayNowActionPerformed
 
     private void setInfo() {

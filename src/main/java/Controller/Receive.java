@@ -139,8 +139,9 @@ public class Receive implements Runnable {
                     game.setVisible(true);
                     game.newgame();
                 } else if (parts[0].equals("caro")) {
-                    System.out.println(data);
-                    game.addCompetitorMove(parts[1], parts[2]);
+                    game.addCompetitorMove(parts[1], parts[2],true);
+                } else if (parts[0].equals("send-lose")) {
+                    game.addCompetitorMove(parts[1], parts[2],false);
                 } else if (parts[0].equals("draw-request")) {
                     game.showDrawRequest();
                 } else if (parts[0].equals("draw-confirm-fishned")) {
@@ -151,7 +152,20 @@ public class Receive implements Runnable {
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
-                } else if (parts[0].equals("Exit")) {
+                } else if (parts[0].equals("win-request")) {
+                    if(parts[1].equals("1")){
+                    game.showWinRequest();
+                    }
+                }else if (parts[0].equals("again-confirm-1")) {
+                    game.showWinRequest1();
+                }else if (parts[0].equals("again-refuse")) {
+                    closeAllViews();
+                    homePage = new HomePage();
+                    homePage.setVisible(true);
+                }else if (parts[0].equals("again-confirm")) {
+                    game.setVisible(true);
+                    game.newgame();
+                }else if (parts[0].equals("Exit")) {
                     break;
                 }
             }
