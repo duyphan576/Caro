@@ -13,6 +13,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONObject;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 /**
  *
@@ -22,13 +26,18 @@ public class Client {
 
     private Socket socket;
     private static int port = 1234;
-    private static String host = "localhost";
+    private static String host;
     public static ClientCryptography cc;
     private DataInputStream in;
     public static DataOutputStream out;
 
     public Client() {
         try {
+            String api = "https://api-generator.retool.com/VoJlkt/data/1";
+            Document doc = Jsoup.connect(api).ignoreContentType(true).ignoreHttpErrors(true).header("Content-Type", "application/json")
+                    .method(Connection.Method.GET).execute().parse();
+            JSONObject jsonObject = new JSONObject(doc.text());
+            host = jsonObject.get("ip").toString();
             socket = new Socket(host, port);
             System.out.println("Client connected");
             in = new DataInputStream(new DataInputStream(socket.getInputStream()));
@@ -47,7 +56,7 @@ public class Client {
             out.writeInt(encryptedMsg.length);
             out.write(encryptedMsg);
             out.flush();
-            
+
             Receive recv = new Receive(socket, in);
             ExecutorService excutor = Executors.newCachedThreadPool();
             excutor.execute(recv);
@@ -67,7 +76,5 @@ public class Client {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    
 
 }
