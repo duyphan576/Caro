@@ -11,8 +11,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.UIManager;
 import Model.User;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,14 +24,15 @@ public class Register extends javax.swing.JFrame {
      * Creates new form SignUp
      */
     private static User user = new User();
-    
+
     public Register() throws Exception {
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
             initComponents();
+            this.setIconImage(new ImageIcon(this.getClass().getResource("/tic-tac-toe.png")).getImage());
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
-        }      
+        }
     }
 
     /**
@@ -68,7 +68,8 @@ public class Register extends javax.swing.JFrame {
         txterro = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Sign Up");
+        setTitle("Register");
+        setResizable(false);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 700));
 
@@ -227,11 +228,11 @@ public class Register extends javax.swing.JFrame {
                         .addComponent(Male, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(rdFemale, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(rdAnother, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblBirthday, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(DateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRegister))
@@ -292,7 +293,7 @@ public class Register extends javax.swing.JFrame {
                 g = 0;
             }
             if (g == 0) {
-                
+
                 txterro.setText("");
                 int i = 0;
                 user.setUserName(txtUserName.getText());
@@ -314,7 +315,7 @@ public class Register extends javax.swing.JFrame {
                 client.push(encryptedMsg);
             }
         } catch (Exception ex) {
-            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error");
         }
     }//GEN-LAST:event_btnRegisterActionPerformed
 
@@ -324,7 +325,7 @@ public class Register extends javax.swing.JFrame {
             register.setVisible(false);
             login = new Login();
         } catch (Exception ex) {
-            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error");
         }
     }//GEN-LAST:event_btnBackActionPerformed
 

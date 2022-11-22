@@ -7,11 +7,16 @@ package GUI;
 import static Controller.Main.client;
 import static Controller.Receive.findRoom;
 import static Controller.Receive.homePage;
+import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -26,18 +31,24 @@ public class FindRoom extends javax.swing.JFrame {
     private boolean isFinded;
 
     public FindRoom() {
-        initComponents();
-        pcb.setValue(70);
-        isFinded = false;
-        startFind();
-        sendFindRequest();
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+            initComponents();
+            this.setIconImage(new ImageIcon(this.getClass().getResource("/tic-tac-toe.png")).getImage());
+            pcb.setValue(70);
+            isFinded = false;
+            startFind();
+            sendFindRequest();
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(FindRoom.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void stopAllThread() {
         timer.stop();
     }
 
-    public void startFind() {
+    private void startFind() {
         timer = new Timer(1000, new ActionListener() {
             int count = 20;
 
@@ -60,7 +71,7 @@ public class FindRoom extends javax.swing.JFrame {
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(rootPane, ex.getMessage());
                     }
-                    int res = JOptionPane.showConfirmDialog(rootPane, "Tìm kiếm thất bại, bạn muốn thử lại lần nữa chứ?");
+                    int res = JOptionPane.showConfirmDialog(rootPane, "Search failed, want to try again?");
                     if (res == JOptionPane.YES_OPTION) {
                         startFind();
                         sendFindRequest();
@@ -76,9 +87,9 @@ public class FindRoom extends javax.swing.JFrame {
         timer.start();
     }
 
-    public void sendFindRequest() {
+    private void sendFindRequest() {
         try {
-            String msg = "playNow;";
+            String msg = "PlayNow;";
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
         } catch (Exception ex) {
@@ -89,9 +100,9 @@ public class FindRoom extends javax.swing.JFrame {
     public void showFindedRoom() {
         isFinded = true;
         timer.stop();
-        lblText.setText("Found another player, joining the room");
+        lblText.setText("Found the opponent, joining the room");
         lblTime.setVisible(false);
-        
+
     }
 
     /**
@@ -109,7 +120,9 @@ public class FindRoom extends javax.swing.JFrame {
         pcb = new javax.swing.JProgressBar();
         lblTime = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Find Room");
+        setResizable(false);
 
         lblLoading.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLoading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading.gif"))); // NOI18N
@@ -161,11 +174,9 @@ public class FindRoom extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;

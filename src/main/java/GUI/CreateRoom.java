@@ -6,7 +6,13 @@ package GUI;
 
 import static Controller.Client.cc;
 import static Controller.Main.client;
+import com.formdev.flatlaf.FlatLightLaf;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -15,7 +21,13 @@ import javax.swing.JOptionPane;
 public class CreateRoom extends javax.swing.JFrame {
 
     public CreateRoom() {
-        initComponents();
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+            initComponents();
+            this.setIconImage(new ImageIcon(this.getClass().getResource("/tic-tac-toe.png")).getImage());
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(CreateRoom.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -35,7 +47,9 @@ public class CreateRoom extends javax.swing.JFrame {
         btnCreate = new javax.swing.JButton();
         pwdRoomPassword = new javax.swing.JPasswordField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Create Room");
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 153, 255));
@@ -131,7 +145,7 @@ public class CreateRoom extends javax.swing.JFrame {
             if (password.isEmpty()) {
                 throw new Exception("Vui lòng nhập mật khẩu bạn muốn đặt cho phòng");
             } else {
-                String msg = "createRoom;" + password;
+                String msg = "CreateRoom;" + password;
                 byte[] encryptedMsg = cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
             }

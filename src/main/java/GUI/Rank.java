@@ -8,8 +8,6 @@ import static Controller.Receive.listRank;
 import Model.Grade;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -76,7 +74,8 @@ public class Rank extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         Rank = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Rank");
 
         tblrankponint.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -156,6 +155,7 @@ public class Rank extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**

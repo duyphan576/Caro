@@ -7,7 +7,8 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="Sign Up"/>
+    <Property name="title" type="java.lang.String" value="Register"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -145,7 +146,7 @@
                       </Group>
                       <Component id="rdAnother" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                  <EmptySpace pref="19" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="lblBirthday" max="32767" attributes="0"/>
                       <Component id="DateChooser" max="32767" attributes="0"/>
