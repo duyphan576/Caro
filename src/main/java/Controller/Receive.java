@@ -5,6 +5,7 @@
 package Controller;
 
 import static Controller.Client.cc;
+import GUI.ChanceUser;
 import GUI.CreateRoom;
 import GUI.FindRoom;
 import GUI.GameClientFrm;
@@ -40,6 +41,7 @@ public class Receive implements Runnable {
     private String data;
     public static Login login;
     public static CreateRoom createRoom;
+    public static ChanceUser chanceus;
     public static GameClientFrm game;
     public static HomePage homePage;
     public static JoinRoom joinRoom;
@@ -165,6 +167,14 @@ public class Receive implements Runnable {
                 }else if (parts[0].equals("again-confirm")) {
                     game.setVisible(true);
                     game.newgame();
+                }else if (parts[0].equals("ChanceUser")) {
+                    chanceus = new ChanceUser(us);
+                    chanceus.setVisible(true);
+                }else if (parts[0].equals("ChanceUserSuccess")) {
+                    us = setUser(0, parts);
+                    closeAllViews();
+                    homePage = new HomePage();
+                    homePage.setVisible(true);
                 }else if (parts[0].equals("Exit")) {
                     break;
                 }

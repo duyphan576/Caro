@@ -82,6 +82,7 @@ public class HomePage extends javax.swing.JFrame {
         lblMaxLoseStreak = new javax.swing.JLabel();
         lblCurrentWinStreak = new javax.swing.JLabel();
         lblCurrentLoseStreak = new javax.swing.JLabel();
+        btnChanceUser = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         JPanel3 = new javax.swing.JPanel();
         lblGameName = new javax.swing.JLabel();
@@ -89,8 +90,8 @@ public class HomePage extends javax.swing.JFrame {
         btnNewRoom = new javax.swing.JButton();
         btnListRoom = new javax.swing.JButton();
         btnRank = new javax.swing.JButton();
-        btnLogOut = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        btnLogOut1 = new javax.swing.JButton();
         JPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         areaChatBox = new javax.swing.JTextArea();
@@ -143,6 +144,14 @@ public class HomePage extends javax.swing.JFrame {
 
         lblCurrentLoseStreak.setText("Current Lose Streak:");
 
+        btnChanceUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Chane.png"))); // NOI18N
+        btnChanceUser.setText("Chance User");
+        btnChanceUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChanceUserActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ProfileLayout = new javax.swing.GroupLayout(Profile);
         Profile.setLayout(ProfileLayout);
         ProfileLayout.setHorizontalGroup(
@@ -167,6 +176,10 @@ public class HomePage extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblLoseMatch, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProfileLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnChanceUser)
+                .addGap(72, 72, 72))
         );
         ProfileLayout.setVerticalGroup(
             ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,7 +208,9 @@ public class HomePage extends javax.swing.JFrame {
                 .addComponent(lblCurrentWinStreak, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblCurrentLoseStreak, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnChanceUser)
+                .addContainerGap())
         );
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -273,19 +288,19 @@ public class HomePage extends javax.swing.JFrame {
             }
         });
 
-        btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/log-out.png"))); // NOI18N
-        btnLogOut.setText("Log Out");
-        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogOutActionPerformed(evt);
-            }
-        });
-
         btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/exit.png"))); // NOI18N
         btnExit.setText("Exit");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExitActionPerformed(evt);
+            }
+        });
+
+        btnLogOut1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/log-out.png"))); // NOI18N
+        btnLogOut1.setText("Log Out");
+        btnLogOut1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOut1ActionPerformed(evt);
             }
         });
 
@@ -299,13 +314,17 @@ public class HomePage extends javax.swing.JFrame {
                     .addComponent(btnPlayNow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnNewRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnListRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(JPanel3Layout.createSequentialGroup()
                         .addComponent(lblGameName, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRank, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(JPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(JPanel3Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(btnLogOut1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         JPanel3Layout.setVerticalGroup(
             JPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,11 +339,14 @@ public class HomePage extends javax.swing.JFrame {
                 .addComponent(btnListRoom)
                 .addGap(18, 18, 18)
                 .addComponent(btnRank)
-                .addGap(18, 18, 18)
-                .addComponent(btnLogOut)
-                .addGap(18, 18, 18)
+                .addGap(109, 109, 109)
                 .addComponent(btnExit)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
+            .addGroup(JPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanel3Layout.createSequentialGroup()
+                    .addContainerGap(556, Short.MAX_VALUE)
+                    .addComponent(btnLogOut1)
+                    .addGap(121, 121, 121)))
         );
 
         JPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -487,20 +509,17 @@ public class HomePage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnNewRoomActionPerformed
 
-    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+    private void btnChanceUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChanceUserActionPerformed
         try {
             // TODO add your handling code here:
-            String msg = "Logout;" + userID;
+            String msg ="ChanceUser";
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
-            login = new Login();
-            homePage.setVisible(false);
-            login.setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }//GEN-LAST:event_btnLogOutActionPerformed
+    }//GEN-LAST:event_btnChanceUserActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
@@ -558,6 +577,10 @@ public class HomePage extends javax.swing.JFrame {
             Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnPlayNowActionPerformed
+
+    private void btnLogOut1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOut1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLogOut1ActionPerformed
 
     private void setInfo() {
         lblID.setText(lblID.getText() + " " + Integer.toString(user.getUserId()));
@@ -637,9 +660,10 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JPanel JPanel4;
     private javax.swing.JPanel Profile;
     private javax.swing.JTextArea areaChatBox;
+    private javax.swing.JButton btnChanceUser;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnListRoom;
-    private javax.swing.JButton btnLogOut;
+    private javax.swing.JButton btnLogOut1;
     private javax.swing.JButton btnNewRoom;
     private javax.swing.JButton btnPlayNow;
     private javax.swing.JButton btnRank;
