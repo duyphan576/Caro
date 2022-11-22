@@ -5,6 +5,12 @@
 package GUI;
 
 import static Controller.Main.client;
+import com.formdev.flatlaf.FlatLightLaf;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -20,8 +26,14 @@ public class JoinRoom extends javax.swing.JFrame {
     }
 
     public JoinRoom(int idroom) {
-        initComponents();
-        txtidroom.setText(String.valueOf(idroom));
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+            initComponents();
+            this.setIconImage(new ImageIcon(this.getClass().getResource("/tic-tac-toe.png")).getImage());
+            txtidroom.setText(String.valueOf(idroom));
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(JoinRoom.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -42,7 +54,9 @@ public class JoinRoom extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         txtidroom = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Join Room");
+        setResizable(false);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/backnho.png"))); // NOI18N
 
@@ -122,13 +136,14 @@ public class JoinRoom extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         try {
             String password = String.copyValueOf(txtpassword.getPassword());
-            String msg = "joinRoom;" + txtidroom.getText() + ";" + password;
+            String msg = "JoinRoom;" + txtidroom.getText() + ";" + password;
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
             System.out.println(msg);

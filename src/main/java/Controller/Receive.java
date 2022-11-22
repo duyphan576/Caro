@@ -7,7 +7,7 @@ package Controller;
 import static Controller.Client.cc;
 import GUI.CreateRoom;
 import GUI.FindRoom;
-import GUI.GameClientFrm;
+import GUI.Game;
 import GUI.HomePage;
 import GUI.JoinRoom;
 import GUI.ListRoom;
@@ -40,7 +40,7 @@ public class Receive implements Runnable {
     private String data;
     public static Login login;
     public static CreateRoom createRoom;
-    public static GameClientFrm game;
+    public static Game game;
     public static HomePage homePage;
     public static JoinRoom joinRoom;
     public static ListRoom listRoom;
@@ -71,21 +71,21 @@ public class Receive implements Runnable {
                 data = decrypt();
                 System.out.println(data);
                 String[] parts = data.split(";");
-                if (parts[0].equals("loginSuccess")) {
+                if (parts[0].equals("Login")) {
                     us = setUser(0, parts);
                     gr = setGrade(parts);
                     homePage = new HomePage();
                     login.setVisible(false);
                     homePage.setVisible(true);
-                } else if (parts[0].equals("rankSuccess")) {
+                } else if (parts[0].equals("Rank")) {
                     listRank = setRank(parts);
                     rank = new Rank();
                     rank.setVisible(true);
-                } else if (parts[0].equals("registerSuccess")) {
+                } else if (parts[0].equals("Register")) {
                     login = new Login();
                     register.setVisible(false);
                     login.setVisible(true);
-                } else if (parts[0].equals("createRoomSuccess")) {
+                } else if (parts[0].equals("CreateRoom")) {
                     if (parts.length == 2) {
                         waitingRoom = new WaitingRoom();
                         waitingRoom.setVisible(true);
@@ -97,14 +97,14 @@ public class Receive implements Runnable {
                         waitingRoom.setRoomName(parts[1]);
                         waitingRoom.setRoomPassword(parts[2]);
                     }
-                } else if (parts[0].equals("userStatusSuccess")) {
+                } else if (parts[0].equals("UserStatus")) {
                     listUser = setUserStatus(parts);
                     homePage.setUserStatus(listUser);
-                } else if (parts[0].equals("broadcastSuccess")) {
+                } else if (parts[0].equals("Broadcast")) {
                     if (homePage.isShowing()) {
                         homePage.addMessage(parts[1]);
                     }
-                } else if (parts[0].equals("viewListRoomSuccess")) {
+                } else if (parts[0].equals("ViewListRoom")) {
                     Vector<String> rooms = new Vector<>();
                     Vector<String> passwords = new Vector<>();
                     for (int i = 1; i < parts.length; i = i + 2) {
@@ -112,7 +112,7 @@ public class Receive implements Runnable {
                         passwords.add(parts[i + 1]);
                     }
                     listRoom.updateRoomList(rooms, passwords);
-                } else if (parts[0].equals("goToRoom")) {
+                } else if (parts[0].equals("GoToRoom")) {
 
                     int roomID = Integer.parseInt(parts[1]);
                     String competitorIP = parts[2];
@@ -123,48 +123,48 @@ public class Receive implements Runnable {
                         try {
                             Thread.sleep(3000);
                         } catch (InterruptedException ex) {
-                            JOptionPane.showMessageDialog(findRoom, "Lỗi khi sleep thread");
+                            JOptionPane.showMessageDialog(findRoom, "Error while sleep thread");
                         }
                     } else if (!(waitingRoom == null)) {
                         waitingRoom.showFindedCompetitor();
                         try {
                             Thread.sleep(3000);
                         } catch (InterruptedException ex) {
-                            JOptionPane.showMessageDialog(waitingRoom, "Lỗi khi sleep thread");
+                            JOptionPane.showMessageDialog(waitingRoom, "Error while sleep thread");
                         }
                     }
                     System.out.println(data);
                     closeAllViews();
-                    game = new GameClientFrm(competitor, roomID, isStart, competitorIP);
+                    game = new Game(competitor, roomID, isStart, competitorIP);
                     game.setVisible(true);
-                    game.newgame();
-                } else if (parts[0].equals("caro")) {
+                    game.newGame();
+                } else if (parts[0].equals("Caro")) {
                     game.addCompetitorMove(parts[1], parts[2],true);
-                } else if (parts[0].equals("send-lose")) {
+                } else if (parts[0].equals("Lose")) {
                     game.addCompetitorMove(parts[1], parts[2],false);
-                } else if (parts[0].equals("draw-request")) {
+                } else if (parts[0].equals("DrawRequest")) {
                     game.showDrawRequest();
-                } else if (parts[0].equals("draw-confirm-fishned")) {
+                } else if (parts[0].equals("DrawConfirm")) {
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
-                } else if (parts[0].equals("lose-confirm-fishned")) {
+                } else if (parts[0].equals("SurrenderRequest")) {
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
-                } else if (parts[0].equals("win-request")) {
+                } else if (parts[0].equals("WinRequest")) {
                     if(parts[1].equals("1")){
                     game.showWinRequest();
                     }
-                }else if (parts[0].equals("again-confirm-1")) {
+                }else if (parts[0].equals("AgainConfirm1")) {
                     game.showWinRequest1();
-                }else if (parts[0].equals("again-refuse")) {
+                }else if (parts[0].equals("AgainRefuse")) {
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
-                }else if (parts[0].equals("again-confirm")) {
+                }else if (parts[0].equals("AgainConfirm")) {
                     game.setVisible(true);
-                    game.newgame();
+                    game.newGame();
                 }else if (parts[0].equals("Exit")) {
                     break;
                 }

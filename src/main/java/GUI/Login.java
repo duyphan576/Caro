@@ -4,13 +4,11 @@
  */
 package GUI;
 
-import Controller.Client;
 import static Controller.Main.client;
 import static Controller.Receive.login;
 import static Controller.Receive.register;
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -31,7 +29,8 @@ public class Login extends javax.swing.JFrame {
     public Login() throws Exception {
         try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
-            initComponents();            
+            initComponents();
+            this.setIconImage(new ImageIcon(this.getClass().getResource("/tic-tac-toe.png")).getImage());
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
@@ -58,7 +57,9 @@ public class Login extends javax.swing.JFrame {
         btnRegister = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login");
         setBackground(new java.awt.Color(255, 204, 204));
+        setResizable(false);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 500));
 
@@ -184,7 +185,7 @@ public class Login extends javax.swing.JFrame {
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
         } catch (Exception ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error");
         }
 
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -196,7 +197,7 @@ public class Login extends javax.swing.JFrame {
             register = new Register();
             register.setVisible(true);
         } catch (Exception ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error");
         }
     }//GEN-LAST:event_btnRegisterActionPerformed
 

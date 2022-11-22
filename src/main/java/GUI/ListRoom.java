@@ -7,9 +7,14 @@ package GUI;
 import static Controller.Main.client;
 import static Controller.Receive.joinRoom;
 import static Controller.Receive.listRoom;
+import com.formdev.flatlaf.FlatLightLaf;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,26 +34,32 @@ public class ListRoom extends javax.swing.JFrame {
     DefaultTableModel defaultTableModel;
 
     public ListRoom() {
-        initComponents();
-        defaultTableModel = (DefaultTableModel) tblRoom.getModel();
-        isPlayThread = true;
-        isFiltered = false;
-        thread = new Thread() {
-            @Override
-            public void run() {
-                while (listRoom.isDisplayable() && isPlayThread && !isFiltered) {
-                    try {
-                        String msg = "viewListRoom;";
-                        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
-                        client.push(encryptedMsg);
-                        Thread.sleep(500);
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+            initComponents();
+            this.setIconImage(new ImageIcon(this.getClass().getResource("/tic-tac-toe.png")).getImage());
+            defaultTableModel = (DefaultTableModel) tblRoom.getModel();
+            isPlayThread = true;
+            isFiltered = false;
+            thread = new Thread() {
+                @Override
+                public void run() {
+                    while (listRoom.isDisplayable() && isPlayThread && !isFiltered) {
+                        try {
+                            String msg = "ViewListRoom;";
+                            byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                            client.push(encryptedMsg);
+                            Thread.sleep(500);
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                        }
                     }
                 }
-            }
-        };
-        thread.start();
+            };
+            thread.start();
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(ListRoom.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -69,7 +80,8 @@ public class ListRoom extends javax.swing.JFrame {
         Object[][] rows = { }; String[] columns = {"Room",""}; DefaultTableModel model = new DefaultTableModel(rows, columns){     @Override     public Class<?> getColumnClass(int column){         switch(column){             case 0: return String.class;             case 1: return ImageIcon.class;             default: return Object.class;         }     } };
         tblRoom = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("List Room");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 204, 255));
@@ -165,9 +177,9 @@ public class ListRoom extends javax.swing.JFrame {
                 int index = tblRoom.getSelectedRow();
                 int room = Integer.parseInt(Room.get(index).split(" ")[1]);
                 String password = Password.get(index);
-                String msg = "joinRoom;";
+                String msg = "JoinRoom;";
                 if (password.equals(" ")) {
-                    msg+=room;
+                    msg += room;
                     byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                     client.push(encryptedMsg);
                     System.out.println(msg);
@@ -195,7 +207,7 @@ public class ListRoom extends javax.swing.JFrame {
                 imageIcon = new ImageIcon(getClass().getResource("/join-paswword.png"));
             }
             defaultTableModel.addRow(new Object[]{
-                Room.get(i),imageIcon
+                Room.get(i), imageIcon
             });
         }
     }

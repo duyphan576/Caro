@@ -15,9 +15,11 @@ import static Controller.Receive.listRoom;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -41,8 +43,9 @@ public class HomePage extends javax.swing.JFrame {
 
     public HomePage() throws Exception {
         try {
-            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            UIManager.setLookAndFeel(new FlatLightLaf());
             initComponents();
+            this.setIconImage(new ImageIcon(this.getClass().getResource("/tic-tac-toe.png")).getImage());
             this.user = us;
             userID = us.getUserId();
             this.grade = gr;
@@ -102,7 +105,9 @@ public class HomePage extends javax.swing.JFrame {
         tblOnlineUser = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Home Page");
         setBackground(new java.awt.Color(255, 255, 255));
+        setResizable(false);
 
         JPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
 
@@ -477,7 +482,7 @@ public class HomePage extends javax.swing.JFrame {
             createRoom.setVisible(true);
         } else if (res == JOptionPane.NO_OPTION) {
             try {
-                String msg = "createRoom;";
+                String msg = "CreateRoom;";
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
                 createRoom = new CreateRoom();
@@ -538,7 +543,7 @@ public class HomePage extends javax.swing.JFrame {
             listRoom = new ListRoom();
             listRoom.setVisible(true);
 
-            String msg = "viewListRoom;";
+            String msg = "ViewListRoom;";
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
 
@@ -550,7 +555,7 @@ public class HomePage extends javax.swing.JFrame {
     private void btnPlayNowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayNowActionPerformed
         // TODO add your handling code here:
         try {
-            String msg = "quick-room;";
+            String msg = "QuickPlay;";
             byte[] encryptedMsg;
             encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
@@ -589,7 +594,7 @@ public class HomePage extends javax.swing.JFrame {
 
     //thieu loai tru chinh minh trong danh sach friend
     private void getUserStatus() throws Exception {
-        String msg = "userStatus;";
+        String msg = "UserStatus;";
         byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
         client.push(encryptedMsg);
     }
