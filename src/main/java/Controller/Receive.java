@@ -162,6 +162,10 @@ public class Receive implements Runnable {
                     if (parts[1].equals("1")) {
                         game.showWinRequest();
                     }
+                } else if (parts[0].equals("ChangePassword")) {
+                    changePassword.showMessage(parts[1]);
+                } else if (parts[0].equals("ChangeInfo")) {
+                    changeInfo.showMessage(parts[1]);
                 } else if (parts[0].equals("AgainConfirm1")) {
                     game.showWinRequest1();
                 } else if (parts[0].equals("AgainRefuse")) {

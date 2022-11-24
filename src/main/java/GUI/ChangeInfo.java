@@ -4,7 +4,12 @@
  */
 package GUI;
 
+import static Controller.Main.client;
 import static Controller.Receive.changeInfo;
+import static Controller.Receive.us;
+import Model.User;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,8 +20,11 @@ public class ChangeInfo extends javax.swing.JFrame {
     /**
      * Creates new form ChangeInfo
      */
+    private User user;
+
     public ChangeInfo() {
         initComponents();
+        this.user = us;
     }
 
     /**
@@ -176,41 +184,44 @@ public class ChangeInfo extends javax.swing.JFrame {
 
     private void btnCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckActionPerformed
         // TODO add your handling code here:
+        int g = 0;
+        if ((!rdMale.isSelected() & !rdFemale.isSelected() & !rdAnother.isSelected())) {
+            JOptionPane.showMessageDialog(rootPane, "Please selected sex");
+            g = 1;
+        } else if (txtFullName.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter FullName");
+            g = 1;
+        } else if (DateChooser.getDate().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Please choose Date");
+            g = 1;
+        } else {
+            g = 0;
+        }
+        if (g == 0) {
+            int i = 0;
+            user.setNickname(txtFullName.getText());
+            if (rdMale.isSelected()) {
+                i = 0;
+            } else if (rdFemale.isSelected()) {
+                i = 1;
+            } else {
+                i = 2;
+            }
+            user.setSex(i);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String startDateString = dateFormat.format(DateChooser.getDate());
+            try {
+                String msg = "ChangePassword;" + user.getUserId() + ";" + user.getNickname() + ";" + user.getSex() + ";" + startDateString;
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+            } catch (Exception ex) {
+                System.out.println("Error");
+            }
+        }
     }//GEN-LAST:event_btnCheckActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChangeInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChangeInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChangeInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChangeInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ChangeInfo().setVisible(true);
-            }
-        });
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(rootPane, message);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

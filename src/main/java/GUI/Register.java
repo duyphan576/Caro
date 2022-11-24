@@ -65,7 +65,6 @@ public class Register extends javax.swing.JFrame {
         DateChooser = new com.toedter.calendar.JDateChooser();
         btnRegister = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
-        txterro = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Register");
@@ -113,11 +112,6 @@ public class Register extends javax.swing.JFrame {
         Male.setPreferredSize(new java.awt.Dimension(25, 25));
 
         buttonGroup1.add(rdFemale);
-        rdFemale.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdFemaleActionPerformed(evt);
-            }
-        });
 
         Female.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Female.setIcon(new javax.swing.ImageIcon(getClass().getResource("/female.png"))); // NOI18N
@@ -192,17 +186,13 @@ public class Register extends javax.swing.JFrame {
                         .addGap(119, 119, 119)
                         .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(57, 57, 57)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txterro, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(99, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblRegisterPage)
-                    .addComponent(txterro))
+                .addComponent(lblRegisterPage)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -257,25 +247,21 @@ public class Register extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void rdFemaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdFemaleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdFemaleActionPerformed
-
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         try {
-            String password1 = String.copyValueOf(pwPassword.getPassword());
-            String password2 = String.copyValueOf(pwConfirm.getPassword());
+            String password = String.copyValueOf(pwPassword.getPassword());
+            String confirm = String.copyValueOf(pwConfirm.getPassword());
             int g = 0;
             if (txtUserName.getText().equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "Please enter User Name");
                 g = 1;
-            } else if (password1.equals("")) {
+            } else if (password.equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "Please enter Password");
                 g = 1;
-            } else if (!password2.equals(password1)) {
+            } else if (!confirm.equals(password)) {
                 JOptionPane.showMessageDialog(rootPane, "Please Confirm Password is not equal Password");
                 g = 1;
-            } else if (password2.equals("")) {
+            } else if (confirm.equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "Please enter Confirm Password");
                 g = 1;
             } else if ((!rdMale.isSelected() & !rdFemale.isSelected() & !rdAnother.isSelected())) {
@@ -291,11 +277,9 @@ public class Register extends javax.swing.JFrame {
                 g = 0;
             }
             if (g == 0) {
-
-                txterro.setText("");
                 int i = 0;
                 user.setUserName(txtUserName.getText());
-                user.setPassword(password1);
+                user.setPassword(password);
                 user.setNickname(txtFullName.getText());
                 if (rdMale.isSelected()) {
                     i = 0;
@@ -307,7 +291,7 @@ public class Register extends javax.swing.JFrame {
                 user.setSex(i);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String startDateString = dateFormat.format(DateChooser.getDate());
-                user.setIsBlocked(0);
+                user.setIsBlocked(1);
                 String msg = "Register;" + user.getUserName() + ";" + user.getPassword() + ";" + user.getNickname() + ";" + user.getSex() + ";" + startDateString;
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
@@ -349,6 +333,5 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JRadioButton rdMale;
     private javax.swing.JTextField txtFullName;
     private javax.swing.JTextField txtUserName;
-    private javax.swing.JLabel txterro;
     // End of variables declaration//GEN-END:variables
 }

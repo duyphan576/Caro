@@ -4,7 +4,11 @@
  */
 package GUI;
 
+import static Controller.Main.client;
 import static Controller.Receive.changePassword;
+import static Controller.Receive.us;
+import Model.User;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,8 +19,11 @@ public class ChangePassword extends javax.swing.JFrame {
     /**
      * Creates new form ChangePassword
      */
+    private User user;
+
     public ChangePassword() {
         initComponents();
+        this.user = us;
     }
 
     /**
@@ -145,41 +152,39 @@ public class ChangePassword extends javax.swing.JFrame {
 
     private void btnCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnCheckActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChangePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChangePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChangePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChangePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        String old = String.copyValueOf(pwOld.getPassword());
+        String password = String.copyValueOf(pwPassword.getPassword());
+        String confirm = String.copyValueOf(pwConfirm.getPassword());
+        int g = 0;
+        if (old.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter old password");
+            g = 1;
+        } else if (password.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter new password");
+            g = 1;
+        } else if (confirm.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter confirm password");
+            g = 1;
+        } else if (!confirm.equals(password)) {
+            JOptionPane.showMessageDialog(rootPane, "Confirm Password is not equals Password");
+            g = 1;
+        } else {
+            g = 0;
         }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ChangePassword().setVisible(true);
+        if (g == 0) {
+            try {
+                String msg = "ChangePassword;" + user.getUserId() + ";" + old + ";" + password;
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+            } catch (Exception ex) {
+                System.out.println("Error");
             }
-        });
+        }
+    }//GEN-LAST:event_btnCheckActionPerformed
+    
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(rootPane, message);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
