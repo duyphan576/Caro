@@ -8,7 +8,7 @@ import static Controller.Client.cc;
 import GUI.ChanceUser;
 import GUI.CreateRoom;
 import GUI.FindRoom;
-import GUI.GameClientFrm;
+import GUI.Game;
 import GUI.HomePage;
 import GUI.JoinRoom;
 import GUI.ListRoom;
@@ -42,7 +42,7 @@ public class Receive implements Runnable {
     public static Login login;
     public static CreateRoom createRoom;
     public static ChanceUser chanceus;
-    public static GameClientFrm game;
+    public static Game game;
     public static HomePage homePage;
     public static JoinRoom joinRoom;
     public static ListRoom listRoom;
@@ -137,9 +137,9 @@ public class Receive implements Runnable {
                     }
                     System.out.println(data);
                     closeAllViews();
-                    game = new GameClientFrm(competitor, roomID, isStart, competitorIP);
+                    game = new Game(competitor, roomID, isStart, competitorIP);
                     game.setVisible(true);
-                    game.newgame();
+                    game.newGame();
                 } else if (parts[0].equals("caro")) {
                     game.addCompetitorMove(parts[1], parts[2],true);
                 } else if (parts[0].equals("send-lose")) {
@@ -166,7 +166,7 @@ public class Receive implements Runnable {
                     homePage.setVisible(true);
                 }else if (parts[0].equals("again-confirm")) {
                     game.setVisible(true);
-                    game.newgame();
+                    game.newGame();
                 }else if (parts[0].equals("ChanceUser")) {
                     chanceus = new ChanceUser(us);
                     chanceus.setVisible(true);
