@@ -50,7 +50,8 @@ public class ChangeInfo extends javax.swing.JFrame {
         btnCheck = new javax.swing.JButton();
         btnNo = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         lblFullName.setText("Full Name");
         lblFullName.setMaximumSize(new java.awt.Dimension(119, 29));
@@ -175,6 +176,7 @@ public class ChangeInfo extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoActionPerformed
@@ -211,7 +213,7 @@ public class ChangeInfo extends javax.swing.JFrame {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String startDateString = dateFormat.format(DateChooser.getDate());
             try {
-                String msg = "ChangePassword;" + user.getUserId() + ";" + user.getNickname() + ";" + user.getSex() + ";" + startDateString;
+                String msg = "ChangeInfo;" + user.getUserId() + ";" + user.getNickname() + ";" + user.getSex() + ";" + startDateString;
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
             } catch (Exception ex) {

@@ -658,7 +658,7 @@ public class Game extends javax.swing.JFrame {
                                     lose(a, b);
                                     winRequest();
                                 } else {
-                                    String msg = "caro;" + a + ";" + b;
+                                    String msg = "Caro;" + a + ";" + b;
                                     byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                                     client.push(encryptedMsg);
                                     displayCompetitorTurn();

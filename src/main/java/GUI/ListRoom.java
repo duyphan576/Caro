@@ -202,12 +202,12 @@ public class ListRoom extends javax.swing.JFrame {
         ImageIcon imageIcon;
         for (int i = 0; i < Room.size(); i++) {
             if (Password.get(i).equals(" ")) {
-                imageIcon = new ImageIcon(getClass().getResource("/swords.png"));
+//                imageIcon = new ImageIcon(getClass().getResource("/swords.png"));
             } else {
-                imageIcon = new ImageIcon(getClass().getResource("/join-paswword.png"));
+//                imageIcon = new ImageIcon(getClass().getResource("/join-paswword.png"));
             }
             defaultTableModel.addRow(new Object[]{
-                Room.get(i), imageIcon
+                Room.get(i)
             });
         }
     }
