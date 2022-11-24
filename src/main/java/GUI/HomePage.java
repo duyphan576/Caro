@@ -12,6 +12,7 @@ import static Controller.Receive.homePage;
 import static Controller.Receive.login;
 import static Controller.Receive.us;
 import static Controller.Receive.listRoom;
+import static Controller.Receive.setting;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
@@ -85,6 +86,7 @@ public class HomePage extends javax.swing.JFrame {
         lblMaxLoseStreak = new javax.swing.JLabel();
         lblCurrentWinStreak = new javax.swing.JLabel();
         lblCurrentLoseStreak = new javax.swing.JLabel();
+        btnSetting = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         JPanel3 = new javax.swing.JPanel();
         lblGameName = new javax.swing.JLabel();
@@ -148,6 +150,16 @@ public class HomePage extends javax.swing.JFrame {
 
         lblCurrentLoseStreak.setText("Current Lose Streak:");
 
+        btnSetting.setBackground(new java.awt.Color(242, 242, 242));
+        btnSetting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/setting.png"))); // NOI18N
+        btnSetting.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnSetting.setBorderPainted(false);
+        btnSetting.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSettingActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ProfileLayout = new javax.swing.GroupLayout(Profile);
         Profile.setLayout(ProfileLayout);
         ProfileLayout.setHorizontalGroup(
@@ -170,7 +182,10 @@ public class HomePage extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProfileLayout.createSequentialGroup()
                         .addComponent(lblWinMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblLoseMatch, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblLoseMatch, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ProfileLayout.createSequentialGroup()
+                        .addComponent(btnSetting)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         ProfileLayout.setVerticalGroup(
@@ -200,7 +215,9 @@ public class HomePage extends javax.swing.JFrame {
                 .addComponent(lblCurrentWinStreak, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblCurrentLoseStreak, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSetting)
+                .addContainerGap())
         );
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -564,6 +581,12 @@ public class HomePage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnPlayNowActionPerformed
 
+    private void btnSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingActionPerformed
+        // TODO add your handling code here:
+        setting = new Setting();
+        setting.setVisible(true);
+    }//GEN-LAST:event_btnSettingActionPerformed
+
     private void setInfo() {
         lblID.setText(lblID.getText() + " " + Integer.toString(user.getUserId()));
         lblUserName.setText(lblUserName.getText() + " " + user.getUserName());
@@ -649,6 +672,7 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JButton btnPlayNow;
     private javax.swing.JButton btnRank;
     private javax.swing.JButton btnSend;
+    private javax.swing.JButton btnSetting;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;

@@ -5,6 +5,8 @@
 package Controller;
 
 import static Controller.Client.cc;
+import GUI.ChangeInfo;
+import GUI.ChangePassword;
 import GUI.CreateRoom;
 import GUI.FindRoom;
 import GUI.Game;
@@ -15,6 +17,7 @@ import GUI.WaitingRoom;
 import GUI.Login;
 import GUI.Rank;
 import GUI.Register;
+import GUI.Setting;
 import Model.Grade;
 import Model.User;
 import java.io.DataInputStream;
@@ -48,6 +51,9 @@ public class Receive implements Runnable {
     public static Rank rank;
     public static Register register;
     public static FindRoom findRoom;
+    public static Setting setting;
+    public static ChangeInfo changeInfo;
+    public static ChangePassword changePassword;
     public static User us;
     public static Grade gr;
     public static ArrayList<Grade> listRank = new ArrayList<>();

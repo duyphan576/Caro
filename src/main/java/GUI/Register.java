@@ -52,7 +52,7 @@ public class Register extends javax.swing.JFrame {
         lblPassword = new javax.swing.JLabel();
         pwPassword = new javax.swing.JPasswordField();
         lblConfirmPassword = new javax.swing.JLabel();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        pwConfirm = new javax.swing.JPasswordField();
         lblFullName = new javax.swing.JLabel();
         txtFullName = new javax.swing.JTextField();
         lblSex = new javax.swing.JLabel();
@@ -186,14 +186,14 @@ public class Register extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(rdAnother))
                         .addComponent(pwPassword)
-                        .addComponent(jPasswordField2))
+                        .addComponent(pwConfirm))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnRegister)
                         .addGap(119, 119, 119)
                         .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(57, 57, 57)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txterro, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                .addComponent(txterro, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -214,7 +214,7 @@ public class Register extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pwConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFullName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -245,14 +245,12 @@ public class Register extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 635, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -266,7 +264,7 @@ public class Register extends javax.swing.JFrame {
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         try {
             String password1 = String.copyValueOf(pwPassword.getPassword());
-            String password2 = String.copyValueOf(jPasswordField2.getPassword());
+            String password2 = String.copyValueOf(pwConfirm.getPassword());
             int g = 0;
             if (txtUserName.getText().equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "Please enter User Name");
@@ -337,7 +335,6 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JButton btnRegister;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JLabel lblBirthday;
     private javax.swing.JLabel lblConfirmPassword;
     private javax.swing.JLabel lblFullName;
@@ -345,6 +342,7 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JLabel lblRegisterPage;
     private javax.swing.JLabel lblSex;
     private javax.swing.JLabel lblUserName;
+    private javax.swing.JPasswordField pwConfirm;
     private javax.swing.JPasswordField pwPassword;
     private javax.swing.JRadioButton rdAnother;
     private javax.swing.JRadioButton rdFemale;
