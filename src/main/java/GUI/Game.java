@@ -298,7 +298,7 @@ public class Game extends javax.swing.JFrame {
 
         timerjLabel19.setForeground(new java.awt.Color(255, 0, 0));
         timerjLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        timerjLabel19.setText("Time:00:20");
+        timerjLabel19.setText("Time: 00:20");
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -339,7 +339,7 @@ public class Game extends javax.swing.JFrame {
         jPanel3.setForeground(new java.awt.Color(102, 102, 102));
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Competitorn:");
+        jLabel6.setText("Competitor:");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -420,9 +420,9 @@ public class Game extends javax.swing.JFrame {
         compretitorTurnJLabel.setForeground(new java.awt.Color(0, 0, 204));
         compretitorTurnJLabel.setText("Competitor turn");
 
-        jLabel3.setText("x/o");
+        jLabel3.setText("X/O");
 
-        jLabel5.setText("x/o");
+        jLabel5.setText("X/O");
 
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/tic-tac-toe.png"))); // NOI18N
 
@@ -464,10 +464,14 @@ public class Game extends javax.swing.JFrame {
                                         .addComponent(yourTurnJLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(28, 28, 28)
                                         .addComponent(timerjLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(28, 28, 28)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(compretitorTurnJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(28, 28, 28)
+                                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(18, 18, 18)
+                                                .addComponent(compretitorTurnJLabel)))
+                                        .addGap(2, 2, 2))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
@@ -542,21 +546,21 @@ public class Game extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
-//        try {
-//            if (jTextField1.getText().isEmpty()) {
-//                throw new Exception("Vui lòng nhập nội dung tin nhắn");
-//            }
-//            String temp = jTextArea1.getText();
-//            temp += "Tôi: " + jTextField1.getText() + "\n";
-//            jTextArea1.setText(temp);
-//            Client.socketHandle.write("chat," + jTextField1.getText());
-//            jTextField1.setText("");
-//            jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
-//        } catch (IOException ex) {
-//            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
-//        } catch (Exception ex) {
-//            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
-//        }
+        try {
+            if (txtChat.getText().isEmpty()) {
+                throw new Exception("Vui lòng nhập nội dung tin nhắn");
+            }
+            String temp = txtChat.getText();
+            temp += "You: " + txtChat.getText() + "\n";
+            areaChat.setText(temp);
+            String msg = "Chat;" + txtChat.getText();
+            byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+            client.push(encryptedMsg);
+            txtChat.setText("");
+            areaChat.setCaretPosition(areaChat.getDocument().getLength());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        }
     }//GEN-LAST:event_btnSendActionPerformed
 
     private void btnDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDrawActionPerformed
@@ -575,21 +579,24 @@ public class Game extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDrawActionPerformed
 
     private void txtChatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtChatKeyPressed
-//        if (evt.getKeyCode() == 10) {
-//            try {
-//                if (jTextField1.getText().isEmpty()) {
-//                    return;
-//                }
-//                String temp = jTextArea1.getText();
-//                temp += "Tôi: " + jTextField1.getText() + "\n";
-//                jTextArea1.setText(temp);
-//                Client.socketHandle.write("chat," + jTextField1.getText());
-//                jTextField1.setText("");
-//                jTextArea1.setCaretPosition(jTextArea1.getDocument().getLength());
-//            } catch (IOException ex) {
-//                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
-//            }
-//        }
+        if (evt.getKeyCode() == 10) {
+            try {
+                if (txtChat.getText().isEmpty()) {
+                    throw new Exception("Vui lòng nhập nội dung tin nhắn");
+                }
+                String temp = txtChat.getText();
+                temp += "You: " + txtChat.getText() + "\n";
+                areaChat.setText(temp);
+                String msg = "Chat;" + txtChat.getText();
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+                txtChat.setText("");
+                areaChat.setCaretPosition(areaChat.getDocument().getLength());
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+
+            }
+        }
     }//GEN-LAST:event_txtChatKeyPressed
 
     private void btnSurrenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSurrenderActionPerformed
@@ -601,9 +608,11 @@ public class Game extends javax.swing.JFrame {
                 client.push(encryptedMsg);
                 timer.stop();
                 setEnableButton(false);
+
             }
         } catch (Exception ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Game.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSurrenderActionPerformed
 
@@ -847,7 +856,7 @@ public class Game extends javax.swing.JFrame {
         int res = JOptionPane.showConfirmDialog(rootPane, "Play again", "Play agian", JOptionPane.YES_NO_OPTION);
         if (res == JOptionPane.YES_OPTION) {
             try {
-                String msg = "againConfirm1;";
+                String msg = "AgainConfirm1;";
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
             } catch (IOException ex) {

@@ -139,9 +139,9 @@ public class Receive implements Runnable {
                     game.setVisible(true);
                     game.newGame();
                 } else if (parts[0].equals("Caro")) {
-                    game.addCompetitorMove(parts[1], parts[2],true);
+                    game.addCompetitorMove(parts[1], parts[2], true);
                 } else if (parts[0].equals("Lose")) {
-                    game.addCompetitorMove(parts[1], parts[2],false);
+                    game.addCompetitorMove(parts[1], parts[2], false);
                 } else if (parts[0].equals("DrawRequest")) {
                     game.showDrawRequest();
                 } else if (parts[0].equals("DrawConfirm")) {
@@ -153,21 +153,23 @@ public class Receive implements Runnable {
                     homePage = new HomePage();
                     homePage.setVisible(true);
                 } else if (parts[0].equals("WinRequest")) {
-                    if(parts[1].equals("1")){
-                    game.showWinRequest();
+                    if (parts[1].equals("1")) {
+                        game.showWinRequest();
                     }
-                }else if (parts[0].equals("AgainConfirm1")) {
+                } else if (parts[0].equals("AgainConfirm1")) {
                     game.showWinRequest1();
-                }else if (parts[0].equals("AgainRefuse")) {
+                } else if (parts[0].equals("AgainRefuse")) {
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
-                }else if (parts[0].equals("AgainConfirm")) {
+                } else if (parts[0].equals("AgainConfirm")) {
                     game.setVisible(true);
                     game.newGame();
-                }else if (parts[0].equals("Exit")) {
+                } else if (parts[0].equals("Chat")){
+                    game.addMessage(parts[1]);
+                } else if (parts[0].equals("Exit")) {
                     break;
-                }
+                } 
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
