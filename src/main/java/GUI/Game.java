@@ -580,19 +580,18 @@ public class Game extends javax.swing.JFrame {
         if (evt.getKeyCode() == 10) {
             try {
                 if (txtChat.getText().isEmpty()) {
-                    throw new Exception("Vui lòng nhập nội dung tin nhắn");
+                    throw new Exception("Message is empty");
+                } else {
+                    String msg = "Chat;" + us.getNickname() + ": " + txtChat.getText();
+                    String txt = areaChat.getText() + us.getNickname() + ": " + txtChat.getText() + "\n";
+                    areaChat.setText(txt);
+                    byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                    client.push(encryptedMsg);
+                    txtChat.setText("");
+                    areaChat.setCaretPosition(areaChat.getDocument().getLength());
                 }
-                String temp = txtChat.getText();
-                temp += "You: " + txtChat.getText() + "\n";
-                areaChat.setText(temp);
-                String msg = "Chat;" + txtChat.getText();
-                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
-                client.push(encryptedMsg);
-                txtChat.setText("");
-                areaChat.setCaretPosition(areaChat.getDocument().getLength());
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(rootPane, "Error");
-
             }
         }
     }//GEN-LAST:event_txtChatKeyPressed
@@ -888,7 +887,7 @@ public class Game extends javax.swing.JFrame {
         }
     }
 
-    public void winRequest(){
+    public void winRequest() {
         try {
             JOptionPane.showMessageDialog(rootPane, "Bạn đã thắng");
             String msg = "WinRequest;" + competitor.getUserId() + ";" + us.getUserId();
@@ -899,7 +898,7 @@ public class Game extends javax.swing.JFrame {
         }
     }
 
-    public void lose(int a, int b){
+    public void lose(int a, int b) {
         try {
             String msg = "Lose;" + a + ";" + b;
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
