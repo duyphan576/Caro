@@ -81,7 +81,7 @@ public class Receive implements Runnable {
                     us = setUser(0, parts);
                     gr = setGrade(parts);
                     homePage = new HomePage();
-                    login.setVisible(false);
+                    login.dispose();
                     homePage.setVisible(true);
                 } else if (parts[0].equals("Rank")) {
                     listRank = setRank(parts);
@@ -89,7 +89,7 @@ public class Receive implements Runnable {
                     rank.setVisible(true);
                 } else if (parts[0].equals("Register")) {
                     login = new Login();
-                    register.setVisible(false);
+                    register.dispose();
                     login.setVisible(true);
                 } else if (parts[0].equals("CreateRoom")) {
                     if (parts.length == 2) {
@@ -97,15 +97,17 @@ public class Receive implements Runnable {
                         waitingRoom.setVisible(true);
                         waitingRoom.setRoomName(parts[1]);
                     } else {
-                        createRoom.setVisible(false);
+                        createRoom.dispose();
                         waitingRoom = new WaitingRoom();
                         waitingRoom.setVisible(true);
                         waitingRoom.setRoomName(parts[1]);
                         waitingRoom.setRoomPassword(parts[2]);
                     }
                 } else if (parts[0].equals("UserStatus")) {
-                    listUser = setUserStatus(parts);
-                    homePage.setUserStatus(listUser);
+                    if (homePage != null) {
+                        listUser = setUserStatus(parts);
+                        homePage.setUserStatus(listUser);
+                    }
                 } else if (parts[0].equals("Broadcast")) {
                     if (homePage.isShowing()) {
                         homePage.addMessage(parts[1]);
@@ -184,7 +186,7 @@ public class Receive implements Runnable {
                 } else if (parts[0].equals("GetInfo")) {
                     us = setUser(0, parts);
                     gr = setGrade(parts);
-                }else if (parts[0].equals("Exit")) {
+                } else if (parts[0].equals("Exit")) {
                     break;
                 }
             }
@@ -306,4 +308,5 @@ public class Receive implements Runnable {
             rank.dispose();
         }
     }
+
 }

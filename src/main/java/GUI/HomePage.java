@@ -52,23 +52,21 @@ public class HomePage extends javax.swing.JFrame {
             userID = us.getUserId();
             this.grade = gr;
             areaChatBox.setEditable(false);
-            thread = new Thread() {
-                @Override
-                public void run() {
-                    while (homePage != null) {
+            
+//                    while (homePage != null) {
                         try {
                             String msg = "GetInfo;"+us.getUserId();
                             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                             client.push(encryptedMsg);
                             getUserStatus();
+//                            thread.sleep(3000);
                         } catch (Exception ex) {
                             Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
-                    }
-                }
-            };
-            thread.start();
+                    
+//                }
+            
             setInfo();
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
@@ -632,7 +630,6 @@ public class HomePage extends javax.swing.JFrame {
 
     }
 
-    //thieu loai tru chinh minh trong danh sach friend
     private void getUserStatus() throws Exception {
         String msg = "UserStatus;";
         byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
