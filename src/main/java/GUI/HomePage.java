@@ -41,19 +41,35 @@ public class HomePage extends javax.swing.JFrame {
     private Grade grade;
     private DefaultTableModel model;
     private int userID;
+    private Thread thread;
 
-    public HomePage() throws Exception {
+    public HomePage(){
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
             initComponents();
-            
             this.setIconImage(new ImageIcon(this.getClass().getResource("/tic-tac-toe.png")).getImage());
             this.user = us;
             userID = us.getUserId();
             this.grade = gr;
             areaChatBox.setEditable(false);
+            thread = new Thread() {
+                @Override
+                public void run() {
+                    while (homePage != null) {
+                        try {
+                            String msg = "GetInfo;"+us.getUserId();
+                            byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                            client.push(encryptedMsg);
+                            getUserStatus();
+                        } catch (Exception ex) {
+                            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    }
+                }
+            };
+            thread.start();
             setInfo();
-            getUserStatus();
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }

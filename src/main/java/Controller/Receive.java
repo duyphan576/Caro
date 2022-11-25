@@ -175,15 +175,18 @@ public class Receive implements Runnable {
                 } else if (parts[0].equals("AgainConfirm")) {
                     game.setVisible(true);
                     game.newGame();
-                } else if (parts[0].equals("Chat")){
+                } else if (parts[0].equals("Chat")) {
                     game.addMessage(parts[1]);
-                } else if (parts[0].equals("SurrenderConfirm")){
+                } else if (parts[0].equals("SurrenderConfirm")) {
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
+                } else if (parts[0].equals("GetInfo")) {
+                    us = setUser(0, parts);
+                    gr = setGrade(parts);
                 }else if (parts[0].equals("Exit")) {
                     break;
-                } 
+                }
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());

@@ -605,7 +605,6 @@ public class Game extends javax.swing.JFrame {
                 client.push(encryptedMsg);
                 timer.stop();
                 setEnableButton(false);
-
             }
         } catch (Exception ex) {
             System.out.println("Error");
