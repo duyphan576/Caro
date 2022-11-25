@@ -177,7 +177,11 @@ public class Receive implements Runnable {
                     game.newGame();
                 } else if (parts[0].equals("Chat")){
                     game.addMessage(parts[1]);
-                } else if (parts[0].equals("Exit")) {
+                } else if (parts[0].equals("SurrenderConfirm")){
+                    closeAllViews();
+                    homePage = new HomePage();
+                    homePage.setVisible(true);
+                }else if (parts[0].equals("Exit")) {
                     break;
                 } 
             }

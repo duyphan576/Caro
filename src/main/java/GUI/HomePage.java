@@ -46,6 +46,7 @@ public class HomePage extends javax.swing.JFrame {
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
             initComponents();
+            
             this.setIconImage(new ImageIcon(this.getClass().getResource("/tic-tac-toe.png")).getImage());
             this.user = us;
             userID = us.getUserId();
