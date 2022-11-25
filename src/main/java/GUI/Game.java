@@ -570,7 +570,7 @@ public class Game extends javax.swing.JFrame {
                 client.push(encryptedMsg);
                 timer.stop();
                 setEnableButton(false);
-            }
+            } 
         } catch (Exception ex) {
             System.out.println("Error");
         }
@@ -640,7 +640,6 @@ public class Game extends javax.swing.JFrame {
                         try {
                             button[a][b].setDisabledIcon(new ImageIcon(normalItem[not(numberOfMatch % 2)]));
                             button[a][b].setEnabled(false);
-//                            playSound();
                             second = 60;
                             minute = 0;
                             matrix[a][b] = 1;

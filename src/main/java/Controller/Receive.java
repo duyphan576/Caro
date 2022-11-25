@@ -124,7 +124,7 @@ public class Receive implements Runnable {
 
                     int roomID = Integer.parseInt(parts[1]);
                     String competitorIP = parts[2];
-                    int isStart = Integer.parseInt(parts[3]);//la gi
+                    int isStart = Integer.parseInt(parts[3]);
                     User competitor = setUser(3, parts);
                     if (findRoom != null) {
                         findRoom.showFindedRoom();
@@ -186,6 +186,7 @@ public class Receive implements Runnable {
                 } else if (parts[0].equals("GetInfo")) {
                     us = setUser(0, parts);
                     gr = setGrade(parts);
+                    homePage.setInfo();
                 } else if (parts[0].equals("Exit")) {
                     break;
                 }

@@ -37,37 +37,30 @@ public class HomePage extends javax.swing.JFrame {
      *
      * @param us
      */
-    private User user;
-    private Grade grade;
     private DefaultTableModel model;
     private int userID;
     private Thread thread;
 
-    public HomePage(){
+    public HomePage() {
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
             initComponents();
             this.setIconImage(new ImageIcon(this.getClass().getResource("/tic-tac-toe.png")).getImage());
-            this.user = us;
             userID = us.getUserId();
-            this.grade = gr;
             areaChatBox.setEditable(false);
-            
-//                    while (homePage != null) {
-                        try {
-                            String msg = "GetInfo;"+us.getUserId();
-                            byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
-                            client.push(encryptedMsg);
-                            getUserStatus();
-//                            thread.sleep(3000);
-                        } catch (Exception ex) {
-                            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
-                        }
 
-                    
+//                    while (homePage != null) {
+            try {
+                String msg = "GetInfo;" + us.getUserId();
+                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                client.push(encryptedMsg);
+                getUserStatus();
+//                            thread.sleep(3000);
+            } catch (Exception ex) {
+                Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
 //                }
-            
-            setInfo();
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
@@ -556,8 +549,8 @@ public class HomePage extends javax.swing.JFrame {
             if (txtMessage.getText().isEmpty()) {
                 throw new Exception("Message is empty.");
             } else {
-                String msg = "Broadcast;" + user.getNickname() + ": " + txtMessage.getText();
-                String txt = areaChatBox.getText() + user.getNickname() + ": " + txtMessage.getText() + "\n";
+                String msg = "Broadcast;" + us.getNickname() + ": " + txtMessage.getText();
+                String txt = areaChatBox.getText() + us.getNickname() + ": " + txtMessage.getText() + "\n";
                 areaChatBox.setText(txt);
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
@@ -602,12 +595,12 @@ public class HomePage extends javax.swing.JFrame {
         setting.setVisible(true);
     }//GEN-LAST:event_btnSettingActionPerformed
 
-    private void setInfo() {
-        lblID.setText(lblID.getText() + " " + Integer.toString(user.getUserId()));
-        lblUserName.setText(lblUserName.getText() + " " + user.getUserName());
-        lblGrade.setText(lblGrade.getText() + " " + Integer.toString(grade.getGrade()));
-        lblName.setText(lblName.getText() + " " + user.getNickname());
-        switch (user.getSex()) {
+    public void setInfo() {
+        lblID.setText(lblID.getText() + " " + Integer.toString(us.getUserId()));
+        lblUserName.setText(lblUserName.getText() + " " + us.getUserName());
+        lblGrade.setText(lblGrade.getText() + " " + Integer.toString(gr.getGrade()));
+        lblName.setText(lblName.getText() + " " + us.getNickname());
+        switch (us.getSex()) {
             case 0:
                 lblSex.setText(lblSex.getText() + " Male");
                 break;
@@ -618,15 +611,15 @@ public class HomePage extends javax.swing.JFrame {
                 lblSex.setText(lblSex.getText() + " Unknown");
                 break;
         }
-        lblBirthday.setText(lblBirthday.getText() + " " + user.getBirthday().toString());
-        lblMatch.setText(lblMatch.getText() + " " + Integer.toString((grade.getWinMatch() + grade.getLoseMatch() + grade.getDrawMatch())));
-        lblWinRate.setText(lblWinRate.getText() + " " + grade.getWinRate() + "%");
-        lblWinMatch.setText(lblWinMatch.getText() + " " + Integer.toString(grade.getWinMatch()));
-        lblLoseMatch.setText(lblLoseMatch.getText() + " " + Integer.toString(grade.getLoseMatch()));
-        lblCurrentWinStreak.setText(lblCurrentWinStreak.getText() + " " + Integer.toString(grade.getCurrentWinStreak()));
-        lblCurrentLoseStreak.setText(lblCurrentLoseStreak.getText() + " " + Integer.toString(grade.getCurrentLoseStreak()));
-        lblMaxWinStreak.setText(lblMaxWinStreak.getText() + " " + Integer.toString(grade.getMaxWinStreak()));
-        lblMaxLoseStreak.setText(lblMaxLoseStreak.getText() + " " + Integer.toString(grade.getMaxLoseStreak()));
+        lblBirthday.setText(lblBirthday.getText() + " " + us.getBirthday().toString());
+        lblMatch.setText(lblMatch.getText() + " " + Integer.toString((gr.getWinMatch() + gr.getLoseMatch() + gr.getDrawMatch())));
+        lblWinRate.setText(lblWinRate.getText() + " " + gr.getWinRate() + "%");
+        lblWinMatch.setText(lblWinMatch.getText() + " " + Integer.toString(gr.getWinMatch()));
+        lblLoseMatch.setText(lblLoseMatch.getText() + " " + Integer.toString(gr.getLoseMatch()));
+        lblCurrentWinStreak.setText(lblCurrentWinStreak.getText() + " " + Integer.toString(gr.getCurrentWinStreak()));
+        lblCurrentLoseStreak.setText(lblCurrentLoseStreak.getText() + " " + Integer.toString(gr.getCurrentLoseStreak()));
+        lblMaxWinStreak.setText(lblMaxWinStreak.getText() + " " + Integer.toString(gr.getMaxWinStreak()));
+        lblMaxLoseStreak.setText(lblMaxLoseStreak.getText() + " " + Integer.toString(gr.getMaxLoseStreak()));
 
     }
 
