@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import Model.User;
 import com.formdev.flatlaf.FlatLightLaf;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -123,7 +121,7 @@ public class Game extends javax.swing.JFrame {
                         byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                         client.push(encryptedMsg);
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                        System.out.println("Error");
                     }
 
                 } else {
@@ -155,7 +153,7 @@ public class Game extends javax.swing.JFrame {
                 }
             });
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error");
         }
 
     }
@@ -171,13 +169,13 @@ public class Game extends javax.swing.JFrame {
                 homePage = new HomePage();
                 homePage.setVisible(true);
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                JOptionPane.showMessageDialog(rootPane, "Error");
             }
             closeAllViews();
             homePage = new HomePage();
             homePage.setVisible(true);
         } catch (Exception ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error");
         }
     }
 
@@ -548,19 +546,18 @@ public class Game extends javax.swing.JFrame {
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         try {
             if (txtChat.getText().isEmpty()) {
-                throw new Exception("Vui lòng nhập nội dung tin nhắn");
+                throw new Exception("Message is empty");
             } else {
-                String temp = txtChat.getText();
-                temp += "You: " + txtChat.getText() + "\n";
-                areaChat.setText(temp);
-                String msg = "Chat;" + txtChat.getText();
+                String msg = "Chat;" + us.getNickname() + ": " + txtChat.getText();
+                String txt = areaChat.getText() + us.getNickname() + ": " + txtChat.getText() + "\n";
+                areaChat.setText(txt);
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
                 txtChat.setText("");
                 areaChat.setCaretPosition(areaChat.getDocument().getLength());
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+            JOptionPane.showMessageDialog(rootPane, "Error");
         }
     }//GEN-LAST:event_btnSendActionPerformed
 
@@ -575,7 +572,7 @@ public class Game extends javax.swing.JFrame {
                 setEnableButton(false);
             }
         } catch (Exception ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error");
         }
     }//GEN-LAST:event_btnDrawActionPerformed
 
@@ -583,19 +580,18 @@ public class Game extends javax.swing.JFrame {
         if (evt.getKeyCode() == 10) {
             try {
                 if (txtChat.getText().isEmpty()) {
-                    throw new Exception("Vui lòng nhập nội dung tin nhắn");
+                    throw new Exception("Message is empty");
+                } else {
+                    String msg = "Chat;" + us.getNickname() + ": " + txtChat.getText();
+                    String txt = areaChat.getText() + us.getNickname() + ": " + txtChat.getText() + "\n";
+                    areaChat.setText(txt);
+                    byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+                    client.push(encryptedMsg);
+                    txtChat.setText("");
+                    areaChat.setCaretPosition(areaChat.getDocument().getLength());
                 }
-                String temp = txtChat.getText();
-                temp += "You: " + txtChat.getText() + "\n";
-                areaChat.setText(temp);
-                String msg = "Chat;" + txtChat.getText();
-                byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
-                client.push(encryptedMsg);
-                txtChat.setText("");
-                areaChat.setCaretPosition(areaChat.getDocument().getLength());
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
-
+                JOptionPane.showMessageDialog(rootPane, "Error");
             }
         }
     }//GEN-LAST:event_txtChatKeyPressed
@@ -612,8 +608,7 @@ public class Game extends javax.swing.JFrame {
 
             }
         } catch (Exception ex) {
-            Logger.getLogger(Game.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error");
         }
     }//GEN-LAST:event_btnSurrenderActionPerformed
 
@@ -668,10 +663,10 @@ public class Game extends javax.swing.JFrame {
                                 setEnableButton(false);
                                 timer.stop();
                             } catch (Exception ie) {
-                                ie.printStackTrace();
+                                System.out.println("Error");
                             }
                         } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                            JOptionPane.showMessageDialog(rootPane, "Error");
                         }
                     }
                 });
@@ -727,10 +722,10 @@ public class Game extends javax.swing.JFrame {
         timer.start();
     }
 
-    public void addMessage(String message) {
-        String temp = areaChat.getText();
-        temp += competitor.getNickname() + ": " + message + "\n";
-        areaChat.setText(temp);
+    public void addMessage(String msg) {
+        String message = areaChat.getText();
+        message += msg + "\n";
+        areaChat.setText(message);
         areaChat.setCaretPosition(areaChat.getDocument().getLength());
     }
 
@@ -819,7 +814,7 @@ public class Game extends javax.swing.JFrame {
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                JOptionPane.showMessageDialog(rootPane, "Error");
             }
         } else {
             try {
@@ -827,7 +822,7 @@ public class Game extends javax.swing.JFrame {
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                JOptionPane.showMessageDialog(rootPane, "Error");
             }
         }
     }
@@ -840,7 +835,7 @@ public class Game extends javax.swing.JFrame {
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                JOptionPane.showMessageDialog(rootPane, "Error");
             }
         } else {
             try {
@@ -848,7 +843,7 @@ public class Game extends javax.swing.JFrame {
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                JOptionPane.showMessageDialog(rootPane, "Error");
             }
         }
     }
@@ -861,7 +856,7 @@ public class Game extends javax.swing.JFrame {
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                JOptionPane.showMessageDialog(rootPane, "Error");
             }
         } else {
             try {
@@ -869,7 +864,7 @@ public class Game extends javax.swing.JFrame {
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                JOptionPane.showMessageDialog(rootPane, "Error");
             }
         }
     }
@@ -892,17 +887,25 @@ public class Game extends javax.swing.JFrame {
         }
     }
 
-    public void winRequest() throws Exception {
-        JOptionPane.showMessageDialog(rootPane, "Bạn đã thắng");
-        String msg = "WinRequest;" + competitor.getUserId() + ";" + us.getUserId();
-        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
-        client.push(encryptedMsg);
+    public void winRequest() {
+        try {
+            JOptionPane.showMessageDialog(rootPane, "Bạn đã thắng");
+            String msg = "WinRequest;" + competitor.getUserId() + ";" + us.getUserId();
+            byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+            client.push(encryptedMsg);
+        } catch (Exception ex) {
+            System.out.println("Error");
+        }
     }
 
-    public void lose(int a, int b) throws Exception {
-        String msg = "Lose;" + a + ";" + b;
-        byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
-        client.push(encryptedMsg);
+    public void lose(int a, int b) {
+        try {
+            String msg = "Lose;" + a + ";" + b;
+            byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
+            client.push(encryptedMsg);
+        } catch (Exception ex) {
+            System.out.println("Error");
+        }
     }
 
     public int checkRow() {

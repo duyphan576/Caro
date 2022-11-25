@@ -520,7 +520,7 @@ public class HomePage extends javax.swing.JFrame {
             homePage.setVisible(false);
             login.setVisible(true);
         } catch (Exception ex) {
-            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error");
         }
 
     }//GEN-LAST:event_btnLogOutActionPerformed
@@ -551,7 +551,7 @@ public class HomePage extends javax.swing.JFrame {
                 areaChatBox.setCaretPosition(areaChatBox.getDocument().getLength());
             }
         } catch (Exception ex) {
-            Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error");
         }
     }//GEN-LAST:event_btnSendActionPerformed
 
