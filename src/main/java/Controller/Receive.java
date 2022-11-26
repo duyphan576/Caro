@@ -182,6 +182,7 @@ public class Receive implements Runnable {
                 } else if (parts[0].equals("Chat")) {
                     game.addMessage(parts[1]);
                 } else if (parts[0].equals("SurrenderConfirm")) {
+                    game.show();
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
@@ -189,7 +190,9 @@ public class Receive implements Runnable {
                     us = setUser(0, parts);
                     gr = setGrade(parts);
                     homePage.setInfo();
-                } else if (parts[0].equals("Exit")) {
+                } else if (parts[0].equals("Lose")) {
+                    game.setLose(parts[1], parts[2]);
+                }else if (parts[0].equals("Exit")) {
                     break;
                 }
             }
