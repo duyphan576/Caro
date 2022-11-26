@@ -182,9 +182,18 @@ public class Receive implements Runnable {
                 } else if (parts[0].equals("Chat")) {
                     game.addMessage(parts[1]);
                 } else if (parts[0].equals("SurrenderConfirm")) {
+                    if(parts[1].equals("true")){
+                    game.show1();
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
+                    }
+                    else{
+                    closeAllViews();
+                    homePage = new HomePage();
+                    homePage.setVisible(true);
+                    }
+                    
                 } else if (parts[0].equals("GetInfo")) {
                     us = setUser(0, parts);
                     gr = setGrade(parts);

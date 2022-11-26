@@ -1184,7 +1184,9 @@ public class Game extends javax.swing.JFrame {
         }
         return win;
     }
-
+    public void show1(){
+        JOptionPane.showMessageDialog(rootPane, "Competitor is surrender");
+    }
     public int checkLeftCrossWin() {
         int win = 0, cheot = 0, n = 0;
         boolean check = false;
@@ -1226,7 +1228,7 @@ public class Game extends javax.swing.JFrame {
         }
         return win;
     }
-
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaChat;
