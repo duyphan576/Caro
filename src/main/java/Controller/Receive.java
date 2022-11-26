@@ -156,7 +156,9 @@ public class Receive implements Runnable {
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
-                } else if (parts[0].equals("SurrenderRequest")) {
+                } else if (parts[0].equals("DrawRefuse")) {
+                    game.displayDrawRefuse();
+                }else if (parts[0].equals("SurrenderRequest")) {
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
