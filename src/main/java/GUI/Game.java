@@ -887,7 +887,7 @@ public class Game extends javax.swing.JFrame {
 
     public void winRequest() {
         try {
-            JOptionPane.showMessageDialog(rootPane, "You Win");
+            JOptionPane.showMessageDialog(rootPane, "You win");
             String msg = "WinRequest;" + competitor.getUserId() + ";" + us.getUserId();
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
@@ -1226,9 +1226,7 @@ public class Game extends javax.swing.JFrame {
         }
         return win;
     }
-    public void show(){
-        JOptionPane.showMessageDialog(rootPane, "Competitor is surrender");
-    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaChat;

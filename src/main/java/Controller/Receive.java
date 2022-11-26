@@ -158,7 +158,7 @@ public class Receive implements Runnable {
                     homePage.setVisible(true);
                 } else if (parts[0].equals("DrawRefuse")) {
                     game.displayDrawRefuse();
-                }else if (parts[0].equals("SurrenderRequest")) {
+                } else if (parts[0].equals("SurrenderRequest")) {
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
@@ -182,7 +182,6 @@ public class Receive implements Runnable {
                 } else if (parts[0].equals("Chat")) {
                     game.addMessage(parts[1]);
                 } else if (parts[0].equals("SurrenderConfirm")) {
-                    game.show();
                     closeAllViews();
                     homePage = new HomePage();
                     homePage.setVisible(true);
@@ -190,9 +189,9 @@ public class Receive implements Runnable {
                     us = setUser(0, parts);
                     gr = setGrade(parts);
                     homePage.setInfo();
-                } else if (parts[0].equals("Lose")) {
-                    game.setLose(parts[1], parts[2]);
-                }else if (parts[0].equals("Exit")) {
+                } else if (parts[0].equals("Error")) {
+                    showMessage(parts[1]);
+                } else if (parts[0].equals("Exit")) {
                     break;
                 }
             }
@@ -315,4 +314,39 @@ public class Receive implements Runnable {
         }
     }
 
+    public void showMessage(String message) {
+        if (login != null) {
+            JOptionPane.showMessageDialog(login, message);
+        }
+        if (register != null) {
+            JOptionPane.showMessageDialog(register, message);
+        }
+        if (homePage != null) {
+            JOptionPane.showMessageDialog(homePage, message);
+        }
+        if (listRoom != null) {
+            JOptionPane.showMessageDialog(listRoom, message);
+        }
+        if (rank != null) {
+            JOptionPane.showMessageDialog(rank, message);
+        }
+        if (findRoom != null) {
+            JOptionPane.showMessageDialog(findRoom, message);
+        }
+        if (waitingRoom != null) {
+            JOptionPane.showMessageDialog(waitingRoom, message);
+        }
+        if (game != null) {
+            JOptionPane.showMessageDialog(game, message);
+        }
+        if (createRoom != null) {
+            JOptionPane.showMessageDialog(createRoom, message);
+        }
+        if (joinRoom != null) {
+            JOptionPane.showMessageDialog(joinRoom, message);
+        }
+        if (rank != null) {
+            JOptionPane.showMessageDialog(rank, message);
+        }
+    }
 }
