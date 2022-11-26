@@ -887,7 +887,7 @@ public class Game extends javax.swing.JFrame {
 
     public void winRequest() {
         try {
-            JOptionPane.showMessageDialog(rootPane, "Bạn đã thắng");
+            JOptionPane.showMessageDialog(rootPane, "You win");
             String msg = "WinRequest;" + competitor.getUserId() + ";" + us.getUserId();
             byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
