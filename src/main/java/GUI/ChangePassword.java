@@ -8,7 +8,13 @@ import static Controller.Main.client;
 import static Controller.Receive.changePassword;
 import static Controller.Receive.us;
 import Model.User;
+import com.formdev.flatlaf.FlatLightLaf;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -22,8 +28,14 @@ public class ChangePassword extends javax.swing.JFrame {
     private User user;
 
     public ChangePassword() {
-        initComponents();
-        this.user = us;
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+            initComponents();
+            this.user = us;
+            this.setIconImage(new ImageIcon(this.getClass().getResource("/tic-tac-toe.png")).getImage());
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(ChangePassword.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -184,7 +196,7 @@ public class ChangePassword extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnCheckActionPerformed
-    
+
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(rootPane, message);
     }

@@ -8,8 +8,14 @@ import static Controller.Main.client;
 import static Controller.Receive.changeInfo;
 import static Controller.Receive.us;
 import Model.User;
+import com.formdev.flatlaf.FlatLightLaf;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -23,8 +29,14 @@ public class ChangeInfo extends javax.swing.JFrame {
     private User user;
 
     public ChangeInfo() {
-        initComponents();
-        this.user = us;
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+            initComponents();
+            this.user = us;
+            this.setIconImage(new ImageIcon(this.getClass().getResource("/tic-tac-toe.png")).getImage());
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(ChangeInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

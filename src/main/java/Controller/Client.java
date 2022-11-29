@@ -60,8 +60,6 @@ public class Client {
             Receive recv = new Receive(socket, in);
             ExecutorService excutor = Executors.newCachedThreadPool();
             excutor.execute(recv);
-        } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }

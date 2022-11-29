@@ -13,6 +13,7 @@ import static Controller.Receive.login;
 import static Controller.Receive.us;
 import static Controller.Receive.listRoom;
 import static Controller.Receive.setting;
+import static Controller.Receive.waitingRoom;
 import Model.Grade;
 import Model.User;
 import com.formdev.flatlaf.FlatIntelliJLaf;
@@ -584,6 +585,8 @@ public class HomePage extends javax.swing.JFrame {
             byte[] encryptedMsg;
             encryptedMsg = client.cc.symmetricEncryption(msg);
             client.push(encryptedMsg);
+            waitingRoom = new WaitingRoom();
+            waitingRoom.setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -199,7 +199,7 @@ public class Receive implements Runnable {
                     gr = setGrade(parts);
                     homePage.setInfo();
                 } else if (parts[0].equals("Error")) {
-                    showMessage(parts[1]);
+                    showError(parts[1]);
                 } else if (parts[0].equals("Exit")) {
                     break;
                 }
@@ -323,39 +323,39 @@ public class Receive implements Runnable {
         }
     }
 
-    public void showMessage(String message) {
+    public void showError(String message) {
         if (login != null) {
-            JOptionPane.showMessageDialog(login, message);
+            JOptionPane.showMessageDialog(login, message, "Error",JOptionPane.ERROR_MESSAGE);
         }
         if (register != null) {
-            JOptionPane.showMessageDialog(register, message);
+            JOptionPane.showMessageDialog(register, message, "Error",JOptionPane.ERROR_MESSAGE);
         }
         if (homePage != null) {
-            JOptionPane.showMessageDialog(homePage, message);
+            JOptionPane.showMessageDialog(homePage, message, "Error",JOptionPane.ERROR_MESSAGE);
         }
         if (listRoom != null) {
-            JOptionPane.showMessageDialog(listRoom, message);
+            JOptionPane.showMessageDialog(listRoom, message, "Error",JOptionPane.ERROR_MESSAGE);
         }
         if (rank != null) {
-            JOptionPane.showMessageDialog(rank, message);
+            JOptionPane.showMessageDialog(rank, message, "Error",JOptionPane.ERROR_MESSAGE);
         }
         if (findRoom != null) {
-            JOptionPane.showMessageDialog(findRoom, message);
+            JOptionPane.showMessageDialog(findRoom, message, "Error",JOptionPane.ERROR_MESSAGE);
         }
         if (waitingRoom != null) {
-            JOptionPane.showMessageDialog(waitingRoom, message);
+            JOptionPane.showMessageDialog(waitingRoom, message, "Error",JOptionPane.ERROR_MESSAGE);
         }
         if (game != null) {
             JOptionPane.showMessageDialog(game, message);
         }
         if (createRoom != null) {
-            JOptionPane.showMessageDialog(createRoom, message);
+            JOptionPane.showMessageDialog(createRoom, message, "Error",JOptionPane.ERROR_MESSAGE);
         }
         if (joinRoom != null) {
-            JOptionPane.showMessageDialog(joinRoom, message);
+            JOptionPane.showMessageDialog(joinRoom, message, "Error",JOptionPane.ERROR_MESSAGE);
         }
         if (rank != null) {
-            JOptionPane.showMessageDialog(rank, message);
+            JOptionPane.showMessageDialog(rank, message, "Error",JOptionPane.ERROR_MESSAGE);
         }
     }
 }
