@@ -162,7 +162,7 @@ public class Game extends javax.swing.JFrame {
         try {
             try {
                 timer.stop();
-                String msg = "LeftRoom;";
+                String msg = "SurrenderRequest;" + competitor.getUserId() + ";" + us.getUserId();
                 byte[] encryptedMsg = client.cc.symmetricEncryption(msg);
                 client.push(encryptedMsg);
                 closeAllViews();
